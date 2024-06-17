@@ -48,8 +48,6 @@ namespace Viper.Game.Tests
             ViperButton vButton = new()
             {
                 Content = "Hello world!",
-                Background = new SolidColorBrush(Colors.White),
-                Foreground = new SolidColorBrush(Colors.Black),
             };
 
             TestingSpace.Children.Add(vButton);

@@ -20,6 +20,17 @@ namespace Viper.Game.Controls
     /// </summary>
     public partial class ViperButton : UserControl
     {
+        /// <summary>
+        /// Im lazy, so heres the entire control container, do whatrever, use events, etc, idk.
+        /// </summary>
+        public UserControl Container
+        {
+            get
+            {
+                return ButtonContainer;
+            }
+        }
+
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(object), typeof(ViperButton), new PropertyMetadata("ViperButton", OnContentChanged));
 
         public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register("Background", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(23, 23, 23)), OnBackgroundChanged));
@@ -146,11 +157,6 @@ namespace Viper.Game.Controls
         {
             get { return (HorizontalAlignment)GetValue(HorizontalAlignmentProperty); }
             set { SetValue(HorizontalAlignmentProperty, value); }
-        }
-
-        public ViperButton()
-        {
-            InitializeComponent();
         }
 
         private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -327,6 +333,44 @@ namespace Viper.Game.Controls
         protected virtual void OnHorizontalAlignmentChanged(object oldValue, object newValue)
         {
             ButtonContent.Foreground = (Brush)newValue;
+        }
+
+        public ViperButton()
+        {
+            InitializeComponent();
+
+            ButtonContainer.MouseEnter += ButtonContainer_MouseEnter;
+            ButtonContainer.MouseLeave += ButtonContainer_MouseLeave;
+            ButtonContainer.PreviewMouseLeftButtonDown += ButtonContainer_PreviewMouseLeftButtonDown;
+            ButtonContainer.PreviewMouseLeftButtonUp += ButtonContainer_PreviewMouseLeftButtonUp;
+        }
+
+        private void ButtonContainer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ButtonRectangle.Fill = HoverBackground;
+            ButtonRectangle.Stroke = HoverBorder;
+            ButtonContent.Foreground = HoverForeground;
+        }
+
+        private void ButtonContainer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ButtonRectangle.Fill = ClickBackground;
+            ButtonRectangle.Stroke = ClickBorder;
+            ButtonContent.Foreground = ClickForeground;
+        }
+
+        private void ButtonContainer_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ButtonRectangle.Fill = Background;
+            ButtonRectangle.Stroke = Border;
+            ButtonContent.Foreground = Foreground;
+        }
+
+        private void ButtonContainer_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ButtonRectangle.Fill = HoverBackground;
+            ButtonRectangle.Stroke = HoverBorder;
+            ButtonContent.Foreground = HoverForeground;
         }
     }
 }
