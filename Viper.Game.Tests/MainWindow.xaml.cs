@@ -50,7 +50,6 @@ namespace Viper.Game.Tests
                 Content = "Hello world!",
                 Background = new SolidColorBrush(Colors.White),
                 Foreground = new SolidColorBrush(Colors.Black),
-                s
             };
 
             TestingSpace.Children.Add(vButton);
