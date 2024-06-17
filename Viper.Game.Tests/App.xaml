@@ -1,7 +1,7 @@
-﻿<Application x:Class="Viper.Testing.App"
+﻿<Application x:Class="Viper.Game.Tests.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Viper.Testing"
+             xmlns:local="clr-namespace:Viper.Game.Tests"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

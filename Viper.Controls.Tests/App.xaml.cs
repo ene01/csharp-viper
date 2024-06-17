@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace Viper.Testing
+namespace Viper.Controls.Tests
 {
     /// <summary>
     /// Interaction logic for App.xaml

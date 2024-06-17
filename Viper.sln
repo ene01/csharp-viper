@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viper.Game", "Viper\Viper.Game.csproj", "{16E51188-108F-4FF6-9550-769E7E74C1F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viper.Game", "Viper\Viper.Game.csproj", "{16E51188-108F-4FF6-9550-769E7E74C1F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viper.Controls", "Viper.Controls\Viper.Controls.csproj", "{49B2BC18-F0CA-418D-A6AB-D8CC18883814}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viper.Controls.Test", "Viper.Testing\Viper.Controls.Test.csproj", "{DBD0AF00-E041-4946-B331-67D926F34F9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viper.Game.Tests", "Viper.Game.Tests\Viper.Game.Tests.csproj", "{6E2A1EFA-9AD5-4939-994E-3C39A750AAE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +17,10 @@ Global
 		{16E51188-108F-4FF6-9550-769E7E74C1F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16E51188-108F-4FF6-9550-769E7E74C1F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16E51188-108F-4FF6-9550-769E7E74C1F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{49B2BC18-F0CA-418D-A6AB-D8CC18883814}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{49B2BC18-F0CA-418D-A6AB-D8CC18883814}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{49B2BC18-F0CA-418D-A6AB-D8CC18883814}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{49B2BC18-F0CA-418D-A6AB-D8CC18883814}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBD0AF00-E041-4946-B331-67D926F34F9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBD0AF00-E041-4946-B331-67D926F34F9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBD0AF00-E041-4946-B331-67D926F34F9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBD0AF00-E041-4946-B331-67D926F34F9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E2A1EFA-9AD5-4939-994E-3C39A750AAE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E2A1EFA-9AD5-4939-994E-3C39A750AAE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E2A1EFA-9AD5-4939-994E-3C39A750AAE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E2A1EFA-9AD5-4939-994E-3C39A750AAE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
