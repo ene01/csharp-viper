@@ -21,6 +21,15 @@ namespace Viper.Game.Tests
         {
             Height = 25,
             Margin = new Thickness(5, 5, 5, 5),
+            Content = "Clear",
+            VerticalAlignment = VerticalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
+        private Button _buttonTest = new()
+        {
+            Height = 25,
+            Margin = new Thickness(5, 5, 5, 5),
             Content = "ViperButton",
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -30,18 +39,14 @@ namespace Viper.Game.Tests
         {
             InitializeComponent();
 
-            TestingSpacesButtons.Children.Add(_clearTestingSpace);
+            TestingSpaceButtons.Children.Add(_clearTestingSpace);
+            TestingSpacesButtons.Children.Add(_buttonTest);
 
+            _buttonTest.Click += _buttonTest_Click;
             _clearTestingSpace.Click += _clearTestingSpace_Click;
         }
 
-        private void DisposeLastTest()
-        {
-            TestingSpace.Children.Clear();
-            TestingInteractions.Children.Clear();
-        }
-
-        private void _clearTestingSpace_Click(object sender, RoutedEventArgs e)
+        private void _buttonTest_Click(object sender, RoutedEventArgs e)
         {
             DisposeLastTest();
 
@@ -51,6 +56,17 @@ namespace Viper.Game.Tests
             };
 
             TestingSpace.Children.Add(vButton);
+        }
+
+        private void _clearTestingSpace_Click(object sender, RoutedEventArgs e)
+        {
+            DisposeLastTest();
+        }
+
+        private void DisposeLastTest()
+        {
+            TestingSpace.Children.Clear();
+            TestingInteractions.Children.Clear();
         }
     }
 }
