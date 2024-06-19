@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Viper.Game.Controls"
              mc:Ignorable="d" VerticalAlignment="Top" HorizontalAlignment="Left">
-    <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" ClipToBounds="True">
         <Rectangle x:Name="ButtonRectangle" Stroke="#FF505050" Fill="#FF171717" StrokeThickness="2"/>
-        <ContentControl x:Name="ButtonContent" Content="ViperButton" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Margin="20,5,20,5"/>
+        <ContentControl x:Name="ButtonContent" Content="ViperButton" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Margin="20,5,20,5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" UseLayoutRounding="True"/>
     </Grid>
 </UserControl>

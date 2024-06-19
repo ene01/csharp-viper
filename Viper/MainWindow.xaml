@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="Viper" Height="450" Width="800">
     <Grid>
+        <Grid Margin="150,79,225,97" Background="#FF505050">
+            <TextBlock Margin="110,98,110,98" TextWrapping="Wrap" Text="Wawa" Width="205" Foreground="White" TextAlignment="Center" FontSize="20"/>
+        </Grid>
 
     </Grid>
 </Window>

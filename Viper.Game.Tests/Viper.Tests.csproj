@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Viper\Viper.Game.csproj" />
+    <ProjectReference Include="..\Viper\Viper.csproj" />
   </ItemGroup>
 
 </Project>

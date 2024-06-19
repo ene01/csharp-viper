@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,11 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Viper.Animations;
 
 namespace Viper.Game.Controls
 {
@@ -31,13 +34,13 @@ namespace Viper.Game.Controls
             }
         }
 
-        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(object), typeof(ViperButton), new PropertyMetadata("ViperButton", OnContentChanged));
+        public static readonly DependencyProperty CompositionProperty = DependencyProperty.Register("Composition", typeof(object), typeof(ViperButton), new PropertyMetadata("ViperButton", OnContentChanged));
 
-        public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register("Background", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(23, 23, 23)), OnBackgroundChanged));
+        public static readonly DependencyProperty NoHoverBackgroundProperty = DependencyProperty.Register("NoHoverBackground", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(23, 23, 23)), OnBackgroundChanged));
 
-        public static readonly DependencyProperty BorderProperty = DependencyProperty.Register("Border", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(80, 80, 80)), OnBorderChanged));
+        public static readonly DependencyProperty NoHoverBorderProperty = DependencyProperty.Register("NoHoverBorder", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(80, 80, 80)), OnBorderChanged));
 
-        public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register("Foreground", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(255, 255, 255)), OnForegroundChanged));
+        public static readonly DependencyProperty NoHoverForegroundProperty = DependencyProperty.Register("NoHoverForeground", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(255, 255, 255)), OnForegroundChanged));
 
         public static readonly DependencyProperty HoverBackgroundProperty = DependencyProperty.Register("HoverBackground", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(50, 50, 50)), OnHoverBackgroundChanged));
 
@@ -51,112 +54,131 @@ namespace Viper.Game.Controls
 
         public static readonly DependencyProperty ClickForegroundProperty = DependencyProperty.Register("ClickForeground", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(0, 0, 0)), OnClickForegroundChanged));
 
-        public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(double), typeof(ViperButton), new PropertyMetadata(double.NaN, OnHeightChanged));
+        public static readonly DependencyProperty ContainerHeightProperty = DependencyProperty.Register("ButtonHeight", typeof(double), typeof(ViperButton), new PropertyMetadata(double.NaN, OnHeightChanged));
 
-        public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(ViperButton), new PropertyMetadata(double.NaN, OnWidthChanged));
+        public static readonly DependencyProperty ContainerWidthProperty = DependencyProperty.Register("ButtonWidth", typeof(double), typeof(ViperButton), new PropertyMetadata(double.NaN, OnWidthChanged));
 
-        public static readonly DependencyProperty MarginProperty = DependencyProperty.Register("Margin", typeof(Thickness), typeof(ViperButton), new PropertyMetadata(new Thickness(0, 0, 0, 0), OnMarginChanged));
+        public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register("MarginPadding", typeof(Thickness), typeof(ViperButton), new PropertyMetadata(new Thickness(0, 0, 0, 0), OnMarginChanged));
 
-        public static readonly DependencyProperty RenderTransformProperty = DependencyProperty.Register("RenderTransform", typeof(Transform), typeof(ViperButton), new PropertyMetadata(null, OnRenderTransformChanged));
+        public static readonly DependencyProperty TransformsProperty = DependencyProperty.Register("Transforms", typeof(Transform), typeof(ViperButton), new PropertyMetadata(null, OnRenderTransformChanged));
 
-        public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", typeof(System.Windows.VerticalAlignment), typeof(ViperButton), new PropertyMetadata(System.Windows.VerticalAlignment.Top, OnVerticalAlignmentChanged));
+        public static readonly DependencyProperty YAlignmentProperty = DependencyProperty.Register("YAlignment", typeof(System.Windows.VerticalAlignment), typeof(ViperButton), new PropertyMetadata(System.Windows.VerticalAlignment.Top, OnVerticalAlignmentChanged));
 
-        public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", typeof(System.Windows.HorizontalAlignment), typeof(ViperButton), new PropertyMetadata(System.Windows.HorizontalAlignment.Left, OnHorizontalAlignmentChanged));
+        public static readonly DependencyProperty XAlignmentProperty = DependencyProperty.Register("XAlignment", typeof(System.Windows.HorizontalAlignment), typeof(ViperButton), new PropertyMetadata(System.Windows.HorizontalAlignment.Left, OnHorizontalAlignmentChanged));
 
-        public object Content
+        public EventHandler Click;
+
+        private object _composition = "ViperButton";
+        private Brush _noHoverBackground = new SolidColorBrush(Color.FromRgb(23, 23, 23));
+        private Brush _noHoverBorder = new SolidColorBrush(Color.FromRgb(80, 80, 80));
+        private Brush _noHoverForeground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        private Brush _hoverBackground = new SolidColorBrush(Color.FromRgb(50, 50, 50));
+        private Brush _hoverBorder = new SolidColorBrush(Color.FromRgb(90, 90, 90));
+        private Brush _hoverForeground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        private Brush _clickBackground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        private Brush _clickBorder = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        private Brush _clickForeground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+        private double _containerHeight = double.NaN;
+        private double _containerWidth = double.NaN;
+        private Thickness _spacing = new Thickness(0, 0, 0, 0);
+        private Transform _transforms = null;
+        private VerticalAlignment _yAlignment = VerticalAlignment.Top;
+        private HorizontalAlignment _xAlignment = HorizontalAlignment.Left;
+
+        public object Composition
         {
-            get { return GetValue(ContentProperty); }
-            set { SetValue(ContentProperty, value); }
+            get { return _composition; }
+            set { _composition = value; SetValue(CompositionProperty, value); }
         }
 
-        public Brush Background
+        public Brush NoHoverBackground
         {
-            get { return (Brush)GetValue(BackgroundProperty); }
-            set { SetValue(BackgroundProperty, value); }
+            get { return _noHoverBackground; }
+            set { _noHoverBackground = value; SetValue(NoHoverBackgroundProperty, value); }
         }
 
-        public Brush Border
+        public Brush NoHoverBorder
         {
-            get { return (Brush)GetValue(BorderProperty); }
-            set { SetValue(BorderProperty, value); }
+            get { return _noHoverBorder; }
+            set { _noHoverBorder = value; SetValue(NoHoverBorderProperty, value); }
         }
 
-        public Brush Foreground
+        public Brush NoHoverForeground
         {
-            get { return (Brush)GetValue(ForegroundProperty); }
-            set { SetValue(ForegroundProperty, value); }
+            get { return _noHoverForeground; }
+            set { _noHoverForeground = value; SetValue(NoHoverForegroundProperty, value); }
         }
 
         public Brush HoverBackground
         {
-            get { return (Brush)GetValue(HoverBackgroundProperty); }
-            set { SetValue(HoverBackgroundProperty, value); }
+            get { return _hoverBackground; }
+            set { _hoverBackground = value; SetValue(HoverBackgroundProperty, value); }
         }
 
         public Brush HoverBorder
         {
-            get { return (Brush)GetValue(HoverBorderProperty); }
-            set { SetValue(HoverBorderProperty, value); }
+            get { return _hoverBorder; }
+            set { _hoverBorder = value; SetValue(HoverBorderProperty, value); }
         }
 
         public Brush HoverForeground
         {
-            get { return (Brush)GetValue(HoverForegroundProperty); }
-            set { SetValue(HoverForegroundProperty, value); }
+            get { return _hoverForeground; }
+            set { _hoverForeground = value; SetValue(HoverForegroundProperty, value); }
         }
 
         public Brush ClickBackground
         {
-            get { return (Brush)GetValue(ClickBackgroundProperty); }
-            set { SetValue(ClickBackgroundProperty, value); }
+            get { return _clickBackground; }
+            set { _clickBackground = value; SetValue(ClickBackgroundProperty, value); }
         }
 
         public Brush ClickBorder
         {
-            get { return (Brush)GetValue(ClickBorderProperty); }
-            set { SetValue(ClickBorderProperty, value); }
+            get { return _clickBorder; }
+            set { _clickBorder = value; SetValue(ClickBorderProperty, value); }
         }
 
         public Brush ClickForeground
         {
-            get { return (Brush)GetValue(ClickForegroundProperty); }
-            set { SetValue(ClickForegroundProperty, value); }
+            get { return _clickForeground; }
+            set { _clickForeground = value; SetValue(ClickForegroundProperty, value); }
         }
 
-        public double Height
+        public double ContainerHeight
         {
-            get { return (double)GetValue(HeightProperty); }
-            set { SetValue(HeightProperty, value); }
+            get { return _containerHeight; }
+            set { _containerHeight = value; SetValue(ContainerHeightProperty, value); }
         }
 
-        public double Width
+        public double ContainerWidth
         {
-            get { return (double)GetValue(WidthProperty); }
-            set { SetValue(WidthProperty, value); }
+            get { return _containerWidth; }
+            set { _containerWidth = value; SetValue(ContainerWidthProperty, value); }
         }
 
-        public Thickness Margin
+        public Thickness Spacing
         {
-            get { return (Thickness)GetValue(MarginProperty); }
-            set { SetValue(MarginProperty, value); }
+            get { return _spacing; }
+            set { _spacing = value; SetValue(SpacingProperty, value); }
         }
 
-        public Transform RenderTransform
+        public Transform Transforms
         {
-            get { return (Transform)GetValue(RenderTransformProperty); }
-            set { SetValue(RenderTransformProperty, value); }
+            get { return _transforms; }
+            set { _transforms = value; SetValue(TransformsProperty, value); }
         }
 
-        public VerticalAlignment VerticalAlignment
+        public VerticalAlignment YAlignment
         {
-            get { return (VerticalAlignment)GetValue(VerticalAlignmentProperty); }
-            set { SetValue(VerticalAlignmentProperty, value); }
+            get { return _yAlignment; }
+            set { _yAlignment = value; SetValue(YAlignmentProperty, value); }
         }
 
-        public HorizontalAlignment HorizontalAlignment
+        public HorizontalAlignment XAlignment
         {
-            get { return (HorizontalAlignment)GetValue(HorizontalAlignmentProperty); }
-            set { SetValue(HorizontalAlignmentProperty, value); }
+            get { return _xAlignment; }
+            set { _xAlignment = value; SetValue(XAlignmentProperty, value); }
         }
 
         private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -257,7 +279,20 @@ namespace Viper.Game.Controls
 
         protected virtual void OnContentChanged(object oldValue, object newValue)
         {
-            ButtonContent.Content = (object)newValue;
+            if (newValue is string)
+            {
+                TextBlock text = new()
+                {
+                    Text = (string)newValue,
+                    TextWrapping = TextWrapping.WrapWithOverflow,
+                };
+
+                ButtonContent.Content = text;
+            }
+            else
+            {
+                ButtonContent.Content = (object)newValue;
+            }
         }
 
         protected virtual void OnBackgroundChanged(object oldValue, object newValue)
@@ -307,37 +342,39 @@ namespace Viper.Game.Controls
 
         protected virtual void OnHeightChanged(object oldValue, object newValue)
         {
-            ButtonRectangle.Stroke = (Brush)newValue;
+            ButtonContainer.Height = (double)newValue;
         }
 
         protected virtual void OnWidthChanged(object oldValue, object newValue)
         {
-            ButtonContent.Foreground = (Brush)newValue;
+            ButtonContainer.Width = (double)newValue;
         }
 
         protected virtual void OnMarginChanged(object oldValue, object newValue)
         {
-            ButtonRectangle.Stroke = (Brush)newValue;
+            ButtonContainer.Margin = (Thickness)newValue;
         }
 
         protected virtual void OnRenderTransformChanged(object oldValue, object newValue)
         {
-            ButtonContent.Foreground = (Brush)newValue;
+            ButtonContainer.RenderTransform = (Transform)newValue;
         }
 
         protected virtual void OnVerticalAlignmentChanged(object oldValue, object newValue)
         {
-            ButtonRectangle.Stroke = (Brush)newValue;
+            ButtonContainer.VerticalAlignment = (VerticalAlignment)newValue;
         }
 
         protected virtual void OnHorizontalAlignmentChanged(object oldValue, object newValue)
         {
-            ButtonContent.Foreground = (Brush)newValue;
+            ButtonContainer.HorizontalAlignment = (HorizontalAlignment)newValue;
         }
 
         public ViperButton()
         {
             InitializeComponent();
+
+            ButtonRectangle.RenderTransform = new ScaleTransform();
 
             ButtonContainer.MouseEnter += ButtonContainer_MouseEnter;
             ButtonContainer.MouseLeave += ButtonContainer_MouseLeave;
@@ -345,32 +382,42 @@ namespace Viper.Game.Controls
             ButtonContainer.PreviewMouseLeftButtonUp += ButtonContainer_PreviewMouseLeftButtonUp;
         }
 
+        private IEasingFunction elastic = new ElasticEase() { Springiness = 12 };
+        private IEasingFunction quadIn = new QuadraticEase() { EasingMode = EasingMode.EaseIn };
+        private IEasingFunction quadOut = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
+
         private void ButtonContainer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            ButtonRectangle.Fill = HoverBackground;
-            ButtonRectangle.Stroke = HoverBorder;
-            ButtonContent.Foreground = HoverForeground;
+            Click?.Invoke(this, new EventArgs());
+
+            Animate.Color(ButtonRectangle.Fill, SolidColorBrush.ColorProperty, (HoverBackground as SolidColorBrush).Color, TimeSpan.FromMilliseconds(300), quadOut);
+            Animate.Color(ButtonRectangle.Stroke, SolidColorBrush.ColorProperty, (HoverBorder as SolidColorBrush).Color, TimeSpan.FromMilliseconds(300), quadOut);
+            Animate.Color(ButtonContent.Foreground, SolidColorBrush.ColorProperty, (HoverForeground as SolidColorBrush).Color, TimeSpan.FromMilliseconds(300), quadOut);
+            Animate.Double(ButtonRectangle.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(400), quadOut);
+            Animate.Double(ButtonRectangle.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(400), quadOut);
         }
 
         private void ButtonContainer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ButtonRectangle.Fill = ClickBackground;
-            ButtonRectangle.Stroke = ClickBorder;
-            ButtonContent.Foreground = ClickForeground;
+            Animate.Color(ButtonRectangle.Fill, SolidColorBrush.ColorProperty, (ClickBackground as SolidColorBrush).Color, TimeSpan.FromMilliseconds(100), quadOut);
+            Animate.Color(ButtonRectangle.Stroke, SolidColorBrush.ColorProperty, (ClickBorder as SolidColorBrush).Color, TimeSpan.FromMilliseconds(100), quadOut);
+            Animate.Color(ButtonContent.Foreground, SolidColorBrush.ColorProperty, (ClickForeground as SolidColorBrush).Color, TimeSpan.FromMilliseconds(100), quadOut);
+            Animate.Double(ButtonRectangle.RenderTransform, ScaleTransform.ScaleXProperty, 0.5, TimeSpan.FromMilliseconds(1000), quadOut);
+            Animate.Double(ButtonRectangle.RenderTransform, ScaleTransform.ScaleYProperty, 0.5, TimeSpan.FromMilliseconds(1000), quadOut);
         }
 
         private void ButtonContainer_MouseLeave(object sender, MouseEventArgs e)
         {
-            ButtonRectangle.Fill = Background;
-            ButtonRectangle.Stroke = Border;
-            ButtonContent.Foreground = Foreground;
+            Animate.Color(ButtonRectangle.Fill, SolidColorBrush.ColorProperty, (NoHoverBackground as SolidColorBrush).Color, TimeSpan.FromMilliseconds(500), quadIn);
+            Animate.Color(ButtonRectangle.Stroke, SolidColorBrush.ColorProperty, (NoHoverBorder as SolidColorBrush).Color, TimeSpan.FromMilliseconds(500), quadIn);
+            Animate.Color(ButtonContent.Foreground, SolidColorBrush.ColorProperty, (NoHoverForeground as SolidColorBrush).Color, TimeSpan.FromMilliseconds(500), quadIn);
         }
 
         private void ButtonContainer_MouseEnter(object sender, MouseEventArgs e)
         {
-            ButtonRectangle.Fill = HoverBackground;
-            ButtonRectangle.Stroke = HoverBorder;
-            ButtonContent.Foreground = HoverForeground;
+            Animate.Color(ButtonRectangle.Fill, SolidColorBrush.ColorProperty, (HoverBackground as SolidColorBrush).Color, TimeSpan.FromMilliseconds(300), quadOut);
+            Animate.Color(ButtonRectangle.Stroke, SolidColorBrush.ColorProperty, (HoverBorder as SolidColorBrush).Color, TimeSpan.FromMilliseconds(300), quadOut);
+            Animate.Color(ButtonContent.Foreground, SolidColorBrush.ColorProperty, (HoverForeground as SolidColorBrush).Color, TimeSpan.FromMilliseconds(300), quadOut);
         }
     }
 }
