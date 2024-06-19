@@ -16,11 +16,16 @@ namespace Viper.Animations
 {
     public static class Animate
     {
-        public static void Double(DependencyObject targetElement, DependencyProperty property, double toValue, TimeSpan duration, IEasingFunction easing = null)
+        public static void Double(DependencyObject targetElement, DependencyProperty property, double toValue, TimeSpan duration, IEasingFunction easing = null, double? fromValue = null)
         {
             if (targetElement != null && property != null)
             {
                 var currentValue = (double)targetElement.GetValue(property);
+
+                if (fromValue != null)
+                {
+                    currentValue = (double)fromValue;
+                }
 
                 DoubleAnimation animation = new()
                 {
@@ -38,11 +43,16 @@ namespace Viper.Animations
             }
         }
 
-        public static void Color(DependencyObject targetElement, DependencyProperty property, Color toColor, TimeSpan duration, IEasingFunction easing = null, bool useCurrentValueAsFromValue = false)
+        public static void Color(DependencyObject targetElement, DependencyProperty property, Color toColor, TimeSpan duration, IEasingFunction easing = null, Color? fromValue = null)
         {
             if (targetElement != null && property != null && targetElement is Animatable)
             {
                 var currentValue = (Color)targetElement.GetValue(property);
+
+                if (fromValue != null)
+                {
+                    currentValue = (Color)fromValue;
+                }
 
                 ColorAnimation animation = new()
                 {
@@ -60,11 +70,16 @@ namespace Viper.Animations
             }
         }
 
-        public static void Point(DependencyObject targetElement, DependencyProperty property, Point toPoint, Duration duration, IEasingFunction easing = null)
+        public static void Point(DependencyObject targetElement, DependencyProperty property, Point toPoint, Duration duration, IEasingFunction easing = null, Point? fromValue = null)
         {
             if (targetElement != null && property != null && targetElement is Animatable)
             {
                 var currentValue = (Point)targetElement.GetValue(property);
+
+                if (fromValue != null)
+                {
+                    currentValue = (Point)fromValue;
+                }
 
                 PointAnimation animation = new PointAnimation
                 {
@@ -82,11 +97,16 @@ namespace Viper.Animations
             }
         }
 
-        public static void AnimateRect(DependencyObject targetElement, DependencyProperty property, Rect toValue, Duration duration, IEasingFunction easing = null)
+        public static void AnimateRect(DependencyObject targetElement, DependencyProperty property, Rect toValue, Duration duration, IEasingFunction easing = null, Rect? fromValue = null)
         {
             if (targetElement != null && property != null)
             {
                 var currentValue = (Rect)targetElement.GetValue(property);
+
+                if (fromValue != null)
+                {
+                    currentValue = (Rect)fromValue;
+                }
 
                 RectAnimation animation = new RectAnimation
                 {
@@ -104,11 +124,16 @@ namespace Viper.Animations
             }
         }
 
-        public static void AnimateThickness(DependencyObject targetElement, DependencyProperty property, Thickness toValue, Duration duration, IEasingFunction easing = null)
+        public static void AnimateThickness(DependencyObject targetElement, DependencyProperty property, Thickness toValue, Duration duration, IEasingFunction easing = null, Thickness? fromValue = null)
         {
             if (targetElement != null && property != null)
             {
                 var currentValue = (Thickness)targetElement.GetValue(property);
+
+                if (fromValue != null)
+                {
+                    currentValue = (Thickness)fromValue;
+                }
 
                 ThicknessAnimation animation = new ThicknessAnimation
                 {
