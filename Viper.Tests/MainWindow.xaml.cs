@@ -61,9 +61,44 @@ namespace Viper.Tests
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
+        private GradientStop _backGSOne = new()
+        {
+            Color = Colors.White,
+            Offset = 0,
+        };
+
+        private GradientStop _backGSTwo = new()
+        {
+            Color = Colors.DarkGray,
+            Offset = 1,
+        };
+
+        private bool _canAnimateBG = true;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            async void BackgroundAnimationLoop()
+            {
+                Random random = new();
+
+                LinearGradientBrush backLinearGradient = new() { GradientStops = { _backGSOne, _backGSTwo }, StartPoint = new Point(0, 0), EndPoint = new Point(0, 1) };
+
+                TestingMainGrid.Background = backLinearGradient;
+
+                while (_canAnimateBG)
+                {
+                    Animate.Color(_backGSOne, GradientStop.ColorProperty, Color.FromRgb((byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255)), TimeSpan.FromSeconds(10));
+                    Animate.Color(_backGSTwo, GradientStop.ColorProperty, Color.FromRgb((byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255)), TimeSpan.FromSeconds(10));
+                    Animate.Point(backLinearGradient, LinearGradientBrush.StartPointProperty, new Point(random.NextDouble(), random.NextDouble()), TimeSpan.FromSeconds(10));
+                    Animate.Point(backLinearGradient, LinearGradientBrush.EndPointProperty, new Point(random.NextDouble(), random.NextDouble()), TimeSpan.FromSeconds(10));
+
+                    await Task.Delay(TimeSpan.FromSeconds(10));
+                }
+            }
+
+            BackgroundAnimationLoop();
 
             DisposeLastTest("Nothing");
 
@@ -447,6 +482,7 @@ namespace Viper.Tests
             void DisabledOnNoHover(object sender, EventArgs e)
             {
                 Animate.Color(dbgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(200), new QuadraticEase());
+                Animate.Color(dbdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase());
             }
 
             buttonColumn.Children.Add(vButton1);

@@ -7,7 +7,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid x:Name="TestingMainGrid" Background="Black">
         <StackPanel x:Name="TestingSpacesButtons" HorizontalAlignment="Left" Width="200" Background="#FF0A0A0A"/>
-        <Grid x:Name="TestingSpace" Margin="370,10,10,10" Background="#FF292929"/>
+        <Grid x:Name="TestingSpace" Margin="375,15,15,15" Background="#FF292929"/>
         <StackPanel x:Name="TestingInteractions" HorizontalAlignment="Left" Width="160" Background="#FF191919" Margin="200,0,0,0"/>
 
     </Grid>
