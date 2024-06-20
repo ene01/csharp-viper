@@ -89,10 +89,10 @@ namespace Viper.Tests
 
                 while (_canAnimateBG)
                 {
-                    Animate.Color(_backGSOne, GradientStop.ColorProperty, Color.FromRgb((byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255)), TimeSpan.FromSeconds(10));
-                    Animate.Color(_backGSTwo, GradientStop.ColorProperty, Color.FromRgb((byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255)), TimeSpan.FromSeconds(10));
-                    Animate.Point(backLinearGradient, LinearGradientBrush.StartPointProperty, new Point(random.NextDouble(), random.NextDouble()), TimeSpan.FromSeconds(10));
-                    Animate.Point(backLinearGradient, LinearGradientBrush.EndPointProperty, new Point(random.NextDouble(), random.NextDouble()), TimeSpan.FromSeconds(10));
+                    Animate.Color(_backGSOne, GradientStop.ColorProperty, Color.FromRgb((byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255)), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
+                    Animate.Color(_backGSTwo, GradientStop.ColorProperty, Color.FromRgb((byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255)), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
+                    Animate.Point(backLinearGradient, LinearGradientBrush.StartPointProperty, new Point(random.NextDouble(), random.NextDouble()), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
+                    Animate.Point(backLinearGradient, LinearGradientBrush.EndPointProperty, new Point(random.NextDouble(), random.NextDouble()), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
 
                     await Task.Delay(TimeSpan.FromSeconds(10));
                 }
@@ -382,41 +382,42 @@ namespace Viper.Tests
 
             ViperButton vButton1 = new()
             {
-                Composition = "Button",
-                Spacing = new Thickness(10, 10, 0, 0)
+                Content = "Button",
+                Margin = new Thickness(10, 10, 0, 0)
             };
 
             ViperButton vButton2 = new()
             {
-                Composition = "With events",
-                ButtonBackground = bgBrush,
-                ButtonBorder = bdBrush,
-                ButtonForeground = fgBrush,
-                Spacing = new Thickness(10, 10, 0, 0)
+                Content = "With events",
+                Background = bgBrush,
+                BorderBrush = bdBrush,
+                Foreground = fgBrush,
+                Margin = new Thickness(10, 10, 0, 0)
             };
 
             ViperButton vButton5 = new()
             {
-                Composition = "Disabled with events",
-                Spacing = new Thickness(10, 10, 0, 0),
-                Enabled = false,
-                ButtonBackground = dbgBrush,
-                ButtonBorder = dbdBrush,
-                ButtonForeground = dfgBrush,
+                Content = "Disabled with events",
+                Margin = new Thickness(10, 10, 0, 0),
+                IsEnabled = false,
+                Background = dbgBrush,
+                BorderBrush = dbdBrush,
+                Foreground = dfgBrush,
             };
 
             ViperButton vButton3 = new()
             {
-                Composition = "An unseen amount of text on a button to maybe see TextWrapping in action when thw window size is small, i dont know if this will work.",
-                Spacing = new Thickness(10, 10, 0, 0)
+                Content = "An unseen amount of text on a button to maybe see TextWrapping in action when thw window size is small, i dont know if this will work.",
+                Margin = new Thickness(10, 10, 0, 0)
             };
 
             ViperButton vButton4 = new()
             {
-                Composition = "Dynamically streched button",
-                Spacing = new Thickness(10, 10, 0, 0),
-                XAlignment = HorizontalAlignment.Stretch,
+                Content = "Dynamically streched button",
+                Margin = new Thickness(10, 10, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
             };
+
 
             vButton2.Click += OnClick;
             vButton2.Release += OnRelease;
@@ -484,6 +485,8 @@ namespace Viper.Tests
                 Animate.Color(dbgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(200), new QuadraticEase());
                 Animate.Color(dbdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase());
             }
+
+            Debug.WriteLine($"Content: {vButton2.GetValue(ForegroundProperty)}");
 
             buttonColumn.Children.Add(vButton1);
             buttonColumn.Children.Add(vButton2);
