@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Viper.Game.Controls"
              mc:Ignorable="d" VerticalAlignment="Top" HorizontalAlignment="Left">
-    <Grid x:Name="ButtonGrid" ClipToBounds="True">
-        <Rectangle x:Name="ButtonRectangle" Stroke="#FF505050" Fill="#FF171717" StrokeThickness="2"/>
+    <Grid x:Name="ButtonGrid" ClipToBounds="True" Background="#FF171717">
+        <Rectangle x:Name="Blackout" Stroke="#00000000" Fill="Black" StrokeThickness="0" Panel.ZIndex="1" IsHitTestVisible="False" Opacity="0"/>
+        <Border x:Name="ButtonBorder" BorderBrush="#FF505050" BorderThickness="1" Background="#00000000"/>
         <ContentControl x:Name="ButtonContent" Content="ViperButton" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Margin="20,5,20,5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" UseLayoutRounding="True"/>
-        <Rectangle x:Name="EnabledLayer" Stroke="#00000000" Fill="Black" StrokeThickness="0" Panel.ZIndex="1" IsHitTestVisible="False" Opacity="0"/>
     </Grid>
 </UserControl>

@@ -35,27 +35,7 @@ namespace Viper.Game.Controls
             }
         }
 
-        public static readonly DependencyProperty CompositionProperty = DependencyProperty.Register("Composition", typeof(object), typeof(ViperButton), new PropertyMetadata("ViperButton", OnContentChanged));
-
-        public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register("NoHoverBackground", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(23, 23, 23)), OnBackgroundChanged));
-
-        public static readonly DependencyProperty ButtonBorderProperty = DependencyProperty.Register("NoHoverBorder", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(80, 80, 80)), OnBorderChanged));
-
-        public static readonly DependencyProperty ButtonForegroundProperty = DependencyProperty.Register("NoHoverForeground", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(255, 255, 255)), OnForegroundChanged));
-
-        public static readonly DependencyProperty ContainerHeightProperty = DependencyProperty.Register("ButtonHeight", typeof(double), typeof(ViperButton), new PropertyMetadata(double.NaN, OnHeightChanged));
-
-        public static readonly DependencyProperty ContainerWidthProperty = DependencyProperty.Register("ButtonWidth", typeof(double), typeof(ViperButton), new PropertyMetadata(double.NaN, OnWidthChanged));
-
-        public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register("MarginPadding", typeof(Thickness), typeof(ViperButton), new PropertyMetadata(new Thickness(0, 0, 0, 0), OnMarginChanged));
-
-        public static readonly DependencyProperty TransformsProperty = DependencyProperty.Register("Transforms", typeof(Transform), typeof(ViperButton), new PropertyMetadata(null, OnRenderTransformChanged));
-
-        public static readonly DependencyProperty YAlignmentProperty = DependencyProperty.Register("YAlignment", typeof(System.Windows.VerticalAlignment), typeof(ViperButton), new PropertyMetadata(System.Windows.VerticalAlignment.Top, OnVerticalAlignmentChanged));
-
-        public static readonly DependencyProperty XAlignmentProperty = DependencyProperty.Register("XAlignment", typeof(System.Windows.HorizontalAlignment), typeof(ViperButton), new PropertyMetadata(System.Windows.HorizontalAlignment.Left, OnHorizontalAlignmentChanged));
-
-        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(bool), typeof(ViperButton), new PropertyMetadata(true, OnEnabledChanged));
+        public static readonly DependencyProperty BorderProperty = DependencyProperty.Register("Border", typeof(Brush), typeof(ViperButton), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(80, 80, 80))));
 
         /// <summary>
         /// Events that triggers when the button is enabled and clicked.
@@ -82,7 +62,7 @@ namespace Viper.Game.Controls
         /// </summary>
         public EventHandler NoHovering;
 
-        private object _composition = "ViperButton";
+        private object _content = "ViperButton";
         private Brush _background = new SolidColorBrush(Color.FromRgb(23, 23, 23));
         private Brush _border = new SolidColorBrush(Color.FromRgb(80, 80, 80));
         private Brush _foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
@@ -94,214 +74,159 @@ namespace Viper.Game.Controls
         private HorizontalAlignment _xAlignment = HorizontalAlignment.Left;
         private bool _isEnabled = true;
 
-        public object Composition
+        public new object Content
         {
-            get { return _composition; }
-            set { _composition = value; SetValue(CompositionProperty, value); }
+            get { return _content; }
+
+            set
+            {
+                _content = value;
+
+                if (value is string)
+                {
+                    TextBlock text = new()
+                    {
+                        Text = (string)_content,
+                        TextWrapping = TextWrapping.WrapWithOverflow,
+                    };
+
+                    ButtonContent.Content = text;
+                }
+                else
+                {
+                    ButtonContent.Content = value;
+                }
+            }
         }
 
-        public Brush ButtonBackground
+        public new Brush Background
         {
             get { return _background; }
-            set { _background = value; SetValue(ButtonBackgroundProperty, value); }
+
+            set 
+            { 
+                _background = value; 
+
+                ButtonGrid.Background = value;
+            }
         }
 
-        public Brush ButtonBorder
+        public new Brush BorderBrush
         {
             get { return _border; }
-            set { _border = value; SetValue(ButtonBorderProperty, value); }
+
+            set
+            { 
+                _border = value;
+
+                ButtonBorder.BorderBrush = value;
+            }
         }
 
-        public Brush ButtonForeground
+        public new Brush Foreground
         {
             get { return _foreground; }
-            set { _foreground = value; SetValue(ButtonForegroundProperty, value); }
+
+            set 
+            { 
+                _foreground = value;
+
+                ButtonContent.Foreground = value;
+            }
         }
 
-        public double ContainerHeight
+        public new double Height
         {
             get { return _containerHeight; }
-            set { _containerHeight = value; SetValue(ContainerHeightProperty, value); }
+
+            set 
+            { 
+                _containerHeight = value;
+
+                Container.Height = value;
+            }
         }
 
-        public double ContainerWidth
+        public new double Width
         {
             get { return _containerWidth; }
-            set { _containerWidth = value; SetValue(ContainerWidthProperty, value); }
+
+            set 
+            { 
+                _containerWidth = value;
+
+                Container.Width = value;
+            }
         }
 
-        public Thickness Spacing
+        public new Thickness Margin
         {
             get { return _spacing; }
-            set { _spacing = value; SetValue(SpacingProperty, value); }
+
+            set 
+            { 
+                _spacing = value;
+
+                Container.Margin = value;
+            }
         }
 
-        public Transform Transforms
+        public new Transform RenderTransform
         {
             get { return _transforms; }
-            set { _transforms = value; SetValue(TransformsProperty, value); }
+
+            set 
+            { 
+                _transforms = value;
+
+                Container.RenderTransform = value;
+            }
         }
 
-        public VerticalAlignment YAlignment
+        public new VerticalAlignment VerticalAlignment
         {
             get { return _yAlignment; }
-            set { _yAlignment = value; SetValue(YAlignmentProperty, value); }
+
+            set 
+            { 
+                _yAlignment = value;
+
+                Container.VerticalAlignment = value;
+            }
         }
 
-        public HorizontalAlignment XAlignment
+        public new HorizontalAlignment HorizontalAlignment
         {
             get { return _xAlignment; }
-            set { _xAlignment = value; SetValue(XAlignmentProperty, value); }
+
+            set 
+            { 
+                _xAlignment = value;
+
+                Container.HorizontalAlignment = value;
+            }
         }
 
-        public bool Enabled
+        public new bool IsEnabled
         {
             get { return _isEnabled; }
-            set { _isEnabled = value; SetValue(IsEnabledProperty, value); }
-        }
 
-        private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ViperButton)d;
-            control.OnContentChanged(e.OldValue, e.NewValue);
-        }
+            set 
+            { 
+                _isEnabled = value;
 
-        private static void OnBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ViperButton)d;
-            control.OnBackgroundChanged(e.OldValue, e.NewValue);
-        }
-
-        private static void OnBorderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ViperButton)d;
-            control.OnBorderChanged(e.OldValue, e.NewValue);
-        }
-
-        private static void OnForegroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ViperButton)d;
-            control.OnForegroundChanged(e.OldValue, e.NewValue);
-        }
-
-        private static void OnHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ViperButton)d;
-            control.OnHeightChanged(e.OldValue, e.NewValue);
-        }
-
-        private static void OnWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ViperButton)d;
-            control.OnWidthChanged(e.OldValue, e.NewValue);
-        }
-
-        private static void OnMarginChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ViperButton)d;
-            control.OnMarginChanged(e.OldValue, e.NewValue);
-        }
-
-        private static void OnRenderTransformChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ViperButton)d;
-            control.OnRenderTransformChanged(e.OldValue, e.NewValue);
-        }
-
-        private static void OnVerticalAlignmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ViperButton)d;
-            control.OnVerticalAlignmentChanged(e.OldValue, e.NewValue);
-        }
-
-        private static void OnHorizontalAlignmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ViperButton)d;
-            control.OnHorizontalAlignmentChanged(e.OldValue, e.NewValue);
-        }
-
-        private static void OnEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ViperButton)d;
-            control.OnHorizontalAlignmentChanged(e.OldValue, e.NewValue);
-        }
-
-        protected virtual void OnContentChanged(object oldValue, object newValue)
-        {
-            if (newValue is string)
-            {
-                TextBlock text = new()
-                {
-                    Text = (string)newValue,
-                    TextWrapping = TextWrapping.WrapWithOverflow,
-                };
-
-                ButtonContent.Content = text;
+                EnabledLayerToggle(value);
             }
-            else
-            {
-                ButtonContent.Content = _contentLoaded;
-            }
-        }
-
-        protected virtual void OnBackgroundChanged(object oldValue, object newValue)
-        {
-            ButtonRectangle.Fill = _background;
-        }
-
-        protected virtual void OnBorderChanged(object oldValue, object newValue)
-        {
-            ButtonRectangle.Stroke = _border;
-        }
-
-        protected virtual void OnForegroundChanged(object oldValue, object newValue)
-        {
-            ButtonContent.Foreground = _foreground;
-        }
-
-        protected virtual void OnHeightChanged(object oldValue, object newValue)
-        {
-            ButtonContainer.Height = _containerHeight;
-        }
-
-        protected virtual void OnWidthChanged(object oldValue, object newValue)
-        {
-            ButtonContainer.Width = _containerWidth;
-        }
-
-        protected virtual void OnMarginChanged(object oldValue, object newValue)
-        {
-            ButtonContainer.Margin = _spacing;
-        }
-
-        protected virtual void OnRenderTransformChanged(object oldValue, object newValue)
-        {
-            ButtonContainer.RenderTransform = _transforms;
-        }
-
-        protected virtual void OnVerticalAlignmentChanged(object oldValue, object newValue)
-        {
-            ButtonContainer.VerticalAlignment =_yAlignment;
-        }
-
-        protected virtual void OnHorizontalAlignmentChanged(object oldValue, object newValue)
-        {
-            ButtonContainer.HorizontalAlignment = _xAlignment;
-        }
-
-        protected virtual void OnEnabledChanged(object oldValue, object newValue)
-        {
-            EnabledLayerToggle();
         }
 
         private IEasingFunction elastic = new ElasticEase() { Springiness = 5 };
         private IEasingFunction quadOut = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
 
-        private double _actualHeight = 0, _actualWidth = 0;
-
         public ViperButton()
         {
             InitializeComponent();
+
+
 
             Loaded += ViperButton_Loaded;
             Unloaded += ViperButton_Unloaded;
@@ -329,17 +254,15 @@ namespace Viper.Game.Controls
             Unloaded -= ViperButton_Unloaded;
         }
 
-        private void EnabledLayerToggle()
+        private void EnabledLayerToggle(bool enable)
         {
-            if (_isEnabled)
+            if (enable)
             {
-                EnabledLayer.IsHitTestVisible = false;
-                Animate.Double(EnabledLayer, OpacityProperty, 0, TimeSpan.FromMilliseconds(200));
+                Animate.Double(Blackout, OpacityProperty, 0, TimeSpan.FromMilliseconds(200));
             }
             else
             {
-                EnabledLayer.IsHitTestVisible = true;
-                Animate.Double(EnabledLayer, OpacityProperty, 0.3, TimeSpan.FromMilliseconds(200));
+                Animate.Double(Blackout, OpacityProperty, 0.3, TimeSpan.FromMilliseconds(200));
             }
         }
 
@@ -348,7 +271,7 @@ namespace Viper.Game.Controls
             ButtonGrid.SizeChanged += ButtonGrid_SizeChanged;
 
             ButtonGrid.RenderTransform = new ScaleTransform(1, 1) { CenterX = ButtonGrid.ActualWidth / 2, CenterY = ButtonGrid.ActualHeight / 2 };
-            EnabledLayerToggle();
+            EnabledLayerToggle(_isEnabled);
         }
 
         private void ButtonGrid_SizeChanged(object sender, SizeChangedEventArgs e)
