@@ -372,127 +372,64 @@ namespace Viper.Tests
                 VerticalAlignment = VerticalAlignment.Top,
             };
 
-            SolidColorBrush bgBrush = new(Color.FromRgb(23, 23, 23));
-            SolidColorBrush bdBrush = new(Color.FromRgb(80, 80, 80));
-            SolidColorBrush fgBrush = new(Color.FromRgb(255, 255, 255));
-
-            SolidColorBrush dbgBrush = new(Color.FromRgb(23, 23, 23));
-            SolidColorBrush dbdBrush = new(Color.FromRgb(80, 80, 80));
-            SolidColorBrush dfgBrush = new(Color.FromRgb(255, 255, 255));
-
             ViperButton vButton1 = new()
             {
-                Content = "Button",
-                Margin = new Thickness(10, 10, 0, 0)
+                Content = "Enabled",
+                Margin = new Thickness(10, 10, 0, 0),
+                DefaultColorAnimations = true,
             };
 
             ViperButton vButton2 = new()
             {
-                Content = "With events",
-                Background = bgBrush,
-                BorderBrush = bdBrush,
-                Foreground = fgBrush,
-                Margin = new Thickness(10, 10, 0, 0)
-            };
-
-            ViperButton vButton5 = new()
-            {
-                Content = "Disabled with events",
+                Content = "Disabled",
                 Margin = new Thickness(10, 10, 0, 0),
+                DefaultColorAnimations = true,
                 IsEnabled = false,
-                Background = dbgBrush,
-                BorderBrush = dbdBrush,
-                Foreground = dfgBrush,
             };
 
             ViperButton vButton3 = new()
             {
-                Content = "An unseen amount of text on a button to maybe see TextWrapping in action when thw window size is small, i dont know if this will work.",
-                Margin = new Thickness(10, 10, 0, 0)
+                Content = "With click event",
+                Margin = new Thickness(10, 10, 0, 0),
+                DefaultColorAnimations = true,
             };
 
             ViperButton vButton4 = new()
             {
+                Content = "An unseen amount of text on a button to maybe see TextWrapping in action when thw window size is small, i dont know if this will work.",
+                Margin = new Thickness(10, 10, 0, 0),
+                DefaultColorAnimations = true,
+            };
+
+            ViperButton vButton5 = new()
+            {
                 Content = "Dynamically streched button",
                 Margin = new Thickness(10, 10, 0, 0),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
+                DefaultColorAnimations = true,
             };
-
 
             vButton2.Click += OnClick;
-            vButton2.Release += OnRelease;
-            vButton2.Holding += OnHolding;
-            vButton2.Hovering += OnHover;
-            vButton2.NoHovering += OnNoHover;
 
-            vButton5.Release += DisabledOnRelease;
-            vButton5.Holding += DisabledOnHolding;
-            vButton5.Hovering += DisabledOnHover;
-            vButton5.NoHovering += DisabledOnNoHover;
-
-            vButton5.Click += (s, e) =>
-            {
-                MessageBox.Show("If you see this i fucked up");
-            };
+            vButton5.Click += OnClick;
 
             void OnClick(object sender, EventArgs e)
             {
-                Debug.WriteLine("- An important message from a fellow button: You clicked me!");
-            }
+                Debug.WriteLine("- An important message from a cool button: You clicked me!");
 
-            void OnHolding(object sender, EventArgs e)
-            {
-                Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Colors.White, TimeSpan.FromMilliseconds(100), new QuadraticEase());
-            }
-
-            void OnRelease(object sender, EventArgs e)
-            {
-                Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Colors.White);
-                Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase());
-                Animate.Color(fgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(255, 255, 255), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Colors.Black);
-            }
-
-            void OnHover(object sender, EventArgs e)
-            {
-                Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(40, 40, 40), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-            }
-
-            void OnNoHover(object sender, EventArgs e)
-            {
-                Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase());
-            }
-
-            void DisabledOnHolding(object sender, EventArgs e)
-            {
-                Animate.Color(dbdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(255, 91, 79), TimeSpan.FromMilliseconds(100), new QuadraticEase());
-            }
-
-            void DisabledOnRelease(object sender, EventArgs e)
-            {
-                Animate.Color(dbgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(40, 40, 40), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Color.FromRgb(255, 91, 79));
-                Animate.Color(dbdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Color.FromRgb(255, 91, 79));
-                Animate.Color(dfgBrush, SolidColorBrush.ColorProperty, Colors.White, TimeSpan.FromMilliseconds(300), new QuadraticEase(), Colors.Black);
-            }
-
-            void DisabledOnHover(object sender, EventArgs e)
-            {
-                Animate.Color(dbgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(40, 40, 40), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-            }
-
-            void DisabledOnNoHover(object sender, EventArgs e)
-            {
-                Animate.Color(dbgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                Animate.Color(dbdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase());
+                if (!(sender as ViperButton).IsEnabled)
+                {
+                    Debug.WriteLine("- An important message from a disabled button: You fucked up");
+                }
             }
 
             Debug.WriteLine($"Content: {vButton2.GetValue(ForegroundProperty)}");
 
             buttonColumn.Children.Add(vButton1);
             buttonColumn.Children.Add(vButton2);
-            buttonColumn.Children.Add(vButton5);
             buttonColumn.Children.Add(vButton3);
             buttonColumn.Children.Add(vButton4);
+            buttonColumn.Children.Add(vButton5);
 
             TestingSpace.Children.Add(buttonColumn);
 
