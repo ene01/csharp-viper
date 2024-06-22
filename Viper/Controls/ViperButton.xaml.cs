@@ -17,7 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Viper.Animations;
 
-namespace Viper.Game.Controls
+namespace Viper.Controls
 {
     /// <summary>
     /// Lógica de interacción para ViperButton.xaml
