@@ -12,7 +12,7 @@ using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
 using Vector = System.Windows.Vector;
 
-namespace Viper.Animations
+namespace Viper.Game.Animations
 {
     public static class Animate
     {
