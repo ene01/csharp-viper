@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viper", "Viper\Viper.csproj", "{16E51188-108F-4FF6-9550-769E7E74C1F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viper.Desktop", "Viper\Viper.Desktop.csproj", "{16E51188-108F-4FF6-9550-769E7E74C1F6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viper.Tests", "Viper.Tests\Viper.Tests.csproj", "{6E2A1EFA-9AD5-4939-994E-3C39A750AAE5}"
 EndProject

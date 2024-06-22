@@ -357,7 +357,7 @@ namespace Viper.Game.Controls
         }
 
         /// <summary>
-        /// Sets default colors, and color animations for buttons, black when not hovered, white when clicked (red if disabled), and grey when hovered).
+        /// Sets default colors, and color animations for buttons, black when not hovered, grey when hovered, and white when clicked (red if disabled)).
         /// THIS REPLACES ANY BRUSH THAT THE BUTTON HAD.
         /// </summary>
         /// <param name="viperButton"></param>
