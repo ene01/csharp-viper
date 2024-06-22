@@ -8,8 +8,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Viper.Game;
 
-namespace Viper.Game
+namespace Viper.Desktop
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -19,6 +20,10 @@ namespace Viper.Game
         public MainWindow()
         {
             InitializeComponent();
+
+            ViperGame vg = new();
+
+            WindowGrid.Children.Add(vg);
         }
     }
 }

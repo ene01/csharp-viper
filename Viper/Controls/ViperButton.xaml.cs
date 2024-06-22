@@ -15,9 +15,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Viper.Animations;
+using Viper.Game.Animations;
 
-namespace Viper.Controls
+namespace Viper.Game.Controls
 {
     /// <summary>
     /// Lógica de interacción para ViperButton.xaml
@@ -27,13 +27,7 @@ namespace Viper.Controls
         /// <summary>
         /// Im lazy, so heres the entire control container, do whatrever, use events, etc, idk.
         /// </summary>
-        public UserControl Container
-        {
-            get
-            {
-                return ButtonContainer;
-            }
-        }
+        public UserControl Container => ButtonContainer;
 
         /// <summary>
         /// Events that triggers when the button is enabled and clicked.
