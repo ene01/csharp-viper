@@ -47,7 +47,7 @@ namespace Viper.Tests
         {
             Height = 25,
             Margin = new Thickness(5, 5, 5, 5),
-            Content = "Animations",
+            Content = "Animation",
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
@@ -56,18 +56,27 @@ namespace Viper.Tests
         {
             Height = 25,
             Margin = new Thickness(5, 5, 5, 5),
-            Content = "Buttons",
+            Content = "Button",
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
-        private GradientStop _backGSOne = new()
+        private Button _checkBoxTest = new()
+        {
+            Height = 25,
+            Margin = new Thickness(5, 5, 5, 5),
+            Content = "CheckBox",
+            VerticalAlignment = VerticalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
+        private GradientStop _testingBGGSOne = new()
         {
             Color = Colors.White,
             Offset = 0,
         };
 
-        private GradientStop _backGSTwo = new()
+        private GradientStop _testingBGGSTwo = new()
         {
             Color = Colors.DarkGray,
             Offset = 1,
@@ -75,28 +84,28 @@ namespace Viper.Tests
 
         private bool _canAnimateBG = true;
 
+        private async void BackgroundAnimationLoop()
+        {
+            Random random = new();
+
+            LinearGradientBrush backLinearGradient = new() { GradientStops = { _testingBGGSOne, _testingBGGSTwo }, StartPoint = new Point(0, 0), EndPoint = new Point(0, 1) };
+
+            TestingMainGrid.Background = backLinearGradient;
+
+            while (_canAnimateBG)
+            {
+                Animate.Color(_testingBGGSOne, GradientStop.ColorProperty, Color.FromRgb((byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255)), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
+                Animate.Color(_testingBGGSTwo, GradientStop.ColorProperty, Color.FromRgb((byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255)), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
+                Animate.Point(backLinearGradient, LinearGradientBrush.StartPointProperty, new Point(random.NextDouble(), random.NextDouble()), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
+                Animate.Point(backLinearGradient, LinearGradientBrush.EndPointProperty, new Point(random.NextDouble(), random.NextDouble()), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
+
+                await Task.Delay(TimeSpan.FromSeconds(10));
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
-
-            async void BackgroundAnimationLoop()
-            {
-                Random random = new();
-
-                LinearGradientBrush backLinearGradient = new() { GradientStops = { _backGSOne, _backGSTwo }, StartPoint = new Point(0, 0), EndPoint = new Point(0, 1) };
-
-                TestingMainGrid.Background = backLinearGradient;
-
-                while (_canAnimateBG)
-                {
-                    Animate.Color(_backGSOne, GradientStop.ColorProperty, Color.FromRgb((byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255)), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
-                    Animate.Color(_backGSTwo, GradientStop.ColorProperty, Color.FromRgb((byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255)), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
-                    Animate.Point(backLinearGradient, LinearGradientBrush.StartPointProperty, new Point(random.NextDouble(), random.NextDouble()), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
-                    Animate.Point(backLinearGradient, LinearGradientBrush.EndPointProperty, new Point(random.NextDouble(), random.NextDouble()), TimeSpan.FromSeconds(10), new QuadraticEase() { EasingMode = EasingMode.EaseInOut });
-
-                    await Task.Delay(TimeSpan.FromSeconds(10));
-                }
-            }
 
             BackgroundAnimationLoop();
 
@@ -105,10 +114,12 @@ namespace Viper.Tests
             TestingSpacesButtons.Children.Add(_clearTestingSpace);
             TestingSpacesButtons.Children.Add(_animationTest);
             TestingSpacesButtons.Children.Add(_buttonTest);
+            TestingSpacesButtons.Children.Add(_checkBoxTest);
 
             _clearTestingSpace.Click += _clearTestingSpace_Click;
             _animationTest.Click += _animationTest_Click;
             _buttonTest.Click += _buttonTest_Click;
+            _checkBoxTest.Click += _checkBoxTest_Click;
         }
 
         private void _clearTestingSpace_Click(object sender, RoutedEventArgs e)
@@ -118,7 +129,7 @@ namespace Viper.Tests
 
         private void _animationTest_Click(object sender, RoutedEventArgs e)
         {
-            DisposeLastTest("Animations");
+            DisposeLastTest("Animation");
 
             Random random = new();
 
@@ -433,6 +444,55 @@ namespace Viper.Tests
 
             TestingSpace.Children.Add(buttonColumn);
 
+        }
+
+        private void _checkBoxTest_Click(object sender, RoutedEventArgs e)
+        {
+            DisposeLastTest("CheckBox");
+
+            StackPanel checkColumn = new()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+            };
+
+            ViperCheckBox check1 = new()
+            {
+                DefaultColorAnimations = true,
+                Content = "Enabled check"
+            };
+
+            ViperCheckBox check2 = new()
+            {
+                DefaultColorAnimations = true,
+                Content = "Disabled check",
+                IsEnabled = false,
+            };
+
+            ViperCheckBox check3 = new()
+            {
+                DefaultColorAnimations = true,
+                Content = "Long texts are like marathons for your eyes—by the end, you're not sure if you should get a medal or just a nap. 🏅😴",
+            };
+
+            ViperCheckBox check4 = new()
+            {
+                DefaultColorAnimations = true,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Content = "Dynamically stretched check box",
+            };
+
+            check1.StateChanged += (s, e) => 
+            {
+                Debug.WriteLine($"{e.State}");
+            };
+
+            checkColumn.Children.Add(check1);
+            checkColumn.Children.Add(check2);
+            checkColumn.Children.Add(check3);
+            checkColumn.Children.Add(check4);
+
+            TestingSpace.Children.Add(checkColumn);
         }
 
         private void DisposeLastTest(string testingSpaceMessage)
