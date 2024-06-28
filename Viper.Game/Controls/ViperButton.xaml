@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Viper.Game.Controls"
-             mc:Ignorable="d" VerticalAlignment="Top" HorizontalAlignment="Left">
+             mc:Ignorable="d" VerticalAlignment="Top" HorizontalAlignment="Left" Cursor="Hand">
     <Grid x:Name="ButtonGrid" ClipToBounds="True" Background="#FF171717">
         <Rectangle x:Name="Blackout" Stroke="#00000000" Fill="Black" StrokeThickness="0" Panel.ZIndex="1" IsHitTestVisible="False" Opacity="0"/>
         <Border x:Name="ButtonBorder" BorderBrush="#FF505050" BorderThickness="1" Background="#00000000"/>

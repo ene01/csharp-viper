@@ -70,6 +70,15 @@ namespace Viper.Tests
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
+        private Button _comboBoxTest = new()
+        {
+            Height = 25,
+            Margin = new Thickness(5, 5, 5, 5),
+            Content = "ComboBox",
+            VerticalAlignment = VerticalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
         private GradientStop _testingBGGSOne = new()
         {
             Color = Colors.White,
@@ -115,11 +124,13 @@ namespace Viper.Tests
             TestingSpacesButtons.Children.Add(_animationTest);
             TestingSpacesButtons.Children.Add(_buttonTest);
             TestingSpacesButtons.Children.Add(_checkBoxTest);
+            TestingSpacesButtons.Children.Add(_comboBoxTest);
 
             _clearTestingSpace.Click += _clearTestingSpace_Click;
             _animationTest.Click += _animationTest_Click;
             _buttonTest.Click += _buttonTest_Click;
             _checkBoxTest.Click += _checkBoxTest_Click;
+            _comboBoxTest.Click += _comboBoxTest_Click;
         }
 
         private void _clearTestingSpace_Click(object sender, RoutedEventArgs e)
@@ -407,7 +418,7 @@ namespace Viper.Tests
 
             ViperButton vButton4 = new()
             {
-                Content = "An unseen amount of text on a button to maybe see TextWrapping in action when thw window size is small, i dont know if this will work.",
+                Content = "Reading a long text is like trying to find a needle in a haystack, but the needle is the main point, and the haystack is endless paragraphs of rambling.",
                 Margin = new Thickness(10, 10, 0, 0),
                 DefaultColorAnimations = true,
             };
@@ -493,6 +504,55 @@ namespace Viper.Tests
             checkColumn.Children.Add(check4);
 
             TestingSpace.Children.Add(checkColumn);
+        }
+
+        private void _comboBoxTest_Click(object sender, RoutedEventArgs e)
+        {
+            DisposeLastTest("ComboBox");
+
+            StackPanel comboColumn = new()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new Thickness(10, 10, 0, 0),
+            };
+
+            ViperComboBox combo1 = new()
+            {
+                DefaultColorAnimations = true,
+                Content = "Enabled",
+                Margin = new Thickness(0, 10, 0, 0),
+            };
+
+            ViperComboBox combo2 = new()
+            {
+                IsEnabled = false,
+                Content = "Disabled",
+                DefaultColorAnimations = true,
+                Margin = new Thickness(0, 10, 0, 0),
+            };
+
+            ViperComboBox combo3 = new()
+            {
+                DefaultColorAnimations = true,
+                Content = "A very tall ComboBox",
+                Height = 50,
+                Margin = new Thickness(0, 10, 0, 0),
+            };
+
+            ViperComboBox combo4 = new()
+            {
+                DefaultColorAnimations = true,
+                Content = "Getting through a long text is like watching a movie with a 30-minute intro, an hour-long middle, and another 30 minutes of ending scenes—by the time it's over, you've forgotten what it was even about.",
+                Margin = new Thickness(0, 10, 0, 0),
+            };
+
+            comboColumn.Children.Add(combo1);
+            comboColumn.Children.Add(combo2);
+            comboColumn.Children.Add(combo3);
+            comboColumn.Children.Add(combo4);
+
+            TestingSpace.Children.Add(comboColumn);
         }
 
         private void DisposeLastTest(string testingSpaceMessage)

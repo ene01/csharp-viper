@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Viper.Game.Controls"
-             mc:Ignorable="d" VerticalAlignment="Top" HorizontalAlignment="Left">
+             mc:Ignorable="d" VerticalAlignment="Top" HorizontalAlignment="Left" Cursor="Hand">
     <Grid x:Name="CheckBoxGrid" ClipToBounds="True" Background="#00171717">
         <Rectangle x:Name="Blackout" Stroke="#00000000" Fill="Black" StrokeThickness="0" Panel.ZIndex="1" IsHitTestVisible="False" Opacity="0"/>
         <Border x:Name="CheckBoxBorder" BorderBrush="#00505050" BorderThickness="1" Background="#00000000"/>
         <Grid x:Name="ContentCheckContainer" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Rectangle x:Name="Check" HorizontalAlignment="Left" Height="15" Stroke="#56FFFFFF" VerticalAlignment="Top" Width="15" Fill="#FF232323" StrokeThickness="2" Margin="5,5,5,5"/>
+            <Rectangle x:Name="Check" HorizontalAlignment="Left" Height="15" Stroke="#56FFFFFF" VerticalAlignment="Top" Width="15" Fill="#FF232323" StrokeThickness="2" Margin="5,5,5,5" RadiusX="2.667" RadiusY="2.667"/>
             <ContentControl x:Name="CheckBoxContent" Content="ViperCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" UseLayoutRounding="True" Margin="25,5,10,5"/>
         </Grid>
     </Grid>
