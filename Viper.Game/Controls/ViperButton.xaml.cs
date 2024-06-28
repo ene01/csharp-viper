@@ -246,8 +246,6 @@ namespace Viper.Game.Controls
         {
             InitializeComponent();
 
-
-
             Loaded += ViperButton_Loaded;
             Unloaded += ViperButton_Unloaded;
             ButtonContainer.LostFocus += ViperButton_LostFocus;
