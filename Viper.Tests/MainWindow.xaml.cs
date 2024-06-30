@@ -520,7 +520,6 @@ namespace Viper.Tests
             ViperComboBox combo1 = new()
             {
                 DefaultColorAnimations = true,
-                Content = "Enabled",
                 Margin = new Thickness(0, 10, 0, 0),
             };
 
@@ -536,21 +535,46 @@ namespace Viper.Tests
             {
                 DefaultColorAnimations = true,
                 Content = "A very tall ComboBox",
-                Height = 50,
+                Height = 100,
                 Margin = new Thickness(0, 10, 0, 0),
             };
 
             ViperComboBox combo4 = new()
             {
                 DefaultColorAnimations = true,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
                 Content = "Getting through a long text is like watching a movie with a 30-minute intro, an hour-long middle, and another 30 minutes of ending scenes—by the time it's over, you've forgotten what it was even about.",
                 Margin = new Thickness(0, 10, 0, 0),
             };
+
+            ViperComboBox combo5 = new()
+            {
+                DefaultColorAnimations = true,
+                Content = "A tall item list.",
+                Margin = new Thickness(0, 10, 0, 0),
+                ItemContainerMaxHeight = 200,
+            };
+
+            // Array of number names
+            string[] numberNames = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten" };
+
+            // Loop through numbers 1 to 10
+            for (int i = 0; i < numberNames.Length; i++)
+            {
+                combo1.AddItem(numberNames[i]);
+                combo2.AddItem(numberNames[i]);
+                combo3.AddItem(numberNames[i]);
+                combo4.AddItem(numberNames[i]);
+                combo5.AddItem(numberNames[i]);
+            }
+
+            combo1.SetSelection(0);
 
             comboColumn.Children.Add(combo1);
             comboColumn.Children.Add(combo2);
             comboColumn.Children.Add(combo3);
             comboColumn.Children.Add(combo4);
+            comboColumn.Children.Add(combo5);
 
             TestingSpace.Children.Add(comboColumn);
         }
