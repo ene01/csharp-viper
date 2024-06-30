@@ -108,7 +108,7 @@ namespace Viper.Game.Controls
             }
         }
 
-        public Brush BorderBrush
+        public new Brush BorderBrush
         {
             get { return _border; }
 
@@ -120,7 +120,7 @@ namespace Viper.Game.Controls
             }
         }
 
-        public new Brush CheckFill
+        public Brush CheckFill
         {
             get { return _background; }
 
@@ -381,13 +381,13 @@ namespace Viper.Game.Controls
             }
         }
 
-        private async void CheckBoxContainer_MouseLeave(object sender, MouseEventArgs e)
+        private void CheckBoxContainer_MouseLeave(object sender, MouseEventArgs e)
         {
             NoHovering?.Invoke(this, new EventArgs());
             _canRegisterClick = false;
         }
 
-        private async void CheckBoxContainer_MouseEnter(object sender, MouseEventArgs e)
+        private void CheckBoxContainer_MouseEnter(object sender, MouseEventArgs e)
         {
             Hovering?.Invoke(this, new EventArgs());
         }

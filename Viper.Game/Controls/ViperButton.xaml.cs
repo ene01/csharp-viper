@@ -337,13 +337,13 @@ namespace Viper.Game.Controls
             }
         }
 
-        private async void ButtonContainer_MouseLeave(object sender, MouseEventArgs e)
+        private void ButtonContainer_MouseLeave(object sender, MouseEventArgs e)
         {
             NoHovering?.Invoke(this, new EventArgs());
             _canRegisterClick = false;
         }
 
-        private async void ButtonContainer_MouseEnter(object sender, MouseEventArgs e)
+        private void ButtonContainer_MouseEnter(object sender, MouseEventArgs e)
         {
             Hovering?.Invoke(this, new EventArgs());
         }

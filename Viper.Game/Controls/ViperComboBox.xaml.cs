@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -52,19 +53,51 @@ namespace Viper.Game.Controls
 
         public EventHandler<ViperComboBoxStateChanged> StateChanged;
 
-        private object _content = "ViperCheckBox";
-        private Brush _background = new SolidColorBrush(Color.FromRgb(23, 23, 23));
-        private Brush _border = new SolidColorBrush(Color.FromRgb(80, 80, 80));
-        private Brush _foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-        private Brush _itemsBackground = new SolidColorBrush(Color.FromRgb(12, 12, 12));
-        private double _stuffGridHeight = double.NaN;
-        private double _stuffGridWidth = double.NaN;
-        private Thickness _spacing = new Thickness(0, 0, 0, 0);
+        public EventHandler<ViperComboBoxSelectionChanged> SelectionChanged;
+
+        private const string CONTENT_VIPER_CHECK_BOX = "Nothing selected";
+        private const byte BACKGROUND_COLOR_R = 23;
+        private const byte BACKGROUND_COLOR_G = 23;
+        private const byte BACKGROUND_COLOR_B = 23;
+        private const byte BORDER_COLOR_R = 80;
+        private const byte BORDER_COLOR_G = 80;
+        private const byte BORDER_COLOR_B = 80;
+        private const byte FOREGROUND_COLOR_R = 255;
+        private const byte FOREGROUND_COLOR_G = 255;
+        private const byte FOREGROUND_COLOR_B = 255;
+        private const byte ITEMS_BACKGROUND_COLOR_R = 12;
+        private const byte ITEMS_BACKGROUND_COLOR_G = 12;
+        private const byte ITEMS_BACKGROUND_COLOR_B = 12;
+        private const byte ITEMS_DISPLAYERS_COLOR_R = 30;
+        private const byte ITEMS_DISPLAYERS_COLOR_G = 30;
+        private const byte ITEMS_DISPLAYERS_COLOR_B = 30;
+        private const double DEFAULT_GRID_HEIGHT = double.NaN;
+        private const double DEFAULT_GRID_WIDTH = double.NaN;
+        private const double ITEM_CONT_MAX_HEIGHT = 100;
+        private const double THICKNESS_LEFT = 0;
+        private const double THICKNESS_TOP = 0;
+        private const double THICKNESS_RIGHT = 0;
+        private const double THICKNESS_BOTTOM = 0;
+        private const VerticalAlignment DEFAULT_VERTICAL_ALIGNMENT = VerticalAlignment.Top;
+        private const HorizontalAlignment DEFAULT_HORIZONTAL_ALIGNMENT = HorizontalAlignment.Left;
+        private const bool DEFAULT_IS_ENABLED = true;
+        private const bool DEFAULT_IS_OPEN = false;
+
+        private object _content = CONTENT_VIPER_CHECK_BOX;
+        private Brush _background = new SolidColorBrush(Color.FromRgb(BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B));
+        private Brush _border = new SolidColorBrush(Color.FromRgb(BORDER_COLOR_R, BORDER_COLOR_G, BORDER_COLOR_B));
+        private Brush _foreground = new SolidColorBrush(Color.FromRgb(FOREGROUND_COLOR_R, FOREGROUND_COLOR_G, FOREGROUND_COLOR_B));
+        private Brush _itemsBackground = new SolidColorBrush(Color.FromRgb(ITEMS_BACKGROUND_COLOR_R, ITEMS_BACKGROUND_COLOR_G, ITEMS_BACKGROUND_COLOR_B));
+        private double _stuffGridHeight = DEFAULT_GRID_HEIGHT;
+        private double _stuffGridWidth = DEFAULT_GRID_WIDTH;
+        private double _itemContMaxHeight = ITEM_CONT_MAX_HEIGHT;
+        private Thickness _spacing = new Thickness(THICKNESS_LEFT, THICKNESS_TOP, THICKNESS_RIGHT, THICKNESS_BOTTOM);
         private Transform _transforms = null;
-        private VerticalAlignment _yAlignment = VerticalAlignment.Top;
-        private HorizontalAlignment _xAlignment = HorizontalAlignment.Left;
-        private bool _isEnabled = true;
-        private bool _isOpen = false;
+        private VerticalAlignment _yAlignment = DEFAULT_VERTICAL_ALIGNMENT;
+        private HorizontalAlignment _xAlignment = DEFAULT_HORIZONTAL_ALIGNMENT;
+        private bool _isEnabled = DEFAULT_IS_ENABLED;
+        private bool _isOpen = DEFAULT_IS_OPEN;
+        private Brush _itemDisplayersBrush = new SolidColorBrush(Color.FromRgb(ITEMS_DISPLAYERS_COLOR_R, ITEMS_DISPLAYERS_COLOR_G, ITEMS_DISPLAYERS_COLOR_B));
 
         public new object Content
         {
@@ -76,13 +109,7 @@ namespace Viper.Game.Controls
 
                 if (value is string)
                 {
-                    TextBlock text = new()
-                    {
-                        Text = (string)_content,
-                        TextWrapping = TextWrapping.WrapWithOverflow,
-                    };
-
-                    ComboBoxContent.Content = text;
+                    ComboBoxContent.Content = WrapWithOverflowTextBlock(value as string, _foreground);
                 }
                 else
                 {
@@ -136,6 +163,26 @@ namespace Viper.Game.Controls
                 _itemsBackground = value;
 
                 ItemStackPanel.Background = value;
+            }
+        }
+
+        public Brush ItemsDisplayersBackground
+        {
+            get { return _itemDisplayersBrush; }
+
+            set
+            {
+                SetDisplayerBrushes(value);
+            }
+        }
+
+        public new double ItemContainerMaxHeight
+        {
+            get { return _itemContMaxHeight; }
+
+            set
+            {
+                _itemContMaxHeight = value;
             }
         }
 
@@ -196,6 +243,9 @@ namespace Viper.Game.Controls
                 _yAlignment = value;
 
                 Container.VerticalAlignment = value;
+                RootGrid.VerticalAlignment = value;
+                ComboBoxContainerStackPanel.VerticalAlignment = value;
+                ComboBoxStuffGrid.VerticalAlignment = value;
             }
         }
 
@@ -208,6 +258,9 @@ namespace Viper.Game.Controls
                 _xAlignment = value;
 
                 Container.HorizontalAlignment = value;
+                RootGrid.HorizontalAlignment = value;
+                ComboBoxContainerStackPanel.HorizontalAlignment = value;
+                ComboBoxStuffGrid.HorizontalAlignment = value;
             }
         }
 
@@ -259,12 +312,143 @@ namespace Viper.Game.Controls
                     this.Holding = null;
                     this.Hovering = null;
                     this.NoHovering = null;
+
+                    Background = new SolidColorBrush(Color.FromRgb(BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B));
+                    BorderBrush = new SolidColorBrush(Color.FromRgb(BORDER_COLOR_R, BORDER_COLOR_G, BORDER_COLOR_B));
+                    Foreground = new SolidColorBrush(Color.FromRgb(FOREGROUND_COLOR_R, FOREGROUND_COLOR_G, FOREGROUND_COLOR_B));
+                    ItemsBackground = new SolidColorBrush(Color.FromRgb(ITEMS_BACKGROUND_COLOR_R, ITEMS_BACKGROUND_COLOR_G, ITEMS_BACKGROUND_COLOR_B));
                 }
             }
         }
 
-        private IEasingFunction elastic = new ElasticEase() { Springiness = 4, Oscillations = 2 };
+        private ScrollViewer _itemScroll = new()
+        {
+            VerticalAlignment = VerticalAlignment.Top,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Hidden,
+            Height = 0,
+        };
+
+        private StackPanel _itemStackPanelList = new()
+        {
+            VerticalAlignment = VerticalAlignment.Top,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
+        private List<object> _items = new();
+        private List<Grid> _itemDisplayers = new();
+
+        private int ItemAmount
+        {
+            get { return _items.Count; }
+        }
+
+        private IEasingFunction elastic = new ElasticEase() { Springiness = 8, Oscillations = 2 };
         private IEasingFunction quadOut = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
+
+        private void SetDisplayerBrushes(Brush value)
+        {
+            foreach (Grid itemDisplayer in _itemDisplayers)
+            {
+                itemDisplayer.Background = value;
+            }
+        }
+
+        public void AddItem(object item)
+        {
+            Grid itemGrid = new()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new Thickness(0, 0, 0, 1),
+                Background = _itemDisplayersBrush,
+            };
+
+            Border border = new()
+            {
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Background = new SolidColorBrush(),
+                BorderBrush = new SolidColorBrush(),
+                BorderThickness = new Thickness(1, 1, 1, 1)
+            };
+
+            ContentControl itemContent = new()
+            {
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new Thickness(5, 5, 5, 5),
+            };
+
+            itemGrid.MouseEnter += (s, e) =>
+            {
+                Animate.Color(border.BorderBrush, SolidColorBrush.ColorProperty, Colors.Gray, TimeSpan.FromMilliseconds(150), quadOut);
+                Animate.Color(border.Background, SolidColorBrush.ColorProperty, Color.FromArgb(50, 255, 255, 255), TimeSpan.FromMilliseconds(150), quadOut);
+            };
+
+            itemGrid.MouseLeave += (s, e) =>
+            {
+                Animate.Color(border.BorderBrush, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 255, 255), TimeSpan.FromMilliseconds(150), quadOut);
+                Animate.Color(border.Background, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 255, 255), TimeSpan.FromMilliseconds(150), quadOut);
+            };
+
+            if (item is string)
+            {
+                itemContent.Content = WrapWithOverflowTextBlock(item as string, new SolidColorBrush(Colors.White));
+            }
+            else
+            {
+                itemContent.Content = item;
+            };
+
+            itemGrid.Children.Add(border);
+            itemGrid.Children.Add(itemContent);
+
+            _items.Add(item);
+            _itemDisplayers.Add(itemGrid);
+
+            int currentIndex = _itemDisplayers.Count - 1;
+
+            itemGrid.PreviewMouseLeftButtonUp += (s, e) =>
+            {
+                SelectionChanged?.Invoke(this, new ViperComboBoxSelectionChanged(currentIndex));
+
+                Animate.Color(border.BorderBrush, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 255, 255), TimeSpan.FromMilliseconds(150), quadOut, Colors.White);
+
+                ItemDisplayToggle(false);
+
+                ComboBoxContent.Content = item;
+            };
+
+            _itemStackPanelList.Children.Add(itemGrid);
+        }
+
+        public void RemoveItem(int index)
+        {
+            _itemStackPanelList.Children.RemoveAt(index);
+
+            _items.RemoveAt(index);
+            _itemDisplayers.RemoveAt(index);
+        }
+
+        public void SetSelection(int index)
+        {
+            SelectionChanged?.Invoke(this, new ViperComboBoxSelectionChanged(index));
+
+            ComboBoxContent.Content = _items[index];
+        }
+
+        private TextBlock WrapWithOverflowTextBlock(string stringToConvert, Brush brush)
+        {
+            TextBlock text = new()
+            {
+                Text = stringToConvert,
+                TextWrapping = TextWrapping.WrapWithOverflow,
+                Foreground = brush,
+            };
+
+            return text;
+        }
 
         public ViperComboBox()
         {
@@ -272,6 +456,10 @@ namespace Viper.Game.Controls
 
             RootGrid.RenderTransform = new ScaleTransform();
             SillyThing.RenderTransform = new RotateTransform(132);
+
+            ItemStackPanel.Children.Add(_itemScroll);
+
+            _itemScroll.Content = _itemStackPanelList;
 
             Loaded += ViperCheckBox_Loaded;
             Unloaded += ViperCheckBox_Unloaded;
@@ -296,6 +484,8 @@ namespace Viper.Game.Controls
         private void ComboBoxContainer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Holding?.Invoke(this, new EventArgs());
+
+            RootGrid.RenderTransform = new ScaleTransform(1, 1) { CenterX = ComboBoxStuffGrid.ActualWidth / 2, CenterY = ComboBoxStuffGrid.ActualHeight / 2 };
 
             ComboBoxContainer.MouseLeave += LocalMouseLeave;
 
@@ -339,17 +529,7 @@ namespace Viper.Game.Controls
 
         private void ViperCheckBox_Loaded(object sender, RoutedEventArgs e)
         {
-            RootGrid.SizeChanged += RootGrid_SizeChanged;
-
-            RootGrid.RenderTransform = new ScaleTransform(1, 1) { CenterX = RootGrid.ActualWidth / 2, CenterY = RootGrid.ActualHeight / 2 };
-
-            void RootGrid_SizeChanged(object sender, SizeChangedEventArgs e)
-            {
-                if (!_isOpen)
-                {
-                    RootGrid.RenderTransform = new ScaleTransform(1, 1) { CenterX = RootGrid.ActualWidth / 2, CenterY = RootGrid.ActualHeight / 2 };
-                }
-            }
+            RootGrid.RenderTransform = new ScaleTransform(1, 1) { CenterX = ComboBoxStuffGrid.ActualWidth / 2, CenterY = ComboBoxStuffGrid.ActualHeight / 2 };
 
             EnabledLayerToggle(_isEnabled);
         }
@@ -369,21 +549,32 @@ namespace Viper.Game.Controls
             Release?.Invoke(this, new EventArgs());
         }
 
-        private void ItemDisplayToggle(bool openOrClose)
+        private async void ItemDisplayToggle(bool newState)
         {
-            StateChanged?.Invoke(this, new ViperComboBoxStateChanged(openOrClose));
+            StateChanged?.Invoke(this, new ViperComboBoxStateChanged(newState));
 
-            if (openOrClose)
+            if (newState)
             {
-                Animate.Double(ItemStackPanel, FrameworkElement.HeightProperty, 50, TimeSpan.FromMilliseconds(600), elastic);
+                Animate.Double(ItemStackPanel, FrameworkElement.HeightProperty, _itemContMaxHeight, TimeSpan.FromMilliseconds(600), elastic);
+                Animate.Double(_itemScroll, ScrollViewer.HeightProperty, _itemContMaxHeight, TimeSpan.FromMilliseconds(600), elastic);
                 Animate.Double(SillyThing.RenderTransform, RotateTransform.AngleProperty, 313, TimeSpan.FromMilliseconds(200), quadOut);
                 Animate.Color(SillyThing.Stroke, SolidColorBrush.ColorProperty, Color.FromArgb(120, 0, 0, 0), TimeSpan.FromMilliseconds(200), quadOut);
             }
             else
             {
                 Animate.Double(ItemStackPanel, FrameworkElement.HeightProperty, 0, TimeSpan.FromMilliseconds(200), quadOut);
+                Animate.Double(_itemScroll, ScrollViewer.HeightProperty, 0, TimeSpan.FromMilliseconds(200), elastic);
                 Animate.Double(SillyThing.RenderTransform, RotateTransform.AngleProperty, 132, TimeSpan.FromMilliseconds(200), quadOut);
                 Animate.Color(SillyThing.Stroke, SolidColorBrush.ColorProperty, Color.FromArgb(40, 255, 255, 255), TimeSpan.FromMilliseconds(200), quadOut);
+
+                await Task.Delay(200);
+
+                _itemScroll.ScrollToTop();
+            }
+
+            if (_isOpen != newState)
+            {
+                _isOpen = newState;
             }
         }
 
