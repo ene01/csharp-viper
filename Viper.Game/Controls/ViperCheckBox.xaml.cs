@@ -57,19 +57,35 @@ namespace Viper.Game.Controls
 
         public EventHandler<ViperCheckBoxStateChanged> StateChanged;
 
-        private object _content = "ViperCheckBox";
-        private Brush _background = new SolidColorBrush(Color.FromRgb(23, 23, 23));
-        private Brush _border = new SolidColorBrush(Color.FromRgb(80, 80, 80));
-        private Brush _fill = new SolidColorBrush(Color.FromRgb(35, 35, 35));
-        private Brush _stroke = new SolidColorBrush(Color.FromArgb(86, 255, 255, 255));
-        private Brush _foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-        private double _containerHeight = double.NaN;
-        private double _containerWidth = double.NaN;
-        private Thickness _spacing = new Thickness(0, 0, 0, 0);
-        private Transform _transforms = null;
-        private VerticalAlignment _yAlignment = VerticalAlignment.Top;
-        private HorizontalAlignment _xAlignment = HorizontalAlignment.Left;
-        private bool _isEnabled = true;
+        // Const.
+        private const string CONTENT_VIPER_CHECKBOX = "ViperCheckBox";
+        private static readonly Brush BACKGROUND_COLOR = new SolidColorBrush(Color.FromRgb(23, 23, 23));
+        private static readonly Brush BORDER_COLOR = new SolidColorBrush(Color.FromRgb(80, 80, 80));
+        private static readonly Brush FILL_COLOR = new SolidColorBrush(Color.FromRgb(35, 35, 35));
+        private static readonly Brush STROKE_COLOR = new SolidColorBrush(Color.FromArgb(86, 255, 255, 255));
+        private static readonly Brush FOREGROUND_COLOR = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        private const double CONTAINER_HEIGHT_NAN = double.NaN;
+        private const double CONTAINER_WIDTH_NAN = double.NaN;
+        private static readonly Thickness SPACING_ZERO = new Thickness(0, 0, 0, 0);
+        private static readonly Transform TRANSFORM_NULL = null;
+        private const VerticalAlignment Y_ALIGNMENT_TOP = VerticalAlignment.Top;
+        private const HorizontalAlignment X_ALIGNMENT_LEFT = HorizontalAlignment.Left;
+        private const bool IS_ENABLED_TRUE = true;
+
+        private object _content = CONTENT_VIPER_CHECKBOX;
+        private Brush _background = BACKGROUND_COLOR;
+        private Brush _border = BORDER_COLOR;
+        private Brush _fill = FILL_COLOR;
+        private Brush _stroke = STROKE_COLOR;
+        private Brush _foreground = FOREGROUND_COLOR;
+        private double _containerHeight = CONTAINER_HEIGHT_NAN;
+        private double _containerWidth = CONTAINER_WIDTH_NAN;
+        private Thickness _spacing = SPACING_ZERO;
+        private Transform _transforms = TRANSFORM_NULL;
+        private VerticalAlignment _yAlignment = Y_ALIGNMENT_TOP;
+        private HorizontalAlignment _xAlignment = X_ALIGNMENT_LEFT;
+        private bool _isEnabled = IS_ENABLED_TRUE;
+
 
         public new object Content
         {
@@ -281,6 +297,12 @@ namespace Viper.Game.Controls
                     this.Holding = null;
                     this.Hovering = null;
                     this.NoHovering = null;
+
+                    Background = BACKGROUND_COLOR;
+                    BorderBrush = BORDER_COLOR;
+                    CheckFill = FILL_COLOR;
+                    CheckStroke = STROKE_COLOR;
+                    Foreground = FOREGROUND_COLOR;
                 }
             }
         }
@@ -302,11 +324,13 @@ namespace Viper.Game.Controls
             CheckBoxContainer.PreviewMouseLeftButtonUp += CheckBoxContainer_PreviewMouseLeftButtonUp;
         }
 
+        // In case the user loses focus (focus to other window, keybind to change focus, etc.), trigger a release event.
         private void ViperCheckBox_LostFocus(object sender, RoutedEventArgs e)
         {
             Release?.Invoke(this, new EventArgs());
         }
 
+        // Remove events when unloaded just in case.
         private void ViperCheckBox_Unloaded(object sender, RoutedEventArgs e)
         {
             Check.MouseEnter -= CheckBoxContainer_MouseEnter;
@@ -317,6 +341,7 @@ namespace Viper.Game.Controls
             Unloaded -= ViperCheckBox_Unloaded;
         }
 
+        // Enables or disables the "black overlay" that appears on top of the button in case its enabled/disabled.
         private void EnabledLayerToggle(bool enable)
         {
             if (enable)
@@ -331,6 +356,7 @@ namespace Viper.Game.Controls
             }
         }
 
+        // Set the "middle" point when loaded.
         private void ViperCheckBox_Loaded(object sender, RoutedEventArgs e)
         {
             Check.RenderTransform = new ScaleTransform(1, 1) { CenterX = Check.ActualWidth / 2, CenterY = Check.ActualHeight / 2 };
@@ -384,6 +410,8 @@ namespace Viper.Game.Controls
         private void CheckBoxContainer_MouseLeave(object sender, MouseEventArgs e)
         {
             NoHovering?.Invoke(this, new EventArgs());
+
+            // An attempt at avoiding weird interactions when the user presses, moves the cursor away, hover the check again and releases the click button.
             _canRegisterClick = false;
         }
 

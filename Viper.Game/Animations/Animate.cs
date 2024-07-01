@@ -16,6 +16,15 @@ namespace Viper.Game.Animations
 {
     public static class Animate
     {
+		/// <summary>
+        /// For properties that use double values.
+        /// </summary>
+        /// <param name="targetElement"></param>
+        /// <param name="property"></param>
+        /// <param name="toValue"></param>
+        /// <param name="duration"></param>
+        /// <param name="easing"></param>
+        /// <param name="fromValue"></param>
         public static void Double(DependencyObject targetElement, DependencyProperty property, double toValue, TimeSpan duration, IEasingFunction easing = null, double? fromValue = null)
         {
             if (targetElement != null && property != null)
@@ -43,6 +52,7 @@ namespace Viper.Game.Animations
             }
         }
 
+        // For color properties.
         public static void Color(DependencyObject targetElement, DependencyProperty property, Color toColor, TimeSpan duration, IEasingFunction easing = null, Color? fromValue = null)
         {
             if (targetElement != null && property != null && targetElement is Animatable)
@@ -70,6 +80,15 @@ namespace Viper.Game.Animations
             }
         }
 
+        /// <summary>
+        /// For properties that use points.
+        /// </summary>
+        /// <param name="targetElement"></param>
+        /// <param name="property"></param>
+        /// <param name="toPoint"></param>
+        /// <param name="duration"></param>
+        /// <param name="easing"></param>
+        /// <param name="fromValue"></param>
         public static void Point(DependencyObject targetElement, DependencyProperty property, Point toPoint, Duration duration, IEasingFunction easing = null, Point? fromValue = null)
         {
             if (targetElement != null && property != null && targetElement is Animatable)
@@ -124,6 +143,15 @@ namespace Viper.Game.Animations
             }
         }
 
+        /// <summary>
+        /// Use for whatever that makes use of "Thickness"
+        /// </summary>
+        /// <param name="targetElement"></param>
+        /// <param name="property"></param>
+        /// <param name="toValue"></param>
+        /// <param name="duration"></param>
+        /// <param name="easing"></param>
+        /// <param name="fromValue"></param>
         public static void AnimateThickness(DependencyObject targetElement, DependencyProperty property, Thickness toValue, Duration duration, IEasingFunction easing = null, Thickness? fromValue = null)
         {
             if (targetElement != null && property != null)
@@ -151,6 +179,7 @@ namespace Viper.Game.Animations
             }
         }
 
+        // A method that verifies that the target element to animate is actually animatable.
         private static void StartAnimation(DependencyObject dependencyObject, DependencyProperty dependencyProperty, AnimationTimeline animation)
         {
             switch (dependencyObject)

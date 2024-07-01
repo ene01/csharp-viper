@@ -162,7 +162,7 @@ namespace Viper.Game.Controls
             {
                 _itemsBackground = value;
 
-                ItemStackPanel.Background = value;
+                ItemContainer.Background = value;
             }
         }
 
@@ -457,7 +457,7 @@ namespace Viper.Game.Controls
             RootGrid.RenderTransform = new ScaleTransform();
             SillyThing.RenderTransform = new RotateTransform(132);
 
-            ItemStackPanel.Children.Add(_itemScroll);
+            ItemContainer.Children.Add(_itemScroll);
 
             _itemScroll.Content = _itemStackPanelList;
 
@@ -555,14 +555,14 @@ namespace Viper.Game.Controls
 
             if (newState)
             {
-                Animate.Double(ItemStackPanel, FrameworkElement.HeightProperty, _itemContMaxHeight, TimeSpan.FromMilliseconds(600), elastic);
+                Animate.Double(ItemContainer, FrameworkElement.HeightProperty, _itemContMaxHeight, TimeSpan.FromMilliseconds(600), elastic);
                 Animate.Double(_itemScroll, ScrollViewer.HeightProperty, _itemContMaxHeight, TimeSpan.FromMilliseconds(600), elastic);
                 Animate.Double(SillyThing.RenderTransform, RotateTransform.AngleProperty, 313, TimeSpan.FromMilliseconds(200), quadOut);
                 Animate.Color(SillyThing.Stroke, SolidColorBrush.ColorProperty, Color.FromArgb(120, 0, 0, 0), TimeSpan.FromMilliseconds(200), quadOut);
             }
             else
             {
-                Animate.Double(ItemStackPanel, FrameworkElement.HeightProperty, 0, TimeSpan.FromMilliseconds(200), quadOut);
+                Animate.Double(ItemContainer, FrameworkElement.HeightProperty, 0, TimeSpan.FromMilliseconds(200), quadOut);
                 Animate.Double(_itemScroll, ScrollViewer.HeightProperty, 0, TimeSpan.FromMilliseconds(200), elastic);
                 Animate.Double(SillyThing.RenderTransform, RotateTransform.AngleProperty, 132, TimeSpan.FromMilliseconds(200), quadOut);
                 Animate.Color(SillyThing.Stroke, SolidColorBrush.ColorProperty, Color.FromArgb(40, 255, 255, 255), TimeSpan.FromMilliseconds(200), quadOut);

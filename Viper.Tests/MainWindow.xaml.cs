@@ -381,7 +381,7 @@ namespace Viper.Tests
             rectangleColumn.Children.Add(skewBox);
 
 
-            TestingSpace.Children.Add(rectangleColumn);        
+            TestingSpace.Children.Add(rectangleColumn);
         }
 
         private void _buttonTest_Click(object sender, RoutedEventArgs e)
@@ -493,7 +493,7 @@ namespace Viper.Tests
                 Content = "Dynamically stretched check box",
             };
 
-            check1.StateChanged += (s, e) => 
+            check1.StateChanged += (s, e) =>
             {
                 Debug.WriteLine($"{e.State}");
             };

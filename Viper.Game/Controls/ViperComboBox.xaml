@@ -24,7 +24,7 @@
                     </Rectangle>
                 </Grid>
             </Grid>
-            <StackPanel x:Name="ItemStackPanel" Height="0" Background="#FF0C0C0C" VerticalAlignment="Top"/>
+            <StackPanel x:Name="ItemContainer" Height="0" Background="#FF0C0C0C" VerticalAlignment="Top"/>
         </StackPanel>
     </Grid>
 </UserControl>

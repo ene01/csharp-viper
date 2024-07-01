@@ -54,18 +54,35 @@ namespace Viper.Game.Controls
         /// </summary>
         public EventHandler? NoHovering;
 
-        private object _content = "ViperButton";
-        private Brush _background = new SolidColorBrush(Color.FromRgb(23, 23, 23));
-        private Brush _border = new SolidColorBrush(Color.FromRgb(80, 80, 80));
-        private Brush _foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-        private double _containerHeight = double.NaN;
-        private double _containerWidth = double.NaN;
-        private Thickness _spacing = new Thickness(0, 0, 0, 0);
-        private Transform _transforms = null;
-        private VerticalAlignment _yAlignment = VerticalAlignment.Top;
-        private HorizontalAlignment _xAlignment = HorizontalAlignment.Left;
-        private bool _isEnabled = true;
+        // Define const.
+        private const string CONTENT_VIPER_BUTTON = "ViperButton";
+        private static readonly Brush BACKGROUND_COLOR = new SolidColorBrush(Color.FromRgb(23, 23, 23));
+        private static readonly Brush BORDER_COLOR = new SolidColorBrush(Color.FromRgb(80, 80, 80));
+        private static readonly Brush FOREGROUND_COLOR = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        private const double CONTAINER_HEIGHT_NAN = double.NaN;
+        private const double CONTAINER_WIDTH_NAN = double.NaN;
+        private static readonly Thickness SPACING_ZERO = new Thickness(0, 0, 0, 0);
+        private static readonly Transform TRANSFORM_NULL = null;
+        private const VerticalAlignment Y_ALIGNMENT_TOP = VerticalAlignment.Top;
+        private const HorizontalAlignment X_ALIGNMENT_LEFT = HorizontalAlignment.Left;
+        private const bool IS_ENABLED_TRUE = true;
 
+        // Private properties used for the button.
+        private object _content = CONTENT_VIPER_BUTTON;
+        private Brush _background = BACKGROUND_COLOR;
+        private Brush _border = BORDER_COLOR;
+        private Brush _foreground = FOREGROUND_COLOR;
+        private double _containerHeight = CONTAINER_HEIGHT_NAN;
+        private double _containerWidth = CONTAINER_WIDTH_NAN;
+        private Thickness _spacing = SPACING_ZERO;
+        private Transform _transforms = TRANSFORM_NULL;
+        private VerticalAlignment _yAlignment = Y_ALIGNMENT_TOP;
+        private HorizontalAlignment _xAlignment = X_ALIGNMENT_LEFT;
+        private bool _isEnabled = IS_ENABLED_TRUE;
+
+        /// <summary>
+        /// Define whats inside the button.
+        /// </summary>
         public new object Content
         {
             get { return _content; }
@@ -91,6 +108,9 @@ namespace Viper.Game.Controls
             }
         }
 
+        /// <summary>
+        /// Background brush for the button.
+        /// </summary>
         public new Brush Background
         {
             get { return _background; }
@@ -103,6 +123,9 @@ namespace Viper.Game.Controls
             }
         }
 
+        /// <summary>
+        /// Border brush for the button, a square that appears at the edges of the button
+        /// </summary>
         public new Brush BorderBrush
         {
             get { return _border; }
@@ -115,6 +138,9 @@ namespace Viper.Game.Controls
             }
         }
 
+        /// <summary>
+        /// Text brush.
+        /// </summary>
         public new Brush Foreground
         {
             get { return _foreground; }
@@ -235,6 +261,10 @@ namespace Viper.Game.Controls
                     this.Holding = null;
                     this.Hovering = null;
                     this.NoHovering = null;
+
+                    Background = BACKGROUND_COLOR;
+                    BorderBrush = BORDER_COLOR;
+                    Foreground = FOREGROUND_COLOR;
                 }
             }
         }
@@ -242,6 +272,9 @@ namespace Viper.Game.Controls
         private IEasingFunction elastic = new ElasticEase() { Springiness = 5 };
         private IEasingFunction quadOut = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
 
+        /// <summary>
+        /// A cool button.
+        /// </summary>
         public ViperButton()
         {
             InitializeComponent();
