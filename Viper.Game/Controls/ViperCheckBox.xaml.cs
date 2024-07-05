@@ -28,7 +28,7 @@ namespace Viper.Game.Controls
         /// <summary>
         /// Im lazy, so heres the entire control container, do whatrever, use events, etc, idk.
         /// </summary>
-        public UserControl Container => CheckBoxContainer;
+        public UserControl Container => CheckBoxControl;
 
         /// <summary>
         /// Events that triggers when the button is enabled and clicked.
@@ -316,12 +316,12 @@ namespace Viper.Game.Controls
 
             Loaded += ViperCheckBox_Loaded;
             Unloaded += ViperCheckBox_Unloaded;
-            CheckBoxContainer.LostFocus += ViperCheckBox_LostFocus;
+            CheckBoxControl.LostFocus += ViperCheckBox_LostFocus;
 
-            CheckBoxContainer.MouseEnter += CheckBoxContainer_MouseEnter;
-            CheckBoxContainer.MouseLeave += CheckBoxContainer_MouseLeave;
-            CheckBoxContainer.PreviewMouseLeftButtonDown += CheckBoxContainer_PreviewMouseLeftButtonDown;
-            CheckBoxContainer.PreviewMouseLeftButtonUp += CheckBoxContainer_PreviewMouseLeftButtonUp;
+            CheckBoxControl.MouseEnter += CheckBoxContainer_MouseEnter;
+            CheckBoxControl.MouseLeave += CheckBoxContainer_MouseLeave;
+            CheckBoxControl.PreviewMouseLeftButtonDown += CheckBoxContainer_PreviewMouseLeftButtonDown;
+            CheckBoxControl.PreviewMouseLeftButtonUp += CheckBoxContainer_PreviewMouseLeftButtonUp;
         }
 
         // In case the user loses focus (focus to other window, keybind to change focus, etc.), trigger a release event.
@@ -394,7 +394,7 @@ namespace Viper.Game.Controls
             Animate.Double(Check.RenderTransform, ScaleTransform.ScaleXProperty, 0.7, TimeSpan.FromMilliseconds(1000), quadOut);
             Animate.Double(Check.RenderTransform, ScaleTransform.ScaleYProperty, 0.7, TimeSpan.FromMilliseconds(1000), quadOut);
 
-            CheckBoxContainer.MouseLeave += LocalMouseLeave;
+            CheckBoxControl.MouseLeave += LocalMouseLeave;
 
             void LocalMouseLeave(object sender, MouseEventArgs e)
             {
@@ -403,7 +403,7 @@ namespace Viper.Game.Controls
                 Animate.Double(Check.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
                 Animate.Double(Check.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
 
-                CheckBoxContainer.MouseLeave -= LocalMouseLeave;
+                CheckBoxControl.MouseLeave -= LocalMouseLeave;
             }
         }
 

@@ -29,7 +29,7 @@ namespace Viper.Game.Controls
         /// <summary>
         /// Im lazy, so heres the entire control container, do whatrever, use events, etc, idk.
         /// </summary>
-        public UserControl Container => ComboBoxContainer;
+        public UserControl Container => ComboBoxControl;
 
         /// <summary>
         /// Event that triggers when the combo box is pressed, can trigger even if the combo box is disabled.
@@ -463,12 +463,12 @@ namespace Viper.Game.Controls
 
             Loaded += ViperCheckBox_Loaded;
             Unloaded += ViperCheckBox_Unloaded;
-            ComboBoxContainer.LostFocus += ViperCheckBox_LostFocus;
+            ComboBoxControl .LostFocus += ViperCheckBox_LostFocus;
 
             ComboBoxStuffGrid.PreviewMouseLeftButtonDown += ComboBoxContainer_PreviewMouseLeftButtonDown;
             ComboBoxStuffGrid.PreviewMouseLeftButtonUp += CheckBoxContainer_PreviewMouseLeftButtonUp;
-            ComboBoxContainer.MouseEnter += ComboBoxContainer_MouseEnter;
-            ComboBoxContainer.MouseLeave += ComboBoxContainer_MouseLeave;
+            ComboBoxControl .MouseEnter += ComboBoxContainer_MouseEnter;
+            ComboBoxControl.MouseLeave += ComboBoxContainer_MouseLeave;
         }
 
         private void ComboBoxContainer_MouseLeave(object sender, MouseEventArgs e)
@@ -487,14 +487,14 @@ namespace Viper.Game.Controls
 
             RootGrid.RenderTransform = new ScaleTransform(1, 1) { CenterX = ComboBoxStuffGrid.ActualWidth / 2, CenterY = ComboBoxStuffGrid.ActualHeight / 2 };
 
-            ComboBoxContainer.MouseLeave += LocalMouseLeave;
+            ComboBoxControl.MouseLeave += LocalMouseLeave;
 
             Animate.Double(RootGrid.RenderTransform, ScaleTransform.ScaleXProperty, 0.9, TimeSpan.FromMilliseconds(1000), quadOut);
             Animate.Double(RootGrid.RenderTransform, ScaleTransform.ScaleYProperty, 0.9, TimeSpan.FromMilliseconds(1000), quadOut);
 
             void LocalMouseLeave(object sender, MouseEventArgs e)
             {
-                ComboBoxContainer.MouseLeave -= LocalMouseLeave;
+                ComboBoxControl.MouseLeave -= LocalMouseLeave;
 
                 Animate.Double(RootGrid.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
                 Animate.Double(RootGrid.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
@@ -510,9 +510,9 @@ namespace Viper.Game.Controls
 
         private void ViperCheckBox_Unloaded(object sender, RoutedEventArgs e)
         {
-            ComboBoxContainer.LostFocus -= ViperCheckBox_LostFocus;
-            ComboBoxContainer.PreviewMouseLeftButtonDown -= ComboBoxContainer_PreviewMouseLeftButtonDown;
-            ComboBoxContainer.PreviewMouseLeftButtonUp -= CheckBoxContainer_PreviewMouseLeftButtonUp;
+            ComboBoxControl.LostFocus -= ViperCheckBox_LostFocus;
+            ComboBoxControl.PreviewMouseLeftButtonDown -= ComboBoxContainer_PreviewMouseLeftButtonDown;
+            ComboBoxControl.PreviewMouseLeftButtonUp -= CheckBoxContainer_PreviewMouseLeftButtonUp;
         }
 
         private void EnabledLayerToggle(bool enable)

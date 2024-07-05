@@ -1,0 +1,26 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Viper.Game.Controls" mc:Ignorable="d" x:Class="Viper.Game.Controls.ViperSlider" x:Name="SliderControl" VerticalAlignment="Top" HorizontalAlignment="Left" UseLayoutRounding="False" ScrollViewer.VerticalScrollBarVisibility="Auto" Background="#002BFF00" d:DesignHeight="43.666" d:DesignWidth="233.334">
+    <Grid x:Name="RootGrid" Background="#00000000">
+        <Rectangle Panel.ZIndex="2" StrokeThickness="0" Stroke="#00000000" Opacity="0" x:Name="Blackout" IsHitTestVisible="False" Fill="Black"/>
+        <Grid x:Name="SliderElements" Margin="12,2,12,2">
+            <Grid x:Name="ButtonElements" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" Panel.ZIndex="1" Margin="-7,4,0,4" Width="14">
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform X="0"/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                <Rectangle x:Name="Button" Fill="#FFAFAFAF" StrokeThickness="2"/>
+                <Rectangle x:Name="WhiteOverlay" Stroke="Black" StrokeThickness="0" Fill="White" Opacity="0"/>
+            </Grid>
+            <Rectangle x:Name="StaticBar" Height="6" VerticalAlignment="Center" Fill="#FF3C3C3C" StrokeThickness="0"/>
+            <Rectangle x:Name="ProgressBar" Height="6" VerticalAlignment="Center" StrokeThickness="0" HorizontalAlignment="Left" Width="0" Fill="#FFE4E4E4"/>
+        </Grid>
+        <Grid x:Name="ValueInputElements" Background="#E5151515" IsHitTestVisible="False" Opacity="0">
+            <TextBlock x:Name="ValueInputTitle" TextWrapping="Wrap" Text="Set a custom value:" VerticalAlignment="Top" Foreground="White" FontSize="11" Margin="0,1,0,0" TextAlignment="Center" Opacity="0.6"/>
+            <TextBox x:Name="ValueInput" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center" Background="#E5060606" BorderBrush="#00ABADB3" Foreground="White" SelectionBrush="White" SelectionTextBrush="Black" FontSize="16" Margin="4,12,4,0" CaretBrush="White" BorderThickness="0,0,0,0"/>
+        </Grid>
+        <Border x:Name="RootBorder" BorderThickness="1,1,1,1"/>
+    </Grid>
+</UserControl>

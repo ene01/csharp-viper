@@ -27,7 +27,7 @@ namespace Viper.Game.Controls
         /// <summary>
         /// Im lazy, so heres the entire control container, do whatrever, use events, etc, idk.
         /// </summary>
-        public UserControl Container => ButtonContainer;
+        public UserControl Container => ButtonControl;
 
         /// <summary>
         /// Events that triggers when the button is enabled and clicked.
@@ -281,12 +281,12 @@ namespace Viper.Game.Controls
 
             Loaded += ViperButton_Loaded;
             Unloaded += ViperButton_Unloaded;
-            ButtonContainer.LostFocus += ViperButton_LostFocus;
+            ButtonControl.LostFocus += ViperButton_LostFocus;
 
-            ButtonContainer.MouseEnter += ButtonContainer_MouseEnter;
-            ButtonContainer.MouseLeave += ButtonContainer_MouseLeave;
-            ButtonContainer.PreviewMouseLeftButtonDown += ButtonContainer_PreviewMouseLeftButtonDown;
-            ButtonContainer.PreviewMouseLeftButtonUp += ButtonContainer_PreviewMouseLeftButtonUp;
+            ButtonControl.MouseEnter += ButtonContainer_MouseEnter;
+            ButtonControl.MouseLeave += ButtonContainer_MouseLeave;
+            ButtonControl.PreviewMouseLeftButtonDown += ButtonContainer_PreviewMouseLeftButtonDown;
+            ButtonControl.PreviewMouseLeftButtonUp += ButtonContainer_PreviewMouseLeftButtonUp;
         }
 
         private void ViperButton_LostFocus(object sender, RoutedEventArgs e)
@@ -297,10 +297,10 @@ namespace Viper.Game.Controls
         private void ViperButton_Unloaded(object sender, RoutedEventArgs e)
         {
             ButtonGrid.SizeChanged -= ButtonGrid_SizeChanged;
-            ButtonContainer.MouseEnter -= ButtonContainer_MouseEnter;
-            ButtonContainer.MouseLeave -= ButtonContainer_MouseLeave;
-            ButtonContainer.PreviewMouseLeftButtonDown -= ButtonContainer_PreviewMouseLeftButtonDown;
-            ButtonContainer.PreviewMouseLeftButtonUp -= ButtonContainer_PreviewMouseLeftButtonUp;
+            ButtonControl.MouseEnter -= ButtonContainer_MouseEnter;
+            ButtonControl.MouseLeave -= ButtonContainer_MouseLeave;
+            ButtonControl.PreviewMouseLeftButtonDown -= ButtonContainer_PreviewMouseLeftButtonDown;
+            ButtonControl.PreviewMouseLeftButtonUp -= ButtonContainer_PreviewMouseLeftButtonUp;
             Loaded -= ViperButton_Loaded;
             Unloaded -= ViperButton_Unloaded;
         }
@@ -357,7 +357,7 @@ namespace Viper.Game.Controls
             Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleXProperty, 0.9, TimeSpan.FromMilliseconds(1000), quadOut);
             Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleYProperty, 0.9, TimeSpan.FromMilliseconds(1000), quadOut);
 
-            ButtonContainer.MouseLeave += LocalMouseLeave;
+            ButtonControl.MouseLeave += LocalMouseLeave;
 
             void LocalMouseLeave(object sender, MouseEventArgs e)
             {
@@ -366,7 +366,7 @@ namespace Viper.Game.Controls
                 Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
                 Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
 
-                ButtonContainer.MouseLeave -= LocalMouseLeave;
+                ButtonControl.MouseLeave -= LocalMouseLeave;
             }
         }
 

@@ -79,6 +79,15 @@ namespace Viper.Tests
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
+        private Button _sliderTest = new()
+        {
+            Height = 25,
+            Margin = new Thickness(5, 5, 5, 5),
+            Content = "Slider",
+            VerticalAlignment = VerticalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
         private GradientStop _testingBGGSOne = new()
         {
             Color = Colors.White,
@@ -125,12 +134,14 @@ namespace Viper.Tests
             TestingSpacesButtons.Children.Add(_buttonTest);
             TestingSpacesButtons.Children.Add(_checkBoxTest);
             TestingSpacesButtons.Children.Add(_comboBoxTest);
+            TestingSpacesButtons.Children.Add(_sliderTest);
 
             _clearTestingSpace.Click += _clearTestingSpace_Click;
             _animationTest.Click += _animationTest_Click;
             _buttonTest.Click += _buttonTest_Click;
             _checkBoxTest.Click += _checkBoxTest_Click;
             _comboBoxTest.Click += _comboBoxTest_Click;
+            _sliderTest.Click += _sliderTest_Click;
         }
 
         private void _clearTestingSpace_Click(object sender, RoutedEventArgs e)
@@ -577,6 +588,93 @@ namespace Viper.Tests
             comboColumn.Children.Add(combo5);
 
             TestingSpace.Children.Add(comboColumn);
+        }
+
+        private void _sliderTest_Click(object sender, RoutedEventArgs e)
+        {
+            DisposeLastTest("Slider");
+
+            StackPanel sliderColumn = new()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new Thickness(10, 10, 10, 0),
+            };
+
+            TextBlock text1 = new()
+            {
+                Text = "Dynamic size",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TextBlock textSlider1Value = new()
+            {
+                Text = "0",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TextBlock text2 = new()
+            {
+                Text = "Limited size, different ProgresBarBrush",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TextBlock text3 = new()
+            {
+                Text = "Disabled, different SliderBrush",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            ViperSlider slider1 = new()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Height = 40,
+                MaxValue = 200,
+                MinValue = 0,
+            };
+
+            ViperSlider slider2 = new()
+            {
+                Height = 40,
+                Width = 300,
+                MaxValue = 100,
+                MinValue = 0,
+                ProgressBarBrush = new SolidColorBrush(Colors.Gold),
+            };
+
+            ViperSlider slider3 = new()
+            {
+                Height = 40,
+                Width = 200,
+                IsEnabled = false,
+                SliderBrush = new SolidColorBrush(Colors.Gold),
+            };
+
+            sliderColumn.Children.Add(text1);
+            sliderColumn.Children.Add(textSlider1Value);
+            sliderColumn.Children.Add(slider1);
+            sliderColumn.Children.Add(text2);
+            sliderColumn.Children.Add(slider2);
+            sliderColumn.Children.Add(text3);
+            sliderColumn.Children.Add(slider3);
+
+            slider1.ValueChanged += (s, e) =>
+            {
+                //Debug.WriteLine($"Slider 1 has something to say: Im in value {e.Value}");
+                textSlider1Value.Text = e.Value.ToString();
+            };
+
+            slider2.ValueChanged += (s, e) =>
+            {
+                //Debug.WriteLine($"Slider 2 has something to say: I think im in value {e.Value}");
+            };
+
+            slider3.ValueChanged += (s, e) =>
+            {
+                //Debug.WriteLine($"Slider 3 has something to say: Why did you move me to {e.Value}?");
+            };
+
+            TestingSpace.Children.Add(sliderColumn);
         }
 
         private void DisposeLastTest(string testingSpaceMessage)

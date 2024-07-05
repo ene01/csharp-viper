@@ -116,7 +116,7 @@ namespace Viper.Game.Animations
             }
         }
 
-        public static void AnimateRect(DependencyObject targetElement, DependencyProperty property, Rect toValue, Duration duration, IEasingFunction easing = null, Rect? fromValue = null)
+        public static void RectValue(DependencyObject targetElement, DependencyProperty property, Rect toValue, Duration duration, IEasingFunction easing = null, Rect? fromValue = null)
         {
             if (targetElement != null && property != null)
             {
@@ -152,7 +152,7 @@ namespace Viper.Game.Animations
         /// <param name="duration"></param>
         /// <param name="easing"></param>
         /// <param name="fromValue"></param>
-        public static void AnimateThickness(DependencyObject targetElement, DependencyProperty property, Thickness toValue, Duration duration, IEasingFunction easing = null, Thickness? fromValue = null)
+        public static void ThicknessValue(DependencyObject targetElement, DependencyProperty property, Thickness toValue, Duration duration, IEasingFunction easing = null, Thickness? fromValue = null)
         {
             if (targetElement != null && property != null)
             {

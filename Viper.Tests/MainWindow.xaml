@@ -11,7 +11,7 @@
 
         <StackPanel x:Name="TestingSpacesButtons" HorizontalAlignment="Left" Width="200" Background="#FF292929"/>
 
-        <Grid x:Name="TestingSpace" Margin="375,15,15,15" Background="#FF0A0A0A"/>
+        <Grid x:Name="TestingSpace" Margin="375,15,15,15" Background="#CC0A0A0A"/>
 
         <StackPanel x:Name="TestingInteractions" HorizontalAlignment="Left" Width="160" Background="#FF191919" Margin="200,0,0,0"/>
 
