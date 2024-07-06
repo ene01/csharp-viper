@@ -186,54 +186,6 @@ namespace Viper.Game.Controls
             }
         }
 
-        public new double Height
-        {
-            get { return _stuffGridHeight; }
-
-            set 
-            {
-                _stuffGridHeight = value;
-
-                ComboBoxStuffGrid.Height = value;
-            }
-        }
-
-        public new double Width
-        {
-            get { return _stuffGridWidth; }
-
-            set 
-            {
-                _stuffGridWidth = value;
-
-                ComboBoxStuffGrid.Width = value;
-            }
-        }
-
-        public new Thickness Margin
-        {
-            get { return _spacing; }
-
-            set 
-            { 
-                _spacing = value;
-
-                Container.Margin = value;
-            }
-        }
-
-        public new Transform RenderTransform
-        {
-            get { return _transforms; }
-
-            set 
-            { 
-                _transforms = value;
-
-                Container.RenderTransform = value;
-            }
-        }
-
         public new VerticalAlignment VerticalAlignment
         {
             get { return _yAlignment; }
