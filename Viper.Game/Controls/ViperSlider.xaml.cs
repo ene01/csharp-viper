@@ -69,6 +69,7 @@ namespace Viper.Game.Controls
         private bool _allowSetValue = true;
         private bool _setValueIsShowing = false;
         private bool _clickedOnTheControl = false;
+        private bool _scrollable = false;
         private double _maxValue = 1;
         private double _minValue = 0;
         private double _currentValue = 0;
@@ -199,6 +200,16 @@ namespace Viper.Game.Controls
             {
                 _isEnabled = value;
                 EnabledToggle(_isEnabled);
+            }
+        }
+
+        public new bool Scrollable
+        {
+            get => _scrollable;
+
+            set
+            {
+                _scrollable = value;
             }
         }
 
@@ -461,14 +472,17 @@ namespace Viper.Game.Controls
 
         private void Container_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            switch (e.Delta)
+            if (_allowSliding && _scrollable)
             {
-                case < 0:
-                    MoveSliderSlightly(true, 1);
-                    break;
-                case > 0:
-                    MoveSliderSlightly(false, 1);
-                    break;
+                switch (e.Delta)
+                {
+                    case < 0:
+                        MoveSliderSlightly(true, 1);
+                        break;
+                    case > 0:
+                        MoveSliderSlightly(false, 1);
+                        break;
+                }
             }
         }
 

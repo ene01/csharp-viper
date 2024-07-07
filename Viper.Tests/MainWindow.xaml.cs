@@ -88,6 +88,15 @@ namespace Viper.Tests
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
+        private Button _unlimitedSelectorTest = new()
+        {
+            Height = 25,
+            Margin = new Thickness(5, 5, 5, 5),
+            Content = "UnlimitedSelector",
+            VerticalAlignment = VerticalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
         private GradientStop _testingBGGSOne = new()
         {
             Color = Colors.White,
@@ -135,6 +144,7 @@ namespace Viper.Tests
             TestingSpacesButtons.Children.Add(_checkBoxTest);
             TestingSpacesButtons.Children.Add(_comboBoxTest);
             TestingSpacesButtons.Children.Add(_sliderTest);
+            TestingSpacesButtons.Children.Add(_unlimitedSelectorTest);
 
             _clearTestingSpace.Click += _clearTestingSpace_Click;
             _animationTest.Click += _animationTest_Click;
@@ -142,6 +152,7 @@ namespace Viper.Tests
             _checkBoxTest.Click += _checkBoxTest_Click;
             _comboBoxTest.Click += _comboBoxTest_Click;
             _sliderTest.Click += _sliderTest_Click;
+            _unlimitedSelectorTest.Click += _unlimitedSelectorTest_Click;
         }
 
         private void _clearTestingSpace_Click(object sender, RoutedEventArgs e)
@@ -161,6 +172,8 @@ namespace Viper.Tests
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
             };
+
+            ScrollViewer sv = new();
 
             Grid r1Box = new()
             {
@@ -392,7 +405,9 @@ namespace Viper.Tests
             rectangleColumn.Children.Add(skewBox);
 
 
-            TestingSpace.Children.Add(rectangleColumn);
+            sv.Content = rectangleColumn;
+
+            TestingSpace.Children.Add(sv);
         }
 
         private void _buttonTest_Click(object sender, RoutedEventArgs e)
@@ -429,12 +444,20 @@ namespace Viper.Tests
 
             ViperButton vButton4 = new()
             {
-                Content = "Reading a long text is like trying to find a needle in a haystack, but the needle is the main point, and the haystack is endless paragraphs of rambling.",
+                Content = "Tall button.",
+                Height = 60,
                 Margin = new Thickness(10, 10, 0, 0),
                 DefaultColorAnimations = true,
             };
 
             ViperButton vButton5 = new()
+            {
+                Content = "Reading a long text is like trying to find a needle in a haystack, but the needle is the main point, and the haystack is endless paragraphs of rambling.",
+                Margin = new Thickness(10, 10, 0, 0),
+                DefaultColorAnimations = true,
+            };
+
+            ViperButton vButton6 = new()
             {
                 Content = "Dynamically streched button",
                 Margin = new Thickness(10, 10, 0, 0),
@@ -463,6 +486,7 @@ namespace Viper.Tests
             buttonColumn.Children.Add(vButton3);
             buttonColumn.Children.Add(vButton4);
             buttonColumn.Children.Add(vButton5);
+            buttonColumn.Children.Add(vButton6);
 
             TestingSpace.Children.Add(buttonColumn);
 
@@ -603,7 +627,7 @@ namespace Viper.Tests
 
             TextBlock text1 = new()
             {
-                Text = "Dynamic size",
+                Text = "Dynamic width and scrollable",
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
@@ -615,13 +639,43 @@ namespace Viper.Tests
 
             TextBlock text2 = new()
             {
-                Text = "Limited size, different ProgresBarBrush",
+                Text = "Set width, different ProgressBarBrush",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TextBlock textSlider2Value = new()
+            {
+                Text = "0",
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
             TextBlock text3 = new()
             {
-                Text = "Disabled, different SliderBrush",
+                Text = "Set width, different SliderBrush",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TextBlock textSlider3Value = new()
+            {
+                Text = "0",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TextBlock text4 = new()
+            {
+                Text = "Both brushes",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TextBlock textSlider4Value = new()
+            {
+                Text = "0",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TextBlock text5 = new()
+            {
+                Text = "Disabled",
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
@@ -631,6 +685,7 @@ namespace Viper.Tests
                 Height = 40,
                 MaxValue = 200,
                 MinValue = 0,
+                Scrollable = true,
             };
 
             ViperSlider slider2 = new()
@@ -646,35 +701,123 @@ namespace Viper.Tests
             {
                 Height = 40,
                 Width = 200,
-                IsEnabled = false,
+                MaxValue = 10,
+                MinValue = 0,
                 SliderBrush = new SolidColorBrush(Colors.Gold),
+            };
+
+            ViperSlider slider4 = new()
+            {
+                Height = 40,
+                Width = 200,
+                MaxValue = 200,
+                MinValue = 0,
+                SliderBrush = new SolidColorBrush(Colors.Gold),
+                ProgressBarBrush = new SolidColorBrush(Colors.Gold),
+            };
+
+            ViperSlider slider5 = new()
+            {
+                Height = 40,
+                Width = 200,
+                IsEnabled = false,
             };
 
             sliderColumn.Children.Add(text1);
             sliderColumn.Children.Add(textSlider1Value);
             sliderColumn.Children.Add(slider1);
             sliderColumn.Children.Add(text2);
+            sliderColumn.Children.Add(textSlider2Value);
             sliderColumn.Children.Add(slider2);
             sliderColumn.Children.Add(text3);
+            sliderColumn.Children.Add(textSlider3Value);
             sliderColumn.Children.Add(slider3);
+            sliderColumn.Children.Add(text4);
+            sliderColumn.Children.Add(textSlider4Value);
+            sliderColumn.Children.Add(slider4);
+            sliderColumn.Children.Add(text5);
+            sliderColumn.Children.Add(slider5);
 
             slider1.ValueChanged += (s, e) =>
             {
-                //Debug.WriteLine($"Slider 1 has something to say: Im in value {e.Value}");
                 textSlider1Value.Text = e.Value.ToString();
             };
 
             slider2.ValueChanged += (s, e) =>
             {
-                //Debug.WriteLine($"Slider 2 has something to say: I think im in value {e.Value}");
+                textSlider2Value.Text = e.Value.ToString();
             };
 
             slider3.ValueChanged += (s, e) =>
             {
-                //Debug.WriteLine($"Slider 3 has something to say: Why did you move me to {e.Value}?");
+                textSlider3Value.Text = e.Value.ToString();
+            };
+
+            slider4.ValueChanged += (s, e) =>
+            {
+                textSlider4Value.Text = e.Value.ToString();
             };
 
             TestingSpace.Children.Add(sliderColumn);
+        }
+
+        private void _unlimitedSelectorTest_Click(object sender, RoutedEventArgs e)
+        {
+            DisposeLastTest("UnlimitedSelector");
+
+            StackPanel unlimtedSelectorColumn = new()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new Thickness(10, 10, 10, 0),
+                
+            };
+
+            ViperUnlimitedSelector us1 = new()
+            {
+                Content = "Something",
+                Margin = new Thickness(0, 0, 0, 10),
+                DefaultColorAnimations = true,
+            };
+
+            ViperUnlimitedSelector us2 = new()
+            {
+                Content = "Disabled",
+                IsEnabled = false,
+                Margin = new Thickness(0, 0, 0, 10),
+                DefaultColorAnimations = true,
+            };
+
+            ViperUnlimitedSelector us3 = new()
+            {
+                Content = "I dont like longgggg namessssss",
+                Margin = new Thickness(0, 0, 0, 10),
+                DefaultColorAnimations = true,
+            };
+
+            ViperUnlimitedSelector us4 = new()
+            {
+                Content = "Im fat",
+                Height = 60,
+                Margin = new Thickness(0, 0, 0, 10),
+                DefaultColorAnimations = true,
+            };
+
+            ViperUnlimitedSelector us5 = new()
+            {
+                Content = "Dynamic",
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Margin = new Thickness(0, 0, 0, 10),
+                DefaultColorAnimations = true,
+            };
+
+            unlimtedSelectorColumn.Children.Add(us1);
+            unlimtedSelectorColumn.Children.Add(us2);
+            unlimtedSelectorColumn.Children.Add(us3);
+            unlimtedSelectorColumn.Children.Add(us4);
+            unlimtedSelectorColumn.Children.Add(us5);
+
+            TestingSpace.Children.Add(unlimtedSelectorColumn);
         }
 
         private void DisposeLastTest(string testingSpaceMessage)

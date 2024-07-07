@@ -154,6 +154,30 @@ namespace Viper.Game.Controls
             }
         }
 
+        public new double Height
+        {
+            get { return _stuffGridHeight; }
+
+            set
+            {
+                _stuffGridHeight = value;
+
+                ComboBoxStuffGrid.Height = value;
+            }
+        }
+
+        public new double Width
+        {
+            get { return _stuffGridWidth; }
+
+            set
+            {
+                _stuffGridWidth = value;
+
+                ComboBoxStuffGrid.Width = value;
+            }
+        }
+
         public Brush ItemsBackground
         {
             get { return _itemsBackground; }

@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\ViperUnlimitedSelector.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Controls\ViperSlider.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -23,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Controls\ViperUnlimitedSelector.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Controls\ViperSlider.xaml">
       <SubType>Designer</SubType>
     </Page>
