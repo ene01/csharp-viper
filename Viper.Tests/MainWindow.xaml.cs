@@ -101,7 +101,7 @@ namespace Viper.Tests
         {
             Height = 25,
             Margin = new Thickness(5, 5, 5, 5),
-            Content = "UnlimitedSelector",
+            Content = "SearchableContainer",
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
