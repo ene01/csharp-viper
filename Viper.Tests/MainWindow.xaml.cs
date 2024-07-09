@@ -97,6 +97,15 @@ namespace Viper.Tests
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
+        private Button _searchSPTest = new()
+        {
+            Height = 25,
+            Margin = new Thickness(5, 5, 5, 5),
+            Content = "UnlimitedSelector",
+            VerticalAlignment = VerticalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
         private GradientStop _testingBGGSOne = new()
         {
             Color = Colors.White,
@@ -145,6 +154,7 @@ namespace Viper.Tests
             TestingSpacesButtons.Children.Add(_comboBoxTest);
             TestingSpacesButtons.Children.Add(_sliderTest);
             TestingSpacesButtons.Children.Add(_unlimitedSelectorTest);
+            TestingSpacesButtons.Children.Add(_searchSPTest);
 
             _clearTestingSpace.Click += _clearTestingSpace_Click;
             _animationTest.Click += _animationTest_Click;
@@ -153,6 +163,7 @@ namespace Viper.Tests
             _comboBoxTest.Click += _comboBoxTest_Click;
             _sliderTest.Click += _sliderTest_Click;
             _unlimitedSelectorTest.Click += _unlimitedSelectorTest_Click;
+            _searchSPTest.Click += _searchSPTest_Click;
         }
 
         private void _clearTestingSpace_Click(object sender, RoutedEventArgs e)
@@ -818,6 +829,21 @@ namespace Viper.Tests
             unlimtedSelectorColumn.Children.Add(us5);
 
             TestingSpace.Children.Add(unlimtedSelectorColumn);
+        }
+
+        private void _searchSPTest_Click(object sender, RoutedEventArgs e)
+        {
+            DisposeLastTest("SearchableGroupBoxStackPanel");
+
+            SearchableGroupBoxStackPanel thing = new()
+            {
+                Background = new SolidColorBrush(Colors.DarkBlue),
+            };
+
+            thing.AddTitleElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "This is a title", FontSize = 21});
+            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.Gray), Content = "Wawa" }, "label|thing");
+
+            TestingSpace.Children.Add(thing);
         }
 
         private void DisposeLastTest(string testingSpaceMessage)

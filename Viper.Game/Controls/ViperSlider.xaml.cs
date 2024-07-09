@@ -221,6 +221,7 @@ namespace Viper.Game.Controls
 
             RootGrid.RenderTransform = new ScaleTransform();
             RootBorder.BorderBrush = new SolidColorBrush();
+            ThumbOverlay.Fill = new SolidColorBrush();
 
             ButtonElements.RenderTransform = _tTransform;
 
@@ -344,7 +345,7 @@ namespace Viper.Game.Controls
 
             if (show)
             {
-                Animate.Double(WhiteOverlay, OpacityProperty, 0, TimeSpan.FromMilliseconds(200), quadOut, 1);
+                Animate.Color(ThumbOverlay.Fill, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 255, 255), TimeSpan.FromMilliseconds(200), quadOut, Color.FromArgb(255, 255, 255, 255));
                 Animate.Double(ValueInputElements, OpacityProperty, 1, TimeSpan.FromMilliseconds(200), quadOut);
 
                 await Task.Delay(200); // Small delay because if this runs instantly, the context menu of the TextBox open at the same time you press right click on the slider.
@@ -369,7 +370,7 @@ namespace Viper.Game.Controls
             }
         }
 
-        // Trigers when the mouse is clicked, used for quick slider movements, also sets events to actually slide the slider.
+        // Trigers when the mouse is clicked, used for quick slider movements, also sets events to actually being able to slide the slider.
         private void Container_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _clickedOnTheControl = true;
@@ -384,6 +385,11 @@ namespace Viper.Game.Controls
             }
 
             SliderMovement(e);
+
+            if (!_allowSliding)
+            {
+                Animate.Color(ThumbOverlay.Fill, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 51, 51), TimeSpan.FromMilliseconds(600), quadOut, Color.FromArgb(255, 255, 51, 51));
+            }
         }
 
         // Triggers only when the mouse is being clicked and moved at the same time.

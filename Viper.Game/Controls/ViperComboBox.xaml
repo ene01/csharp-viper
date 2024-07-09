@@ -2,6 +2,7 @@
     <Grid x:Name="RootGrid" VerticalAlignment="Top" HorizontalAlignment="Left" Height="NaN" Width="NaN">
         <Rectangle Panel.ZIndex="1" StrokeThickness="0" Stroke="#00000000" Opacity="0" x:Name="Blackout" IsHitTestVisible="False" Fill="Black"/>
         <Border x:Name="ComboBoxBorder" BorderThickness="1" Panel.ZIndex="2" BorderBrush="#FF505050"/>
+        <Border x:Name="BorderOverlay" BorderBrush="#00FF0000" BorderThickness="1" Panel.ZIndex="2"/>
         <StackPanel x:Name="ComboBoxContainerStackPanel" RenderTransformOrigin="0.5,0.5" Background="#FF171717" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Grid x:Name="ComboBoxStuffGrid" ClipToBounds="True" Background="#00FF1515" VerticalAlignment="Top" HorizontalAlignment="Left" Cursor="Hand">
                 <Grid x:Name="ComboBoxContentContainer" Margin="10,5,10,5" VerticalAlignment="Center" HorizontalAlignment="Center" Width="NaN">
@@ -26,5 +27,6 @@
             </Grid>
             <StackPanel x:Name="ItemContainer" Height="0" Background="#FF0C0C0C" VerticalAlignment="Top"/>
         </StackPanel>
+        <Border BorderBrush="Black" BorderThickness="1"/>
     </Grid>
 </UserControl>

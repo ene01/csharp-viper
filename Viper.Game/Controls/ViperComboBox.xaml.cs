@@ -521,6 +521,10 @@ namespace Viper.Game.Controls
 
                 ItemDisplayToggle(_isOpen);
             }
+            else
+            {
+                Animate.Color(BorderOverlay.BorderBrush, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 51, 51), TimeSpan.FromMilliseconds(400), quadOut, Color.FromArgb(255, 255, 51, 51));
+            }
 
             Release?.Invoke(this, new EventArgs());
         }
