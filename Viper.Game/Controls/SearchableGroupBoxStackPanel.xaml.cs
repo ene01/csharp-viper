@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Printing;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -57,6 +58,41 @@ namespace Viper.Game.Controls
         private void TitleStackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ElementStackPanel.Margin = new Thickness(0, TitleStackPanel.ActualHeight, 0, 0);
+        }
+
+        public void Search(string keyWords)
+        {
+            int index = 0;
+
+            string convKeyWords = keyWords.ToLower();
+
+            List<string> words = Text.SeparateWords(convKeyWords, ' ');
+
+            foreach (UIElement element in ElementStackPanel.Children)
+            {
+                foreach (string word in words)
+                {
+                    if (_elementTags[index].Contains(word))
+                    {
+                        element.Visibility = Visibility.Visible;
+                        break;
+                    }
+                    else
+                    {
+                        element.Visibility = Visibility.Collapsed;
+                    }
+                }
+
+                index += 1;
+            }
+        }
+
+        public void ShowAllElements()
+        {
+            foreach (UIElement element in ElementStackPanel.Children)
+            {
+                element.Visibility = Visibility.Visible;
+            }
         }
 
         public void AddElement(UIElement element, string tag)

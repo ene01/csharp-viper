@@ -55,7 +55,7 @@ namespace Viper.Game.Controls
 
         public EventHandler<ViperComboBoxSelectionChanged> SelectionChanged;
 
-        private const string CONTENT_VIPER_CHECK_BOX = "Nothing selected";
+        private const string DEFAULT_CONTENT_VIPER_CHECK_BOX = "Nothing selected";
         private const byte BACKGROUND_COLOR_R = 23;
         private const byte BACKGROUND_COLOR_G = 23;
         private const byte BACKGROUND_COLOR_B = 23;
@@ -82,8 +82,10 @@ namespace Viper.Game.Controls
         private const HorizontalAlignment DEFAULT_HORIZONTAL_ALIGNMENT = HorizontalAlignment.Left;
         private const bool DEFAULT_IS_ENABLED = true;
         private const bool DEFAULT_IS_OPEN = false;
+        private const bool DEFAULT_USE_PREVIOUS_ITEM = false;
+        private const bool DEFAULT_INSTA_SELECT = false;
 
-        private object _content = CONTENT_VIPER_CHECK_BOX;
+        private object _dContent = DEFAULT_CONTENT_VIPER_CHECK_BOX;
         private Brush _background = new SolidColorBrush(Color.FromRgb(BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B));
         private Brush _border = new SolidColorBrush(Color.FromRgb(BORDER_COLOR_R, BORDER_COLOR_G, BORDER_COLOR_B));
         private Brush _foreground = new SolidColorBrush(Color.FromRgb(FOREGROUND_COLOR_R, FOREGROUND_COLOR_G, FOREGROUND_COLOR_B));
@@ -97,23 +99,29 @@ namespace Viper.Game.Controls
         private HorizontalAlignment _xAlignment = DEFAULT_HORIZONTAL_ALIGNMENT;
         private bool _isEnabled = DEFAULT_IS_ENABLED;
         private bool _isOpen = DEFAULT_IS_OPEN;
+        private bool _usePrevious = DEFAULT_USE_PREVIOUS_ITEM;
+        private bool _instaSelect = DEFAULT_INSTA_SELECT;
         private Brush _itemDisplayersBrush = new SolidColorBrush(Color.FromRgb(ITEMS_DISPLAYERS_COLOR_R, ITEMS_DISPLAYERS_COLOR_G, ITEMS_DISPLAYERS_COLOR_B));
+        private int? _selected = null;
 
-        public new object Content
+        public new object? Content = null; // :tf:
+
+        /// <summary>
+        /// Content showed when theres no item selected
+        /// </summary>
+        public object FallbackContent
         {
-            get { return _content; }
+            get { return _dContent; }
 
             set
             {
-                _content = value;
-
                 if (value is string)
                 {
-                    ComboBoxContent.Content = WrapWithOverflowTextBlock(value as string, _foreground);
+                    _dContent = WrapWithOverflowTextBlock(value as string, _foreground);
                 }
                 else
                 {
-                    ComboBoxContent.Content = value;
+                    _dContent = value;
                 }
             }
         }
@@ -264,6 +272,42 @@ namespace Viper.Game.Controls
             }
         }
 
+        /// <summary>
+        /// Handles cases when the current item selected is removed by changing the selection to the previous item.
+        /// </summary>
+        public new bool UsePreviousItem
+        {
+            get { return _usePrevious; }
+
+            set
+            {
+                _usePrevious = value;
+            }
+        }
+
+        /// <summary>
+        /// Selects the first item as soon as theres one availible.
+        /// </summary>
+        public new bool InstaSelection
+        {
+            get { return _instaSelect; }
+
+            set
+            {
+                _instaSelect = value;
+            }
+        }
+
+        public int? SelectedIndex
+        {
+            get => _selected;
+        }
+
+        public int ItemAmount
+        {
+            get { return _items.Count; }
+        }
+
         private bool _setDefaultColorAnimations = false;
 
         /// <summary>
@@ -314,11 +358,6 @@ namespace Viper.Game.Controls
         private List<object> _items = new();
         private List<Grid> _itemDisplayers = new();
 
-        private int ItemAmount
-        {
-            get { return _items.Count; }
-        }
-
         private IEasingFunction elastic = new ElasticEase() { Springiness = 8, Oscillations = 2 };
         private IEasingFunction quadOut = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
 
@@ -328,6 +367,11 @@ namespace Viper.Game.Controls
             {
                 itemDisplayer.Background = value;
             }
+        }
+
+        public object GetItemFromIndex(int index)
+        {
+            return _items[index];
         }
 
         public void AddItem(object item)
@@ -389,6 +433,8 @@ namespace Viper.Game.Controls
             {
                 SelectionChanged?.Invoke(this, new ViperComboBoxSelectionChanged(currentIndex));
 
+                _selected = currentIndex;
+
                 Animate.Color(border.BorderBrush, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 255, 255), TimeSpan.FromMilliseconds(150), quadOut, Colors.White);
 
                 ItemDisplayToggle(false);
@@ -397,21 +443,56 @@ namespace Viper.Game.Controls
             };
 
             _itemStackPanelList.Children.Add(itemGrid);
+
+            if (_selected == null && _items.Count == 1 && _instaSelect)
+            {
+                SetSelection(0);
+            }
         }
 
         public void RemoveItem(int index)
         {
-            _itemStackPanelList.Children.RemoveAt(index);
+            if (!(index < 0) && index < _items.Count)
+            {
+                if (index == 0)
+                {
+                    CheckSelectedContent(true);
+                }
 
-            _items.RemoveAt(index);
-            _itemDisplayers.RemoveAt(index);
+                if (_usePrevious && index == _selected)
+                {
+                    SetSelection(index - 1);
+                }
+                else if (index == _selected)
+                {
+                    CheckSelectedContent(true);
+                }
+
+                _itemStackPanelList.Children.RemoveAt(index);
+                _items.RemoveAt(index);
+                _itemDisplayers.RemoveAt(index);
+            }
+        }
+
+        public void ClearAllItems()
+        {
+            _itemStackPanelList.Children.Clear();
+            _items.Clear();
+            _itemDisplayers.Clear();
+            CheckSelectedContent(true);
         }
 
         public void SetSelection(int index)
         {
-            SelectionChanged?.Invoke(this, new ViperComboBoxSelectionChanged(index));
+            if (index < _items.Count && !(index < 0))
+            {
+                SelectionChanged?.Invoke(this, new ViperComboBoxSelectionChanged(index));
 
-            ComboBoxContent.Content = _items[index];
+                _selected = index;
+                Debug.WriteLine($"-- Selection updated = {_selected}");
+
+                ComboBoxContent.Content = _items[index];
+            }
         }
 
         private TextBlock WrapWithOverflowTextBlock(string stringToConvert, Brush brush)
@@ -507,7 +588,22 @@ namespace Viper.Game.Controls
         {
             RootGrid.RenderTransform = new ScaleTransform(1, 1) { CenterX = ComboBoxStuffGrid.ActualWidth / 2, CenterY = ComboBoxStuffGrid.ActualHeight / 2 };
 
+            CheckSelectedContent();
+
             EnabledLayerToggle(_isEnabled);
+        }
+
+        private void CheckSelectedContent(bool forceClear = false)
+        {
+            if (forceClear || _selected == null)
+            {
+                if (forceClear)
+                {
+                    _selected = null;
+                }
+
+                ComboBoxContent.Content = _dContent;
+            };
         }
 
         private void CheckBoxContainer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

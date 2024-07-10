@@ -6,7 +6,7 @@
         <StackPanel x:Name="ComboBoxContainerStackPanel" RenderTransformOrigin="0.5,0.5" Background="#FF171717" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Grid x:Name="ComboBoxStuffGrid" ClipToBounds="True" Background="#00FF1515" VerticalAlignment="Top" HorizontalAlignment="Left" Cursor="Hand">
                 <Grid x:Name="ComboBoxContentContainer" Margin="10,5,10,5" VerticalAlignment="Center" HorizontalAlignment="Center" Width="NaN">
-                    <ContentControl VerticalContentAlignment="Center" UseLayoutRounding="True" x:Name="ComboBoxContent" HorizontalContentAlignment="Center" Foreground="White" Content="ViperComboBox" VerticalAlignment="Top" HorizontalAlignment="Left" Cursor="Hand" Margin="20,0,0,0"/>
+                    <ContentControl VerticalContentAlignment="Center" UseLayoutRounding="True" x:Name="ComboBoxContent" HorizontalContentAlignment="Center" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Left" Cursor="Hand" Margin="20,0,0,0"/>
                     <Rectangle x:Name="SillyThing" HorizontalAlignment="Left" Height="11" VerticalAlignment="Center" Width="11" RenderTransformOrigin="0.5,0.5" Stroke="#66FFFFFF" RadiusX="1.931" RadiusY="1.931">
                         <Rectangle.Fill>
                             <LinearGradientBrush EndPoint="0,1" StartPoint="0,0" SpreadMethod="Pad" MappingMode="RelativeToBoundingBox">

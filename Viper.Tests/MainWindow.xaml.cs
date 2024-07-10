@@ -17,6 +17,7 @@ using Viper.Game.Animations;
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
+using Viper.Game.Events;
 
 namespace Viper.Tests
 {
@@ -556,6 +557,8 @@ namespace Viper.Tests
         {
             DisposeLastTest("ComboBox");
 
+            List<ViperComboBox> combos = new();
+
             StackPanel comboColumn = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -563,16 +566,44 @@ namespace Viper.Tests
                 Margin = new Thickness(10, 10, 0, 0),
             };
 
+            TextBlock debugText = new()
+            {
+                Text = "Last selection: ",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TextBlock desc1 = new()
+            {
+                Text = "The first ComboBox has InstaSelection (select first item as soon as is availible) and UsePreviousItem (select previous item if the selected is removed) enabled",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            Button debugAdd = new()
+            {
+                Content = "Add random items"
+            };
+
+            Button debugRemove = new()
+            {
+                Content = "Remove an item"
+            };
+
+            Button debugClear = new()
+            {
+                Content = "Clear items"
+            };
+
             ViperComboBox combo1 = new()
             {
                 DefaultColorAnimations = true,
                 Margin = new Thickness(0, 10, 0, 0),
+                UsePreviousItem = true,
+                InstaSelection = true,
             };
 
             ViperComboBox combo2 = new()
             {
                 IsEnabled = false,
-                Content = "Disabled",
                 DefaultColorAnimations = true,
                 Margin = new Thickness(0, 10, 0, 0),
             };
@@ -580,7 +611,6 @@ namespace Viper.Tests
             ViperComboBox combo3 = new()
             {
                 DefaultColorAnimations = true,
-                Content = "A very tall ComboBox",
                 Height = 100,
                 Margin = new Thickness(0, 10, 0, 0),
             };
@@ -589,33 +619,61 @@ namespace Viper.Tests
             {
                 DefaultColorAnimations = true,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Content = "Getting through a long text is like watching a movie with a 30-minute intro, an hour-long middle, and another 30 minutes of ending scenes—by the time it's over, you've forgotten what it was even about.",
+                FallbackContent = "This is a really long messaage to tell you that this custom ViperComboBox is currently holding no items, add a few with the buttons on the side!",
                 Margin = new Thickness(0, 10, 0, 0),
             };
 
             ViperComboBox combo5 = new()
             {
                 DefaultColorAnimations = true,
-                Content = "A tall item list.",
                 Margin = new Thickness(0, 10, 0, 0),
                 ItemContainerMaxHeight = 200,
             };
 
-            // Array of number names
-            string[] numberNames = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten" };
+            combos.Add(combo1);
+            combos.Add(combo2);
+            combos.Add(combo3);
+            combos.Add(combo4);
+            combos.Add(combo5);
 
-            // Loop through numbers 1 to 10
-            for (int i = 0; i < numberNames.Length; i++)
+            combo1.SelectionChanged += UpdateDebugText;
+            combo2.SelectionChanged += UpdateDebugText;
+            combo3.SelectionChanged += UpdateDebugText;
+            combo4.SelectionChanged += UpdateDebugText;
+            combo5.SelectionChanged += UpdateDebugText;
+
+            void UpdateDebugText(object sender, ViperComboBoxSelectionChanged e)
             {
-                combo1.AddItem(numberNames[i]);
-                combo2.AddItem(numberNames[i]);
-                combo3.AddItem(numberNames[i]);
-                combo4.AddItem(numberNames[i]);
-                combo5.AddItem(numberNames[i]);
+                debugText.Text = $"Last selection: {(sender as ViperComboBox).GetItemFromIndex(e.Index)}";
             }
 
-            combo1.SetSelection(0);
+            debugAdd.Click += (s, e) =>
+            {
+                Random rnd = new();
 
+                foreach (ViperComboBox combo in combos)
+                {
+                    combo.AddItem($"{rnd.Next(0, 1000)}");
+                }
+            };
+
+            debugRemove.Click += (s, e) =>
+            {
+                foreach (ViperComboBox combo in combos)
+                {
+                    combo.RemoveItem(combo.ItemAmount - 1);
+                }
+            };
+
+            debugClear.Click += (s, e) =>
+            {
+                foreach (ViperComboBox combo in combos)
+                {
+                    combo.ClearAllItems();
+                }
+            };
+
+            comboColumn.Children.Add(desc1);
             comboColumn.Children.Add(combo1);
             comboColumn.Children.Add(combo2);
             comboColumn.Children.Add(combo3);
@@ -623,6 +681,10 @@ namespace Viper.Tests
             comboColumn.Children.Add(combo5);
 
             TestingSpace.Children.Add(comboColumn);
+            TestingInteractions.Children.Add(debugText);
+            TestingInteractions.Children.Add(debugAdd);
+            TestingInteractions.Children.Add(debugRemove);
+            TestingInteractions.Children.Add(debugClear);
         }
 
         private void _sliderTest_Click(object sender, RoutedEventArgs e)
@@ -636,57 +698,15 @@ namespace Viper.Tests
                 Margin = new Thickness(10, 10, 10, 0),
             };
 
-            TextBlock text1 = new()
+            TextBlock debugText = new()
             {
-                Text = "Dynamic width and scrollable",
+                Text = "Value: 0",
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
-            TextBlock textSlider1Value = new()
+            TextBlock desc1 = new()
             {
-                Text = "0",
-                Foreground = new SolidColorBrush(Colors.White),
-            };
-
-            TextBlock text2 = new()
-            {
-                Text = "Set width, different ProgressBarBrush",
-                Foreground = new SolidColorBrush(Colors.White),
-            };
-
-            TextBlock textSlider2Value = new()
-            {
-                Text = "0",
-                Foreground = new SolidColorBrush(Colors.White),
-            };
-
-            TextBlock text3 = new()
-            {
-                Text = "Set width, different SliderBrush",
-                Foreground = new SolidColorBrush(Colors.White),
-            };
-
-            TextBlock textSlider3Value = new()
-            {
-                Text = "0",
-                Foreground = new SolidColorBrush(Colors.White),
-            };
-
-            TextBlock text4 = new()
-            {
-                Text = "Both brushes",
-                Foreground = new SolidColorBrush(Colors.White),
-            };
-
-            TextBlock textSlider4Value = new()
-            {
-                Text = "0",
-                Foreground = new SolidColorBrush(Colors.White),
-            };
-
-            TextBlock text5 = new()
-            {
-                Text = "Disabled",
+                Text = "This one is scrollable, others are not",
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
@@ -734,42 +754,35 @@ namespace Viper.Tests
                 IsEnabled = false,
             };
 
-            sliderColumn.Children.Add(text1);
-            sliderColumn.Children.Add(textSlider1Value);
+            sliderColumn.Children.Add(desc1);
             sliderColumn.Children.Add(slider1);
-            sliderColumn.Children.Add(text2);
-            sliderColumn.Children.Add(textSlider2Value);
             sliderColumn.Children.Add(slider2);
-            sliderColumn.Children.Add(text3);
-            sliderColumn.Children.Add(textSlider3Value);
             sliderColumn.Children.Add(slider3);
-            sliderColumn.Children.Add(text4);
-            sliderColumn.Children.Add(textSlider4Value);
             sliderColumn.Children.Add(slider4);
-            sliderColumn.Children.Add(text5);
             sliderColumn.Children.Add(slider5);
 
             slider1.ValueChanged += (s, e) =>
             {
-                textSlider1Value.Text = e.Value.ToString();
+                debugText.Text = "Value: " + e.Value.ToString();
             };
 
             slider2.ValueChanged += (s, e) =>
             {
-                textSlider2Value.Text = e.Value.ToString();
+                debugText.Text = "Value: " + e.Value.ToString();
             };
 
             slider3.ValueChanged += (s, e) =>
             {
-                textSlider3Value.Text = e.Value.ToString();
+                debugText.Text = "Value: " + e.Value.ToString();
             };
 
             slider4.ValueChanged += (s, e) =>
             {
-                textSlider4Value.Text = e.Value.ToString();
+                debugText.Text = "Value: " + e.Value.ToString();
             };
 
             TestingSpace.Children.Add(sliderColumn);
+            TestingInteractions.Children.Add(debugText);
         }
 
         private void _unlimitedSelectorTest_Click(object sender, RoutedEventArgs e)
@@ -784,51 +797,47 @@ namespace Viper.Tests
                 
             };
 
+            TextBlock desc1 = new()
+            {
+                Text = "Not a lot to see here",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TextBlock debugText = new()
+            {
+                Text = "Value: 0",
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
             ViperUnlimitedSelector us1 = new()
             {
-                Content = "Something",
                 Margin = new Thickness(0, 0, 0, 10),
                 DefaultColorAnimations = true,
             };
 
             ViperUnlimitedSelector us2 = new()
             {
-                Content = "Disabled",
-                IsEnabled = false,
-                Margin = new Thickness(0, 0, 0, 10),
-                DefaultColorAnimations = true,
-            };
-
-            ViperUnlimitedSelector us3 = new()
-            {
-                Content = "I dont like longgggg namessssss",
-                Margin = new Thickness(0, 0, 0, 10),
-                DefaultColorAnimations = true,
-            };
-
-            ViperUnlimitedSelector us4 = new()
-            {
-                Content = "Im fat",
-                Height = 60,
-                Margin = new Thickness(0, 0, 0, 10),
-                DefaultColorAnimations = true,
-            };
-
-            ViperUnlimitedSelector us5 = new()
-            {
-                Content = "Dynamic",
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Margin = new Thickness(0, 0, 0, 10),
                 DefaultColorAnimations = true,
             };
 
+            us1.IndexChanged += (s, e) =>
+            {
+                debugText.Text = "Value: " + e.Index.ToString();
+            };
+
+            us2.IndexChanged += (s, e) =>
+            {
+                debugText.Text = "Value: " + e.Index.ToString();
+            };
+
+            unlimtedSelectorColumn.Children.Add(desc1);
             unlimtedSelectorColumn.Children.Add(us1);
             unlimtedSelectorColumn.Children.Add(us2);
-            unlimtedSelectorColumn.Children.Add(us3);
-            unlimtedSelectorColumn.Children.Add(us4);
-            unlimtedSelectorColumn.Children.Add(us5);
 
             TestingSpace.Children.Add(unlimtedSelectorColumn);
+            TestingInteractions.Children.Add(debugText);
         }
 
         private void _searchSPTest_Click(object sender, RoutedEventArgs e)
@@ -837,13 +846,39 @@ namespace Viper.Tests
 
             SearchableGroupBoxStackPanel thing = new()
             {
-                Background = new SolidColorBrush(Colors.DarkBlue),
+                Background = new SolidColorBrush(Color.FromRgb(23, 23, 23)),
             };
 
-            thing.AddTitleElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "This is a title", FontSize = 21});
-            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.Gray), Content = "Wawa" }, "label|thing");
+            TextBox searchBox = new()
+            {
+                Height = 20,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+            };
+
+            thing.AddTitleElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "SearchTest", FontSize = 21});
+            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Coso" }, "coso");
+            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Cosa" }, "cosa");
+            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Algo" }, "algo");
+            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "LoL" }, "lol league of legends");
+            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Wawa" }, "wawa");
+
+            searchBox.PreviewKeyUp += (s, e) =>
+            {
+                thing.Search(searchBox.Text);
+
+                if (searchBox.Text == "")
+                {
+                    thing.ShowAllElements();
+                }
+            };
+
+            searchBox.LostFocus += (s, e) =>
+            {
+                searchBox.Text = "";
+            };
 
             TestingSpace.Children.Add(thing);
+            TestingInteractions.Children.Add(searchBox);
         }
 
         private void DisposeLastTest(string testingSpaceMessage)

@@ -63,7 +63,6 @@ namespace Viper.Game.Controls
         public EventHandler<ViperUnlimitedSelectorIndexChanged>? IndexChanged;
 
         // Define const.
-        private const string CONTENT = "ViperUnlimitedSelector";
         private static readonly Brush BACKGROUND_COLOR = new SolidColorBrush(Color.FromRgb(23, 23, 23));
         private static readonly Brush BORDER_COLOR = new SolidColorBrush(Color.FromRgb(80, 80, 80));
         private static readonly Brush FOREGROUND_COLOR = new SolidColorBrush(Color.FromRgb(255, 255, 255));
@@ -80,7 +79,6 @@ namespace Viper.Game.Controls
         private const int DEFAULT_INDEX = 0;
 
         // Private properties used for the button.
-        private object _content = CONTENT;
         private object _leftContent = SIDE_BUTTON_LEFT_CONTENT;
         private object _rightContent = SIDE_BUTTON_RIGTH_CONTENT;
         private Brush _background = BACKGROUND_COLOR;
@@ -97,34 +95,6 @@ namespace Viper.Game.Controls
         private bool _isEnabled = IS_ENABLED_TRUE;
         private int _currentIndex = DEFAULT_INDEX;
         private bool _defaultAnim = false;
-
-        /// <summary>
-        /// Define whats inside the button.
-        /// </summary>
-        public new object Content
-        {
-            get { return _content; }
-
-            set
-            {
-                _content = value;
-
-                if (value is string)
-                {
-                    TextBlock text = new()
-                    {
-                        Text = (string)_content,
-                        TextWrapping = TextWrapping.WrapWithOverflow,
-                    };
-
-                    UnlimitedSelectorContent.Content = text;
-                }
-                else
-                {
-                    UnlimitedSelectorContent.Content = value;
-                }
-            }
-        }
 
         public new object LeftContent
         {
@@ -230,7 +200,7 @@ namespace Viper.Game.Controls
             { 
                 _foreground = value;
 
-                UnlimitedSelectorContent.Foreground = value;
+                IndexViewer.Foreground = value;
             }
         }
 
@@ -291,23 +261,13 @@ namespace Viper.Game.Controls
         {
             InitializeComponent();
 
-            UnlimitedSelectorContent.RenderTransform = new TranslateTransform();
             IndexViewer.RenderTransform = new TranslateTransform();
 
             LeftButton.SizeChanged += LeftButton_SizeChanged;
             RightButton.SizeChanged += RightButton_SizeChanged;
 
-            IndexViewerGrid.SizeChanged += Container_SizeChanged;
-
             LeftButton.PreviewMouseLeftButtonUp += LeftButton_PreviewMouseLeftButtonUp;
             RightButton.PreviewMouseLeftButtonUp += RightButton_PreviewMouseLeftButtonUp;
-        }
-
-        private void Container_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            Thickness current = CenterElements.Margin;
-
-            UnlimitedSelectorContent.Margin = new Thickness(current.Left, current.Top, IndexViewerGrid.ActualWidth + 8, current.Bottom);
         }
 
         private void RightButton_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -326,6 +286,8 @@ namespace Viper.Game.Controls
 
         private async void RightButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            Debug.WriteLine("Right");
+
             if (_isEnabled)
             {
                 _currentIndex += 1;
@@ -350,6 +312,8 @@ namespace Viper.Game.Controls
 
         private async void LeftButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            Debug.WriteLine("Left");
+
             if (!(_currentIndex - 1 < 0) && _isEnabled)
             {
                 _currentIndex -= 1;
