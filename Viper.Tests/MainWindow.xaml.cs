@@ -12,7 +12,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Viper.Game.Controls;
+using Viper.Game.Controls.Individual;
+using Viper.Game.Controls.Panels;
 using Viper.Game.Animations;
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
@@ -851,11 +852,12 @@ namespace Viper.Tests
 
             TextBox searchBox = new()
             {
-                Height = 20,
+                Height = 30,
+                FontSize = 19,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
             };
 
-            thing.AddTitleElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "SearchTest", FontSize = 21});
+            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "SearchTest", FontSize = 21}, "", false);
             thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Coso" }, "coso");
             thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Cosa" }, "cosa");
             thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Algo" }, "algo");

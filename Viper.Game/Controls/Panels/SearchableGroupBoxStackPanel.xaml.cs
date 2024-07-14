@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Viper.Game.Controls
+namespace Viper.Game.Controls.Panels
 {
     /// <summary>
     /// Lógica de interacción para SearchableGroupBoxStackPanel.xaml
@@ -46,7 +46,7 @@ namespace Viper.Game.Controls
             }
         }
 
-        private List<string> _elementTags = new();
+        private List<object[]> _elementTags = new();
 
         public SearchableGroupBoxStackPanel()
         {
@@ -72,7 +72,7 @@ namespace Viper.Game.Controls
             {
                 foreach (string word in words)
                 {
-                    if (_elementTags[index].Contains(word))
+                    if ((_elementTags[index][0] as string).Contains(word) || (bool)_elementTags[index][1] == false)
                     {
                         element.Visibility = Visibility.Visible;
                         break;
@@ -95,9 +95,11 @@ namespace Viper.Game.Controls
             }
         }
 
-        public void AddElement(UIElement element, string tag)
+        public void AddElement(UIElement element, string tag, bool removableBySearch = true)
         {
-            _elementTags.Add(tag);
+            object[] tags = [tag, removableBySearch];
+
+            _elementTags.Add(tags);
             ElementStackPanel.Children.Add(element);
         }
 
@@ -118,21 +120,6 @@ namespace Viper.Game.Controls
             }
 
             ElementStackPanel.Children.Remove(element);
-        }
-
-        public void AddTitleElement(UIElement element)
-        {
-            TitleStackPanel.Children.Add(element);
-        }
-
-        public void RemoveTitleElementAt(int index)
-        {
-            TitleStackPanel.Children.RemoveAt(index);
-        }
-
-        public void RemoveTitleElement(UIElement element)
-        {
-            TitleStackPanel.Children.Remove(element);
         }
     }
 }

@@ -8,28 +8,28 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Controls\ViperUnlimitedSelector.xaml.cs">
+    <Compile Update="Controls\Individual\ViperUnlimitedSelector.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\ViperSlider.xaml.cs">
+    <Compile Update="Controls\Individual\ViperSlider.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\ViperComboBox.xaml.cs">
+    <Compile Update="Controls\Individual\ViperComboBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\ViperCheckBox.xaml.cs">
+    <Compile Update="Controls\Individual\ViperCheckBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\ViperButton.xaml.cs">
+    <Compile Update="Controls\Individual\ViperButton.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Controls\ViperUnlimitedSelector.xaml">
+    <Page Update="Controls\Individual\ViperUnlimitedSelector.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Controls\ViperSlider.xaml">
+    <Page Update="Controls\Individual\ViperSlider.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

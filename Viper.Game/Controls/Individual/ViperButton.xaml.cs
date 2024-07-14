@@ -16,19 +16,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Viper.Game.Animations;
-using Viper.Game.Events;
 
-namespace Viper.Game.Controls
+namespace Viper.Game.Controls.Individual
 {
     /// <summary>
     /// Lógica de interacción para ViperButton.xaml
     /// </summary>
-    public partial class ViperCheckBox : UserControl
+    public partial class ViperButton : UserControl
     {
         /// <summary>
         /// Im lazy, so heres the entire control container, do whatrever, use events, etc, idk.
         /// </summary>
-        public UserControl Container => CheckBoxControl;
+        public UserControl Container => ButtonControl;
 
         /// <summary>
         /// Events that triggers when the button is enabled and clicked.
@@ -55,14 +54,10 @@ namespace Viper.Game.Controls
         /// </summary>
         public EventHandler? NoHovering;
 
-        public EventHandler<ViperCheckBoxStateChanged> StateChanged;
-
-        // Const.
-        private const string CONTENT_VIPER_CHECKBOX = "ViperCheckBox";
+        // Define const.
+        private const string CONTENT_VIPER_BUTTON = "ViperButton";
         private static readonly Brush BACKGROUND_COLOR = new SolidColorBrush(Color.FromRgb(23, 23, 23));
         private static readonly Brush BORDER_COLOR = new SolidColorBrush(Color.FromRgb(80, 80, 80));
-        private static readonly Brush FILL_COLOR = new SolidColorBrush(Color.FromRgb(35, 35, 35));
-        private static readonly Brush STROKE_COLOR = new SolidColorBrush(Color.FromArgb(86, 255, 255, 255));
         private static readonly Brush FOREGROUND_COLOR = new SolidColorBrush(Color.FromRgb(255, 255, 255));
         private const double CONTAINER_HEIGHT_NAN = double.NaN;
         private const double CONTAINER_WIDTH_NAN = double.NaN;
@@ -72,11 +67,10 @@ namespace Viper.Game.Controls
         private const HorizontalAlignment X_ALIGNMENT_LEFT = HorizontalAlignment.Left;
         private const bool IS_ENABLED_TRUE = true;
 
-        private object _content = CONTENT_VIPER_CHECKBOX;
+        // Private properties used for the button.
+        private object _content = CONTENT_VIPER_BUTTON;
         private Brush _background = BACKGROUND_COLOR;
         private Brush _border = BORDER_COLOR;
-        private Brush _fill = FILL_COLOR;
-        private Brush _stroke = STROKE_COLOR;
         private Brush _foreground = FOREGROUND_COLOR;
         private double _containerHeight = CONTAINER_HEIGHT_NAN;
         private double _containerWidth = CONTAINER_WIDTH_NAN;
@@ -86,7 +80,9 @@ namespace Viper.Game.Controls
         private HorizontalAlignment _xAlignment = X_ALIGNMENT_LEFT;
         private bool _isEnabled = IS_ENABLED_TRUE;
 
-
+        /// <summary>
+        /// Define whats inside the button.
+        /// </summary>
         public new object Content
         {
             get { return _content; }
@@ -103,63 +99,48 @@ namespace Viper.Game.Controls
                         TextWrapping = TextWrapping.WrapWithOverflow,
                     };
 
-                    CheckBoxContent.Content = text;
+                    ButtonContent.Content = text;
                 }
                 else
                 {
-                    CheckBoxContent.Content = value;
+                    ButtonContent.Content = value;
                 }
             }
         }
 
+        /// <summary>
+        /// Background brush for the button.
+        /// </summary>
         public new Brush Background
         {
             get { return _background; }
 
-            set
-            {
-                _background = value;
+            set 
+            { 
+                _background = value; 
 
-                CheckBoxGrid.Background = value;
+                ButtonGrid.Background = value;
             }
         }
 
+        /// <summary>
+        /// Border brush for the button, a square that appears at the edges of the button
+        /// </summary>
         public new Brush BorderBrush
         {
             get { return _border; }
 
             set
-            {
+            { 
                 _border = value;
 
-                CheckBoxBorder.BorderBrush = value;
+                ButtonBorder.BorderBrush = value;
             }
         }
 
-        public Brush CheckFill
-        {
-            get { return _background; }
-
-            set
-            {
-                _fill= value;
-
-                Check.Fill = value;
-            }
-        }
-
-        public Brush CheckStroke
-        {
-            get { return _border; }
-
-            set
-            {
-                _stroke = value;
-
-                Check.Stroke = value;
-            }
-        }
-
+        /// <summary>
+        /// Text brush.
+        /// </summary>
         public new Brush Foreground
         {
             get { return _foreground; }
@@ -168,7 +149,7 @@ namespace Viper.Game.Controls
             { 
                 _foreground = value;
 
-                CheckBoxContent.Foreground = value;
+                ButtonContent.Foreground = value;
             }
         }
 
@@ -181,23 +162,6 @@ namespace Viper.Game.Controls
                 _isEnabled = value;
 
                 EnabledLayerToggle(value);
-            }
-        }
-
-        private bool _isChecked = false;
-
-        public bool IsChecked
-        {
-            get
-            {
-                return _isChecked;
-            }
-
-            set
-            {
-                _isChecked = value;
-
-                StateChanged?.Invoke(this, new ViperCheckBoxStateChanged(value));
             }
         }
 
@@ -217,7 +181,7 @@ namespace Viper.Game.Controls
 
                 if (_setDefaultColorAnimations)
                 {
-                    SetDefaltCheckAnimations(this);
+                    SetDefaltBrushAnimations(this);
                 }
                 else
                 {
@@ -228,8 +192,6 @@ namespace Viper.Game.Controls
 
                     Background = BACKGROUND_COLOR;
                     BorderBrush = BORDER_COLOR;
-                    CheckFill = FILL_COLOR;
-                    CheckStroke = STROKE_COLOR;
                     Foreground = FOREGROUND_COLOR;
                 }
             }
@@ -238,112 +200,111 @@ namespace Viper.Game.Controls
         private IEasingFunction elastic = new ElasticEase() { Springiness = 5 };
         private IEasingFunction quadOut = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
 
-        public ViperCheckBox()
+        /// <summary>
+        /// A cool button.
+        /// </summary>
+        public ViperButton()
         {
             InitializeComponent();
 
-            Loaded += ViperCheckBox_Loaded;
-            Unloaded += ViperCheckBox_Unloaded;
-            CheckBoxControl.LostFocus += ViperCheckBox_LostFocus;
+            Loaded += ViperButton_Loaded;
+            Unloaded += ViperButton_Unloaded;
+            ButtonControl.LostFocus += ViperButton_LostFocus;
 
-            CheckBoxControl.MouseEnter += CheckBoxContainer_MouseEnter;
-            CheckBoxControl.MouseLeave += CheckBoxContainer_MouseLeave;
-            CheckBoxControl.PreviewMouseLeftButtonDown += CheckBoxContainer_PreviewMouseLeftButtonDown;
-            CheckBoxControl.PreviewMouseLeftButtonUp += CheckBoxContainer_PreviewMouseLeftButtonUp;
+            ButtonControl.MouseEnter += ButtonContainer_MouseEnter;
+            ButtonControl.MouseLeave += ButtonContainer_MouseLeave;
+            ButtonControl.PreviewMouseLeftButtonDown += ButtonContainer_PreviewMouseLeftButtonDown;
+            ButtonControl.PreviewMouseLeftButtonUp += ButtonContainer_PreviewMouseLeftButtonUp;
         }
 
-        // In case the user loses focus (focus to other window, keybind to change focus, etc.), trigger a release event.
-        private void ViperCheckBox_LostFocus(object sender, RoutedEventArgs e)
+        private void ViperButton_LostFocus(object sender, RoutedEventArgs e)
         {
             Release?.Invoke(this, new EventArgs());
         }
 
-        // Remove events when unloaded just in case.
-        private void ViperCheckBox_Unloaded(object sender, RoutedEventArgs e)
+        private void ViperButton_Unloaded(object sender, RoutedEventArgs e)
         {
-            Check.MouseEnter -= CheckBoxContainer_MouseEnter;
-            Check.MouseLeave -= CheckBoxContainer_MouseLeave;
-            Check.PreviewMouseLeftButtonDown -= CheckBoxContainer_PreviewMouseLeftButtonDown;
-            Check.PreviewMouseLeftButtonUp -= CheckBoxContainer_PreviewMouseLeftButtonUp;
-            Loaded -= ViperCheckBox_Loaded;
-            Unloaded -= ViperCheckBox_Unloaded;
+            ButtonGrid.SizeChanged -= ButtonGrid_SizeChanged;
+            ButtonControl.MouseEnter -= ButtonContainer_MouseEnter;
+            ButtonControl.MouseLeave -= ButtonContainer_MouseLeave;
+            ButtonControl.PreviewMouseLeftButtonDown -= ButtonContainer_PreviewMouseLeftButtonDown;
+            ButtonControl.PreviewMouseLeftButtonUp -= ButtonContainer_PreviewMouseLeftButtonUp;
+            Loaded -= ViperButton_Loaded;
+            Unloaded -= ViperButton_Unloaded;
         }
 
-        // Enables or disables the "black overlay" that appears on top of the button in case its enabled/disabled.
         private void EnabledLayerToggle(bool enable)
         {
             if (enable)
             {
-                Animate.Double(Check, OpacityProperty, 1, TimeSpan.FromMilliseconds(200));
-                Animate.Double(CheckBoxContent, OpacityProperty, 1, TimeSpan.FromMilliseconds(200));
+                Animate.Double(Blackout, OpacityProperty, 0, TimeSpan.FromMilliseconds(200));
             }
             else
             {
-                Animate.Double(Check, OpacityProperty, 0.6, TimeSpan.FromMilliseconds(200));
-                Animate.Double(CheckBoxContent, OpacityProperty, 0.6, TimeSpan.FromMilliseconds(200));
+                Animate.Double(Blackout, OpacityProperty, 0.3, TimeSpan.FromMilliseconds(200));
             }
         }
 
-        // Set the "middle" point when loaded.
-        private void ViperCheckBox_Loaded(object sender, RoutedEventArgs e)
+        private void ViperButton_Loaded(object sender, RoutedEventArgs e)
         {
-            Check.RenderTransform = new ScaleTransform(1, 1) { CenterX = Check.ActualWidth / 2, CenterY = Check.ActualHeight / 2 };
+            ButtonGrid.SizeChanged += ButtonGrid_SizeChanged;
+
+            ButtonGrid.RenderTransform = new ScaleTransform(1, 1) { CenterX = ButtonGrid.ActualWidth / 2, CenterY = ButtonGrid.ActualHeight / 2 };
             EnabledLayerToggle(_isEnabled);
+        }
+
+        private void ButtonGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ButtonGrid.RenderTransform = new ScaleTransform(1, 1) { CenterX = ButtonGrid.ActualWidth / 2, CenterY = ButtonGrid.ActualHeight / 2 };
         }
 
         private bool _canRegisterClick = false;
 
-        private void CheckBoxContainer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void ButtonContainer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (_isEnabled && _canRegisterClick)
             {
                 Click?.Invoke(this, new EventArgs());
-
-                _isChecked = !_isChecked;
-
-                StateChanged?.Invoke(this, new ViperCheckBoxStateChanged(_isChecked));
             }
 
             if (_canRegisterClick)
             {
                 Release?.Invoke(this, new EventArgs());
 
-                Animate.Double(Check.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
-                Animate.Double(Check.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
+                Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
+                Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
             }
         }
 
-        private void CheckBoxContainer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ButtonContainer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _canRegisterClick = true;
 
             Holding?.Invoke(this, new EventArgs());
 
-            Animate.Double(Check.RenderTransform, ScaleTransform.ScaleXProperty, 0.7, TimeSpan.FromMilliseconds(1000), quadOut);
-            Animate.Double(Check.RenderTransform, ScaleTransform.ScaleYProperty, 0.7, TimeSpan.FromMilliseconds(1000), quadOut);
+            Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleXProperty, 0.9, TimeSpan.FromMilliseconds(1000), quadOut);
+            Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleYProperty, 0.9, TimeSpan.FromMilliseconds(1000), quadOut);
 
-            CheckBoxControl.MouseLeave += LocalMouseLeave;
+            ButtonControl.MouseLeave += LocalMouseLeave;
 
             void LocalMouseLeave(object sender, MouseEventArgs e)
             {
                 NoHovering?.Invoke(this, new EventArgs());
 
-                Animate.Double(Check.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
-                Animate.Double(Check.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
+                Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
+                Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
 
-                CheckBoxControl.MouseLeave -= LocalMouseLeave;
+                ButtonControl.MouseLeave -= LocalMouseLeave;
             }
         }
 
-        private void CheckBoxContainer_MouseLeave(object sender, MouseEventArgs e)
+        private void ButtonContainer_MouseLeave(object sender, MouseEventArgs e)
         {
             NoHovering?.Invoke(this, new EventArgs());
-
-            // An attempt at avoiding weird interactions when the user presses, moves the cursor away, hover the check again and releases the click button.
             _canRegisterClick = false;
         }
 
-        private void CheckBoxContainer_MouseEnter(object sender, MouseEventArgs e)
+        private void ButtonContainer_MouseEnter(object sender, MouseEventArgs e)
         {
             Hovering?.Invoke(this, new EventArgs());
         }
@@ -353,45 +314,58 @@ namespace Viper.Game.Controls
         /// THIS REPLACES ANY BRUSH THAT THE BUTTON HAD.
         /// </summary>
         /// <param name="viperButton"></param>
-        public static void SetDefaltCheckAnimations(ViperCheckBox viperCheckBox)
+        public static void SetDefaltBrushAnimations(ViperButton viperButton)
         {
-            SolidColorBrush bgBrush = new(Color.FromRgb(35, 35, 35));
-            SolidColorBrush bdBrush = new(Color.FromArgb(86, 80, 80, 80));
+            SolidColorBrush bdBrush = new(Color.FromRgb(80, 80, 80));
+            SolidColorBrush bgBrush = new(Color.FromRgb(23, 23, 23));
+            SolidColorBrush fgBrush = new(Color.FromRgb(255, 255, 255));
 
-            viperCheckBox.CheckFill = bgBrush;
-            viperCheckBox.CheckStroke = bdBrush;
+            viperButton.Background = bgBrush;
+            viperButton.BorderBrush = bdBrush;
+            viperButton.Foreground = fgBrush;
 
-            viperCheckBox.StateChanged+= OnStateChanged;
-            viperCheckBox.Hovering += OnHover;
-            viperCheckBox.NoHovering += OnNoHover;
+            viperButton.Holding += OnHolding;
+            viperButton.Hovering += OnHover;
+            viperButton.NoHovering += OnNoHover;
+            viperButton.Release += OnRelease;
 
-            void OnStateChanged(object sender, EventArgs e)
+            void OnHolding(object sender, EventArgs e)
             {
-                if (viperCheckBox.IsChecked)
+                if (viperButton.IsEnabled)
                 {
-                    Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(56, 255, 102), TimeSpan.FromMilliseconds(100), new QuadraticEase(), Colors.White);
+                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Colors.White, TimeSpan.FromMilliseconds(100), new QuadraticEase());
                 }
                 else
                 {
-                    Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(35, 35, 35), TimeSpan.FromMilliseconds(100), new QuadraticEase(), Colors.White);
+                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(255, 99, 99), TimeSpan.FromMilliseconds(100), new QuadraticEase());
+                }
+            }
+
+            void OnRelease(object sender, EventArgs e)
+            {
+                if (viperButton.IsEnabled)
+                {
+                    Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Colors.White);
+                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase());
+                    Animate.Color(fgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(255, 255, 255), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Colors.Black);
+                }
+                else
+                {
+                    Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Color.FromRgb(255, 99, 99));
+                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase());
+                    Animate.Color(fgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(255, 255, 255), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Color.FromRgb(255, 99, 99));
                 }
             }
 
             void OnHover(object sender, EventArgs e)
             {
-                if (viperCheckBox.IsEnabled)
-                {
-                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromArgb(255, 255, 255, 255), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                }
-                else
-                {
-                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromArgb(255, 255, 56, 56), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                }
+                Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(40, 40, 40), TimeSpan.FromMilliseconds(200), new QuadraticEase());
             }
 
             void OnNoHover(object sender, EventArgs e)
             {
-                Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromArgb(86, 255, 255, 255), TimeSpan.FromMilliseconds(300), new QuadraticEase());
+                Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(200), new QuadraticEase());
+                Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase());
             }
         }
     }
