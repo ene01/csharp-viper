@@ -870,10 +870,10 @@ namespace Viper.Tests
             };
 
             thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "SearchTest", FontSize = 21}, "", false);
-            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Coso" }, "coso");
-            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Cosa" }, "cosa");
-            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Algo" }, "algo");
-            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "LoL" }, "lol league of legends");
+            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Item" }, "item");
+            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Another item" }, "another item");
+            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Not an item" }, "not an item");
+            thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Objeto" }, "objeto");
             thing.AddElement(new Label() { Foreground = new SolidColorBrush(Colors.White), Content = "Wawa" }, "wawa");
 
             searchBox.PreviewKeyUp += (s, e) =>

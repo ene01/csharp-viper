@@ -86,11 +86,11 @@ namespace Viper.Game.Controls.Panels
                     if ((_elementTags[index][0] as string).Contains(word) || (bool)_elementTags[index][1] == false)
                     {
                         element.Visibility = Visibility.Visible;
-                        break;
                     }
                     else
                     {
                         element.Visibility = Visibility.Collapsed;
+                        break;
                     }
                 }
 
