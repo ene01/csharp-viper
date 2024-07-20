@@ -19,6 +19,7 @@ using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
 using Viper.Game.Events;
+using Viper.Game.Controls.Gameplay;
 
 namespace Viper.Tests
 {
@@ -108,6 +109,15 @@ namespace Viper.Tests
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
+        private Button _playerTest = new()
+        {
+            Height = 25,
+            Margin = new Thickness(5, 5, 5, 5),
+            Content = "Player",
+            VerticalAlignment = VerticalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
         private GradientStop _testingBGGSOne = new()
         {
             Color = Colors.White,
@@ -157,6 +167,7 @@ namespace Viper.Tests
             TestingSpacesButtons.Children.Add(_sliderTest);
             TestingSpacesButtons.Children.Add(_unlimitedSelectorTest);
             TestingSpacesButtons.Children.Add(_searchSPTest);
+            TestingSpacesButtons.Children.Add(_playerTest);
 
             _clearTestingSpace.Click += _clearTestingSpace_Click;
             _animationTest.Click += _animationTest_Click;
@@ -166,6 +177,7 @@ namespace Viper.Tests
             _sliderTest.Click += _sliderTest_Click;
             _unlimitedSelectorTest.Click += _unlimitedSelectorTest_Click;
             _searchSPTest.Click += _searchSPTest_Click;
+            _playerTest.Click += _playerTest_Click;
         }
 
         private void _clearTestingSpace_Click(object sender, RoutedEventArgs e)
@@ -881,6 +893,21 @@ namespace Viper.Tests
 
             TestingSpace.Children.Add(thing);
             TestingInteractions.Children.Add(searchBox);
+        }
+
+        private void _playerTest_Click(object sender, RoutedEventArgs e)
+        {
+            DisposeLastTest("Player");
+
+            Player player = new()
+            {
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Left,
+            };
+
+            player.IncreasePlayerSize(5);
+
+            TestingSpace.Children.Add(player);
         }
 
         private void DisposeLastTest(string testingSpaceMessage)

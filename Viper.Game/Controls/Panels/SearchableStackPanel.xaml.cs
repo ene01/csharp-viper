@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Viper.Game.Events;
 
 namespace Viper.Game.Controls.Panels
 {
@@ -24,6 +25,7 @@ namespace Viper.Game.Controls.Panels
     {
         private Brush _border = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         private Brush _background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+        public EventHandler<SearchPanelIsSearchingChanged>? Searching;
 
         public Brush BorderBrush
         {
@@ -62,6 +64,15 @@ namespace Viper.Game.Controls.Panels
 
         public void Search(string keyWords)
         {
+            if (keyWords == "")
+            {
+                Searching?.Invoke(this, new SearchPanelIsSearchingChanged(false));
+            }
+            else
+            {
+                Searching?.Invoke(this, new SearchPanelIsSearchingChanged(true));
+            }
+
             int index = 0;
 
             string convKeyWords = keyWords.ToLower();
@@ -89,6 +100,8 @@ namespace Viper.Game.Controls.Panels
 
         public void ShowAllElements()
         {
+            Searching?.Invoke(this, new SearchPanelIsSearchingChanged(false));
+
             foreach (UIElement element in ElementStackPanel.Children)
             {
                 element.Visibility = Visibility.Visible;
