@@ -20,6 +20,7 @@ using Point = System.Windows.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
 using Viper.Game.Events;
 using Viper.Game.Controls.Gameplay;
+using System.Numerics;
 
 namespace Viper.Tests
 {
@@ -118,6 +119,15 @@ namespace Viper.Tests
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
+        private Button _foodTest = new()
+        {
+            Height = 25,
+            Margin = new Thickness(5, 5, 5, 5),
+            Content = "Food",
+            VerticalAlignment = VerticalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
         private GradientStop _testingBGGSOne = new()
         {
             Color = Colors.White,
@@ -168,6 +178,7 @@ namespace Viper.Tests
             TestingSpacesButtons.Children.Add(_unlimitedSelectorTest);
             TestingSpacesButtons.Children.Add(_searchSPTest);
             TestingSpacesButtons.Children.Add(_playerTest);
+            TestingSpacesButtons.Children.Add(_foodTest);
 
             _clearTestingSpace.Click += _clearTestingSpace_Click;
             _animationTest.Click += _animationTest_Click;
@@ -178,6 +189,7 @@ namespace Viper.Tests
             _unlimitedSelectorTest.Click += _unlimitedSelectorTest_Click;
             _searchSPTest.Click += _searchSPTest_Click;
             _playerTest.Click += _playerTest_Click;
+            _foodTest.Click += _foodTest_Click;
         }
 
         private void _clearTestingSpace_Click(object sender, RoutedEventArgs e)
@@ -901,13 +913,100 @@ namespace Viper.Tests
 
             Player player = new()
             {
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalAlignment = HorizontalAlignment.Left,
+                PlayerBrush = new SolidColorBrush(Colors.Violet),
+                PlayerStroke = new SolidColorBrush(Colors.Magenta),
+                InputUp = Key.W,
+                InputDown = Key.S,
+                InputLeft = Key.A,
+                InputRight = Key.D,
+                XLimit = TestingSpace.ActualWidth,
+                YLimit = TestingSpace.ActualHeight,
+                Tickrate = 50,
             };
 
-            player.IncreasePlayerSize(5);
+            TextBlock debugInfo1 = new()
+            {
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TextBlock debugInfo2 = new()
+            {
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TestingSpace.SizeChanged += (s, e) =>
+            {
+                player.XLimit = TestingSpace.ActualWidth;
+                player.YLimit = TestingSpace.ActualHeight;
+            };
+
+            Button add = new()
+            {
+                Content = "Add Size"
+            };
+
+            Button reset = new()
+            {
+                Content = "Reset"
+            };
+
+            add.Click += (s, e) =>
+            {
+                player.IncreasePlayerSize(1);
+            };
+
+            reset.Click += (s, e) =>
+            {
+                player.Reset();
+            };
+
+            player.TickrateChanged += (s, e) =>
+            {
+                debugInfo1.Text = $"Tickrate: {e.TickRate}";
+            };
+
+            player.PositionChanged += (s, e) =>
+            {
+                debugInfo2.Text = $"X: {e.X} | Y: {e.Y}";
+            };
 
             TestingSpace.Children.Add(player);
+            TestingInteractions.Children.Add(add);
+            TestingInteractions.Children.Add(reset);
+            TestingInteractions.Children.Add(debugInfo1);
+            TestingInteractions.Children.Add(debugInfo2);
+        }
+
+        private void _foodTest_Click(object sender, RoutedEventArgs e)
+        {
+            DisposeLastTest("Food");
+
+            Food food = new()
+            {
+                FoodBrush = new SolidColorBrush(Colors.AliceBlue),
+                FoodStroke = new SolidColorBrush(Colors.Aquamarine),
+                XLimit = TestingSpace.ActualWidth,
+                YLimit = TestingSpace.ActualHeight,
+            };
+
+            TextBlock debugInfo = new()
+            {
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            TestingSpace.SizeChanged += (s, e) =>
+            {
+                food.XLimit = TestingSpace.ActualWidth;
+                food.YLimit = TestingSpace.ActualHeight;
+            };
+
+            food.PositionChanged += (s, e) =>
+            {
+                debugInfo.Text = $"X: {e.X} | Y: {e.Y}";
+            };
+
+            TestingSpace.Children.Add(food);
+            TestingInteractions.Children.Add(debugInfo);
         }
 
         private void DisposeLastTest(string testingSpaceMessage)

@@ -20,28 +20,6 @@ namespace Viper.Game.Events
         }
     }
 
-    public class PlayerLivesChangedEventArgs : EventArgs, IGameplayEvents
-    {
-        public int NewLivesCount { get; }
-
-        public PlayerLivesChangedEventArgs(int newLivesCount)
-        {
-            NewLivesCount = newLivesCount;
-        }
-    }
-
-    public class PlayerPositionChangedEventArgs : EventArgs, IGameplayEvents
-    {
-        public double NewX { get; }
-        public double NewY { get; }
-
-        public PlayerPositionChangedEventArgs(double newX, double newY)
-        {
-            NewX = newX;
-            NewY = newY;
-        }
-    }
-
     public class PlayerInputChangedEventArgs : EventArgs, IGameplayEvents
     {
         public Player.Direction Direction { get; }
@@ -55,33 +33,23 @@ namespace Viper.Game.Events
         }
     }
 
-    public class PlayerMovingChangedEventArgs : EventArgs, IGameplayEvents
+    public class PlayerIsMovingChangedEventArgs : EventArgs, IGameplayEvents
     {
         public bool IsMoving { get; }
 
-        public PlayerMovingChangedEventArgs(bool isMoving)
+        public PlayerIsMovingChangedEventArgs(bool isMoving)
         {
             IsMoving = isMoving;
         }
     }
 
-    public class PlayerBodyElementsCountChangedEventArgs : EventArgs, IGameplayEvents
-    {
-        public int NewBodyElementsCount { get; }
-
-        public PlayerBodyElementsCountChangedEventArgs(int newBodyElementsCount)
-        {
-            NewBodyElementsCount = newBodyElementsCount;
-        }
-    }
-
     public class PlayerTickRateChangedEventArgs : EventArgs, IGameplayEvents
     {
-        public int NewTickRate { get; }
+        public int TickRate { get; }
 
         public PlayerTickRateChangedEventArgs(int newTickRate)
         {
-            NewTickRate = newTickRate;
+            TickRate = newTickRate;
         }
     }
 
@@ -95,13 +63,35 @@ namespace Viper.Game.Events
         }
     }
 
-    public class PlayerColorChangedEventArgs : EventArgs, IGameplayEvents
+    public class BrushChangedEventArgs : EventArgs, IGameplayEvents
     {
-        public Color Color { get; }
+        public Brush Brush { get; }
 
-        public PlayerColorChangedEventArgs(Color newColor)
+        public BrushChangedEventArgs(Brush newBrush)
         {
-            Color = newColor;
+            Brush = newBrush;
+        }
+    }
+
+    public class StrokeChangedEventArgs : EventArgs, IGameplayEvents
+    {
+        public Brush Stroke { get; }
+
+        public StrokeChangedEventArgs(Brush newBrush)
+        {
+            Stroke = newBrush;
+        }
+    }
+
+    public class PositionChangedEventArgs : EventArgs, IGameplayEvents
+    {
+        public double X { get; }
+        public double Y { get; }
+
+        public PositionChangedEventArgs(double newX, double newY)
+        {
+            X = newX;
+            Y = newY;
         }
     }
 
