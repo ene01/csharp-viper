@@ -452,7 +452,7 @@ namespace Viper.Game.Controls.Gameplay
                 DirectionChanged?.Invoke(this, new PlayerDirectionChangedEventArgs(Direction.Right));
             }
 
-            if (_isPlayerMoving == false)
+            if (_isPlayerMoving == false && _directionBuffer.Count > 0)
             {
                 _isPlayerMoving = true;
                 IsMovingChanged?.Invoke(this, new PlayerIsMovingChangedEventArgs(_isPlayerMoving));
