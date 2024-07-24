@@ -25,9 +25,10 @@ namespace Viper.Game.Controls.Panels
     {
         private Brush _border = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         private Brush _background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+
         public EventHandler<SearchPanelIsSearchingChanged>? Searching;
 
-        public Brush BorderBrush
+        public new Brush BorderBrush
         {
             get => _border;
 
@@ -37,7 +38,7 @@ namespace Viper.Game.Controls.Panels
             }
         }
 
-        public Brush Background
+        public new Brush Background
         {
             get => _background;
 
@@ -83,6 +84,7 @@ namespace Viper.Game.Controls.Panels
             {
                 foreach (string word in words)
                 {
+#pragma warning disable CS8602 // Desreferencia de una referencia posiblemente NULL.
                     if ((_elementTags[index][0] as string).Contains(word) || (bool)_elementTags[index][1] == false)
                     {
                         element.Visibility = Visibility.Visible;
@@ -92,6 +94,7 @@ namespace Viper.Game.Controls.Panels
                         element.Visibility = Visibility.Collapsed;
                         break;
                     }
+#pragma warning restore CS8602 // Desreferencia de una referencia posiblemente NULL.
                 }
 
                 index += 1;

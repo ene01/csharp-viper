@@ -34,7 +34,7 @@ namespace Viper.Game.Controls.Gameplay
 
         private Rectangle _foodElement = new();
 
-        private Brush _foodBrush;
+        private Brush _foodBrush = new SolidColorBrush(Colors.White);
         public Brush FoodBrush
         {
             get { return _foodBrush; }
@@ -42,7 +42,7 @@ namespace Viper.Game.Controls.Gameplay
             set { _foodBrush = value; BrushChanged?.Invoke(this, new BrushChangedEventArgs(value)); }
         }
 
-        private Brush _foodStroke;
+        private Brush _foodStroke = new SolidColorBrush(Colors.White);
         public Brush FoodStroke
         {
             get { return _foodStroke; }

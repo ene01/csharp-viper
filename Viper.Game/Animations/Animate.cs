@@ -25,7 +25,7 @@ namespace Viper.Game.Animations
         /// <param name="duration"></param>
         /// <param name="easing"></param>
         /// <param name="fromValue"></param>
-        public static void Double(DependencyObject targetElement, DependencyProperty property, double toValue, TimeSpan duration, IEasingFunction easing = null, double? fromValue = null)
+        public static void Double(DependencyObject targetElement, DependencyProperty property, double toValue, TimeSpan duration, IEasingFunction? easing = null, double? fromValue = null)
         {
             if (targetElement != null && property != null)
             {
@@ -53,7 +53,7 @@ namespace Viper.Game.Animations
         }
 
         // For color properties.
-        public static void Color(DependencyObject targetElement, DependencyProperty property, Color toColor, TimeSpan duration, IEasingFunction easing = null, Color? fromValue = null)
+        public static void Color(DependencyObject targetElement, DependencyProperty property, Color toColor, TimeSpan duration, IEasingFunction? easing = null, Color? fromValue = null)
         {
             if (targetElement != null && property != null && targetElement is Animatable)
             {
@@ -89,7 +89,7 @@ namespace Viper.Game.Animations
         /// <param name="duration"></param>
         /// <param name="easing"></param>
         /// <param name="fromValue"></param>
-        public static void Point(DependencyObject targetElement, DependencyProperty property, Point toPoint, Duration duration, IEasingFunction easing = null, Point? fromValue = null)
+        public static void Point(DependencyObject targetElement, DependencyProperty property, Point toPoint, Duration duration, IEasingFunction? easing = null, Point? fromValue = null)
         {
             if (targetElement != null && property != null && targetElement is Animatable)
             {
@@ -116,7 +116,7 @@ namespace Viper.Game.Animations
             }
         }
 
-        public static void RectValue(DependencyObject targetElement, DependencyProperty property, Rect toValue, Duration duration, IEasingFunction easing = null, Rect? fromValue = null)
+        public static void RectValue(DependencyObject targetElement, DependencyProperty property, Rect toValue, Duration duration, IEasingFunction? easing = null, Rect? fromValue = null)
         {
             if (targetElement != null && property != null)
             {
@@ -152,7 +152,7 @@ namespace Viper.Game.Animations
         /// <param name="duration"></param>
         /// <param name="easing"></param>
         /// <param name="fromValue"></param>
-        public static void ThicknessValue(DependencyObject targetElement, DependencyProperty property, Thickness toValue, Duration duration, IEasingFunction easing = null, Thickness? fromValue = null)
+        public static void ThicknessValue(DependencyObject targetElement, DependencyProperty property, Thickness toValue, Duration duration, IEasingFunction? easing = null, Thickness? fromValue = null)
         {
             if (targetElement != null && property != null)
             {

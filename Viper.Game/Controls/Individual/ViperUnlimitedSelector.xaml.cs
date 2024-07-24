@@ -72,7 +72,6 @@ namespace Viper.Game.Controls.Individual
         private const double CONTAINER_HEIGHT_NAN = double.NaN;
         private const double CONTAINER_WIDTH_NAN = double.NaN;
         private static readonly Thickness SPACING_ZERO = new Thickness(0, 0, 0, 0);
-        private static readonly Transform TRANSFORM_NULL = null;
         private const VerticalAlignment Y_ALIGNMENT_TOP = VerticalAlignment.Top;
         private const HorizontalAlignment X_ALIGNMENT_LEFT = HorizontalAlignment.Left;
         private const bool IS_ENABLED_TRUE = true;
@@ -89,14 +88,13 @@ namespace Viper.Game.Controls.Individual
         private double _containerHeight = CONTAINER_HEIGHT_NAN;
         private double _containerWidth = CONTAINER_WIDTH_NAN;
         private Thickness _spacing = SPACING_ZERO;
-        private Transform _transforms = TRANSFORM_NULL;
         private VerticalAlignment _yAlignment = Y_ALIGNMENT_TOP;
         private HorizontalAlignment _xAlignment = X_ALIGNMENT_LEFT;
         private bool _isEnabled = IS_ENABLED_TRUE;
         private int _currentIndex = DEFAULT_INDEX;
         private bool _defaultAnim = false;
 
-        public new object LeftContent
+        public object LeftContent
         {
             get { return _leftContent; }
 
@@ -121,7 +119,7 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public new object RightContent
+        public object RightContent
         {
             get { return _rightContent; }
 
@@ -161,7 +159,7 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public new Brush SideButtonsBackground
+        public Brush SideButtonsBackground
         {
             get { return _sideBackground; }
 

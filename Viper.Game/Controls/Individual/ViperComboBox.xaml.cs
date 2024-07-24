@@ -51,9 +51,9 @@ namespace Viper.Game.Controls.Individual
         /// </summary>
         public EventHandler? NoHovering;
 
-        public EventHandler<ViperComboBoxStateChanged> StateChanged;
+        public EventHandler<ViperComboBoxStateChanged>? StateChanged;
 
-        public EventHandler<ViperComboBoxSelectionChanged> SelectionChanged;
+        public EventHandler<ViperComboBoxSelectionChanged>? SelectionChanged;
 
         private const string DEFAULT_CONTENT_VIPER_CHECK_BOX = "Nothing selected";
         private const byte BACKGROUND_COLOR_R = 23;
@@ -94,7 +94,6 @@ namespace Viper.Game.Controls.Individual
         private double _stuffGridWidth = DEFAULT_GRID_WIDTH;
         private double _itemContMaxHeight = ITEM_CONT_MAX_HEIGHT;
         private Thickness _spacing = new Thickness(THICKNESS_LEFT, THICKNESS_TOP, THICKNESS_RIGHT, THICKNESS_BOTTOM);
-        private Transform _transforms = null;
         private VerticalAlignment _yAlignment = DEFAULT_VERTICAL_ALIGNMENT;
         private HorizontalAlignment _xAlignment = DEFAULT_HORIZONTAL_ALIGNMENT;
         private bool _isEnabled = DEFAULT_IS_ENABLED;
@@ -117,7 +116,9 @@ namespace Viper.Game.Controls.Individual
             {
                 if (value is string)
                 {
+#pragma warning disable CS8604 // Posible argumento de referencia nulo
                     _dContent = WrapWithOverflowTextBlock(value as string, _foreground);
+#pragma warning restore CS8604 // Posible argumento de referencia nulo
                 }
                 else
                 {
@@ -138,7 +139,7 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public Brush BorderBrush
+        public new Brush BorderBrush
         {
             get { return _border; }
 
@@ -208,7 +209,7 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public new double ItemContainerMaxHeight
+        public double ItemContainerMaxHeight
         {
             get { return _itemContMaxHeight; }
 
@@ -260,7 +261,7 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public new bool IsOpen
+        public bool IsOpen
         {
             get { return _isOpen; }
 
@@ -275,7 +276,7 @@ namespace Viper.Game.Controls.Individual
         /// <summary>
         /// Handles cases when the current item selected is removed by changing the selection to the previous item.
         /// </summary>
-        public new bool UsePreviousItem
+        public bool UsePreviousItem
         {
             get { return _usePrevious; }
 
@@ -288,7 +289,7 @@ namespace Viper.Game.Controls.Individual
         /// <summary>
         /// Selects the first item as soon as theres one availible.
         /// </summary>
-        public new bool InstaSelection
+        public bool InstaSelection
         {
             get { return _instaSelect; }
 
@@ -414,7 +415,9 @@ namespace Viper.Game.Controls.Individual
 
             if (item is string)
             {
+#pragma warning disable CS8604 // Posible argumento de referencia nulo
                 itemContent.Content = WrapWithOverflowTextBlock(item as string, new SolidColorBrush(Colors.White));
+#pragma warning restore CS8604 // Posible argumento de referencia nulo
             }
             else
             {
@@ -669,9 +672,11 @@ namespace Viper.Game.Controls.Individual
             viperComboBox.Background = bgBrush;
             viperComboBox.Foreground = fgBrush;
 
+#pragma warning disable CS8622 // La nulabilidad de los tipos de referencia del tipo de parámetro no coincide con el delegado de destino (posiblemente debido a los atributos de nulabilidad).
             viperComboBox.StateChanged+= OnStateChanged;
             viperComboBox.Hovering += OnHover;
             viperComboBox.NoHovering += OnNoHover;
+#pragma warning restore CS8622 // La nulabilidad de los tipos de referencia del tipo de parámetro no coincide con el delegado de destino (posiblemente debido a los atributos de nulabilidad).
 
             void OnStateChanged(object sender, ViperComboBoxStateChanged e)
             {

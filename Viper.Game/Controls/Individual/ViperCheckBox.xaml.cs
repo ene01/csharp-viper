@@ -55,7 +55,7 @@ namespace Viper.Game.Controls.Individual
         /// </summary>
         public EventHandler? NoHovering;
 
-        public EventHandler<ViperCheckBoxStateChanged> StateChanged;
+        public EventHandler<ViperCheckBoxStateChanged>? StateChanged;
 
         // Const.
         private const string CONTENT_VIPER_CHECKBOX = "ViperCheckBox";
@@ -67,7 +67,6 @@ namespace Viper.Game.Controls.Individual
         private const double CONTAINER_HEIGHT_NAN = double.NaN;
         private const double CONTAINER_WIDTH_NAN = double.NaN;
         private static readonly Thickness SPACING_ZERO = new Thickness(0, 0, 0, 0);
-        private static readonly Transform TRANSFORM_NULL = null;
         private const VerticalAlignment Y_ALIGNMENT_TOP = VerticalAlignment.Top;
         private const HorizontalAlignment X_ALIGNMENT_LEFT = HorizontalAlignment.Left;
         private const bool IS_ENABLED_TRUE = true;
@@ -81,7 +80,6 @@ namespace Viper.Game.Controls.Individual
         private double _containerHeight = CONTAINER_HEIGHT_NAN;
         private double _containerWidth = CONTAINER_WIDTH_NAN;
         private Thickness _spacing = SPACING_ZERO;
-        private Transform _transforms = TRANSFORM_NULL;
         private VerticalAlignment _yAlignment = Y_ALIGNMENT_TOP;
         private HorizontalAlignment _xAlignment = X_ALIGNMENT_LEFT;
         private bool _isEnabled = IS_ENABLED_TRUE;
@@ -361,10 +359,11 @@ namespace Viper.Game.Controls.Individual
             viperCheckBox.CheckFill = bgBrush;
             viperCheckBox.CheckStroke = bdBrush;
 
+#pragma warning disable CS8622 // La nulabilidad de los tipos de referencia del tipo de parámetro no coincide con el delegado de destino (posiblemente debido a los atributos de nulabilidad).
             viperCheckBox.StateChanged+= OnStateChanged;
             viperCheckBox.Hovering += OnHover;
             viperCheckBox.NoHovering += OnNoHover;
-
+#pragma warning restore CS8622 // La nulabilidad de los tipos de referencia del tipo de parámetro no coincide con el delegado de destino (posiblemente debido a los atributos de nulabilidad).
             void OnStateChanged(object sender, EventArgs e)
             {
                 if (viperCheckBox.IsChecked)

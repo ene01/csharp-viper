@@ -28,7 +28,7 @@ namespace Viper.Game.Controls.Individual
     /// </summary>
     public partial class ViperSlider : UserControl
     {
-        public EventHandler<ViperSliderValueChanged> ValueChanged;
+        public EventHandler<ViperSliderValueChanged>? ValueChanged;
 
         /// <summary>
         /// Im lazy, so heres the entire control container, do whatrever, use events, etc, idk.
@@ -105,7 +105,7 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public new Brush SliderBrush
+        public Brush SliderBrush
         {
             get => _slider;
 
@@ -117,7 +117,7 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public new Brush BarBrush
+        public Brush BarBrush
         {
             get => _bar;
 
@@ -129,7 +129,7 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public new Brush ProgressBarBrush
+        public Brush ProgressBarBrush
         {
             get => _barProgress;
 
@@ -203,7 +203,7 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public new bool Scrollable
+        public bool Scrollable
         {
             get => _scrollable;
 
@@ -302,7 +302,7 @@ namespace Viper.Game.Controls.Individual
         } 
 
         // Opens the "SetValue" overlay of the control, sets events for momentary key presses, and removes everything when the overlay is closed.
-        private async void ButtonElements_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void ButtonElements_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (_allowSetValue)
             {

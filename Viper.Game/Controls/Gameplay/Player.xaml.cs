@@ -582,6 +582,7 @@ namespace Viper.Game.Controls.Gameplay
                     // Search for each player body square position and look if your position matches with one of them, if you do, then you crashed into yourself.
                     foreach (Rectangle rect in _playerBody)
                     {
+#pragma warning disable CS8602 // Desreferencia de una referencia posiblemente NULL.
                         if ((rect.RenderTransform as TranslateTransform).X == _xPos && (rect.RenderTransform as TranslateTransform).Y == _yPos)
                         {
                             if (_canDie)
@@ -595,6 +596,7 @@ namespace Viper.Game.Controls.Gameplay
                                 break;
                             }
                         }
+#pragma warning restore CS8602 // Desreferencia de una referencia posiblemente NULL.
                     }
                 }
 
