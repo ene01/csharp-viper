@@ -128,6 +128,15 @@ namespace Viper.Tests
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
+        private Button _gameSessionTest = new()
+        {
+            Height = 25,
+            Margin = new Thickness(5, 5, 5, 5),
+            Content = "GameplaySession",
+            VerticalAlignment = VerticalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
         private GradientStop _testingBGGSOne = new()
         {
             Color = Colors.White,
@@ -179,6 +188,7 @@ namespace Viper.Tests
             TestingSpacesButtons.Children.Add(_searchSPTest);
             TestingSpacesButtons.Children.Add(_playerTest);
             TestingSpacesButtons.Children.Add(_foodTest);
+            TestingSpacesButtons.Children.Add(_gameSessionTest);
 
             _clearTestingSpace.Click += _clearTestingSpace_Click;
             _animationTest.Click += _animationTest_Click;
@@ -190,6 +200,7 @@ namespace Viper.Tests
             _searchSPTest.Click += _searchSPTest_Click;
             _playerTest.Click += _playerTest_Click;
             _foodTest.Click += _foodTest_Click;
+            _gameSessionTest.Click += _gameSessionTest_Click;
         }
 
         private void _clearTestingSpace_Click(object sender, RoutedEventArgs e)
@@ -1007,6 +1018,24 @@ namespace Viper.Tests
 
             TestingSpace.Children.Add(food);
             TestingInteractions.Children.Add(debugInfo);
+        }
+
+        private void _gameSessionTest_Click(object sender, RoutedEventArgs e)
+        {
+            DisposeLastTest("GameplaySession");
+
+            GameplaySession gs = new()
+            {
+                PlayfieldGridSize = 10,
+                PlayfieldBrush = new SolidColorBrush(Color.FromArgb(130, 0, 0, 0)),
+                MaxLives = 3,
+                ShowHUD = true,
+            };
+
+            gs.Food.FoodBrush = new SolidColorBrush(Colors.LightGreen);
+            gs.Food.FoodStroke = new SolidColorBrush(Colors.LightGreen);
+
+            TestingSpace.Children.Add(gs);
         }
 
         private void DisposeLastTest(string testingSpaceMessage)

@@ -1,0 +1,65 @@
+﻿<UserControl x:Name="GameplayControl" x:Class="Viper.Game.Controls.Gameplay.GameplaySession"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Viper.Game.Controls.Gameplay"
+             mc:Ignorable="d" MinWidth="10" MinHeight="10" VerticalAlignment="Top" HorizontalAlignment="Left" Width="300" Height="333.6">
+    <Grid x:Name="GameplayGrid">
+        <Border x:Name="GameplayBorder" BorderThickness="1" Panel.ZIndex="1" VerticalAlignment="Top"/>
+        <StackPanel x:Name="HUD" VerticalAlignment="Top" Background="#FF080808" Orientation="Horizontal">
+            <Grid x:Name="PNG" VerticalAlignment="Top" Margin="5,3,2,3" RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleX="-5"/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                <TextBlock x:Name="PlayerNumberText" TextWrapping="Wrap" Text=" 0 " Foreground="White" Background="#33FFFFFF" FontSize="20" RenderTransformOrigin="0.5,0.5" FontWeight="Bold"/>
+                <Border x:Name="PNB" BorderBrush="#FFA7A7A7" BorderThickness="1" Opacity="0.5" ToolTip="Player number"/>
+            </Grid>
+            <Grid x:Name="PTG" VerticalAlignment="Top" Margin="2,3,2,3" RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleX="-5"/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                <TextBlock x:Name="PointsText" TextWrapping="Wrap" Text=" 🍗 0 " HorizontalAlignment="Center" Foreground="#FFFCFFC1" Background="#33F6FF57" FontSize="20" RenderTransformOrigin="0.5,0.5" FontWeight="Bold"/>
+                <Border x:Name="PTB" BorderBrush="#FFFEFF82" BorderThickness="1" Opacity="0.5" ToolTip="Points"/>
+            </Grid>
+            <Grid x:Name="LVG" VerticalAlignment="Top" Margin="2,3,2,3" RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleX="-5"/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                <TextBlock x:Name="LivesText" TextWrapping="Wrap" Text=" ♥ 0 " Foreground="#FFCBFFD8" HorizontalAlignment="Center" Background="#3369FF7F" FontSize="20" RenderTransformOrigin="0.5,0.5" FontWeight="Bold"/>
+                <Border x:Name="LVB" BorderBrush="#FFA0FF93" BorderThickness="1" Opacity="0.5" ToolTip="Lives"/>
+            </Grid>
+            <Grid x:Name="TMG" VerticalAlignment="Top" Margin="2,3,2,3" RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleX="-5"/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                <TextBlock x:Name="TimeText" TextWrapping="Wrap" Text=" ⌛ 00:00:00 " Foreground="#FFC9CCFF" Background="#33A59EFF" FontSize="20" RenderTransformOrigin="0.5,0.5" FontWeight="Bold"/>
+                <Border x:Name="TMB" BorderBrush="#FFAC9CFF" BorderThickness="1" Opacity="0.5" ToolTip="Timer"/>
+            </Grid>
+        </StackPanel>
+        <Viewbox x:Name="PlayfieldViewBox" Margin="0,32.6,0,0">
+            <Grid x:Name="Playfield" Height="300" Width="300" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Viewbox>
+
+    </Grid>
+</UserControl>

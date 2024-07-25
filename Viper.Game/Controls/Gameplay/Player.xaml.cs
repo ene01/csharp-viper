@@ -76,6 +76,13 @@ namespace Viper.Game.Controls.Gameplay
             Right,
         }
 
+        public enum DeathCause
+        {
+            CrashIntoWall,
+            CrashIntoItself,
+            ForceOfTheUniverse,
+        }
+
         private Key _inputUp = Key.Up;
         private Key _inputDown = Key.Down;
         private Key _inputLeft = Key.Left;
@@ -162,6 +169,13 @@ namespace Viper.Game.Controls.Gameplay
         }
 
         private List<Rectangle> _playerBody = new();
+        /// <summary>
+        /// All body parts of the viper.
+        /// </summary>
+        public List<Rectangle> PlayerBodyParts
+        {
+            get { return _playerBody; }
+        }
 
         private Brush _playerBrush = new SolidColorBrush(Colors.White);
         public Brush PlayerBrush
@@ -204,15 +218,11 @@ namespace Viper.Game.Controls.Gameplay
         private ElasticEase elastic = new() { Oscillations = 5, Springiness = 5 };
 
         private bool _isDead = false;
-        public bool IsDead
-        {
-            get
-            {
-                return _isDead;
-            }
-        }
 
         private bool _isPlayerMoving = false;
+        /// <summary>
+        /// States if the player is currently moving or not.
+        /// </summary>
         public bool IsPlayerMoving
         {
             get
@@ -229,6 +239,9 @@ namespace Viper.Game.Controls.Gameplay
         }
 
         private bool _canBufferDirections = true;
+        /// <summary>
+        /// Saves multiple player directions for better control when moving.
+        /// </summary>
         public bool CanBufferDirections
         {
             get
@@ -550,6 +563,7 @@ namespace Viper.Game.Controls.Gameplay
                         if (_canDie)
                         {
                             _isDead = true;
+                            Died?.Invoke(this, new PlayerDiedEventArgs(DeathCause.CrashIntoWall));
                         }
                         else // If you crashed but you cant die, then dont update anything and just chill a bit.
                         {
@@ -588,6 +602,7 @@ namespace Viper.Game.Controls.Gameplay
                             if (_canDie)
                             {
                                 _isDead = true;
+                                Died?.Invoke(this, new PlayerDiedEventArgs(DeathCause.CrashIntoItself));
                                 break;
                             }
                             else

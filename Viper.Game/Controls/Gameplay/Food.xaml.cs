@@ -160,6 +160,13 @@ namespace Viper.Game.Controls.Gameplay
             _translate.X = newX;
             _translate.Y = newY;
 
+            Animate.Double(_foodElement, Shape.OpacityProperty, 1, TimeSpan.FromMilliseconds(200), new SineEase(), 0);
+            Animate.Double(_scale, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(900), elastic, 0.6);
+            Animate.Double(_scale, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(900), elastic, 0.6);
+
+            _xPos = newX;
+            _yPos = newY;
+
             PositionChanged?.Invoke(this, new PositionChangedEventArgs(newX, newY));
         }
     }

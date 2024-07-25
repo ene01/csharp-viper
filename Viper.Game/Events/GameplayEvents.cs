@@ -12,11 +12,11 @@ namespace Viper.Game.Events
 {
     public class PlayerDiedEventArgs : EventArgs, IGameplayEvents
     {
-        public int DeathCounter { get; }
+        public Player.DeathCause DeathCause { get; }
 
-        public PlayerDiedEventArgs(int deaths)
+        public PlayerDiedEventArgs(Player.DeathCause cause)
         {
-            DeathCounter = deaths;
+            DeathCause = cause;
         }
     }
 
