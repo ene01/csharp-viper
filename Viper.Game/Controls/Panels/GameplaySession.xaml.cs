@@ -16,8 +16,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Viper.Game.Animations;
+using Viper.Game.Controls.Gameplay;
 
-namespace Viper.Game.Controls.Gameplay
+namespace Viper.Game.Controls.Panels
 {
     /// <summary>
     /// Lógica de interacción para GameplaySession.xaml
@@ -217,11 +218,13 @@ namespace Viper.Game.Controls.Gameplay
 
                     foreach (Rectangle bodyPart in Player.BodyParts)
                     {
+#pragma warning disable CS8602 // Desreferencia de una referencia posiblemente NULL.
                         if (Food.PositionX == (bodyPart.RenderTransform as TranslateTransform).X && Food.PositionY == (bodyPart.RenderTransform as TranslateTransform).Y)
                         {
                             CheckFoodSpawn();
                             break;
                         }
+#pragma warning restore CS8602 // Desreferencia de una referencia posiblemente NULL.
                     }
                 }
 
