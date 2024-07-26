@@ -26,7 +26,7 @@ namespace Viper.Game.Controls.Individual
     /// <summary>
     /// Lógica de interacción para ViperButton.xaml
     /// </summary>
-    public partial class ViperSlider : UserControl
+    public partial class BaseSlider : UserControl
     {
         public EventHandler<ViperSliderValueChanged>? ValueChanged;
 
@@ -40,10 +40,10 @@ namespace Viper.Game.Controls.Individual
         /// </summary>
         public const double MOUSE_OFFSET = 3;
         public const double HUNDRED_PERCENT = 100;
-        private const byte BACKGROUND_COLOR_A = 0;
-        private const byte BACKGROUND_COLOR_R = 0;
-        private const byte BACKGROUND_COLOR_G = 0;
-        private const byte BACKGROUND_COLOR_B = 0;
+        private const byte SET_BACKGROUND_COLOR_A = 89;
+        private const byte SET_BACKGROUND_COLOR_R = 0;
+        private const byte SET_BACKGROUND_COLOR_G = 0;
+        private const byte SET_BACKGROUND_COLOR_B = 0;
         public const byte FOREGROUND_COLOR_R = 255;
         public const byte FOREGROUND_COLOR_G = 255;
         public const byte FOREGROUND_COLOR_B = 255;
@@ -58,7 +58,8 @@ namespace Viper.Game.Controls.Individual
         public const byte PROGRESS_COLOR_B = 228;
         private const bool DEFAULT_IS_ENABLED = true;
 
-        private Brush _background = new SolidColorBrush(Color.FromRgb(BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B));
+        private Brush _background = new SolidColorBrush();
+        private Brush _setValueBackground = new SolidColorBrush(Color.FromArgb(SET_BACKGROUND_COLOR_A, SET_BACKGROUND_COLOR_R, SET_BACKGROUND_COLOR_G, SET_BACKGROUND_COLOR_B));
         private Brush _slider = new SolidColorBrush(Color.FromRgb(SLIDER_COLOR_R, SLIDER_COLOR_G, SLIDER_COLOR_B));
         private Brush _bar = new SolidColorBrush(Color.FromRgb(BAR_COLOR_R, BAR_COLOR_G, BAR_COLOR_B));
         private Brush _barProgress = new SolidColorBrush(Color.FromRgb(PROGRESS_COLOR_R, PROGRESS_COLOR_G, PROGRESS_COLOR_B));
@@ -89,6 +90,18 @@ namespace Viper.Game.Controls.Individual
                 _background = value;
 
                 Container.Background = value;
+            }
+        }
+
+        public new Brush ValueSetterBackground
+        {
+            get => _setValueBackground;
+
+            set
+            {
+                _setValueBackground = value;
+
+                ValueInputElements.Background = value;
             }
         }
 
@@ -215,7 +228,7 @@ namespace Viper.Game.Controls.Individual
 
         private TranslateTransform _tTransform = new();
 
-        public ViperSlider()
+        public BaseSlider()
         {
             InitializeComponent();
 
@@ -345,7 +358,6 @@ namespace Viper.Game.Controls.Individual
 
             if (show)
             {
-                Animate.Color(ThumbOverlay.Fill, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 255, 255), TimeSpan.FromMilliseconds(200), quadOut, Color.FromArgb(255, 255, 255, 255));
                 Animate.Double(ValueInputElements, OpacityProperty, 1, TimeSpan.FromMilliseconds(200), quadOut);
 
                 await Task.Delay(200); // Small delay because if this runs instantly, the context menu of the TextBox open at the same time you press right click on the slider.
@@ -358,11 +370,7 @@ namespace Viper.Game.Controls.Individual
 
                 if (failed)
                 {
-                    Animate.Color(RootBorder.BorderBrush, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 82, 82), TimeSpan.FromMilliseconds(500), quadOut, Color.FromArgb(255, 255, 82, 82));
-                }
-                else
-                {
-                    Animate.Color(RootBorder.BorderBrush, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 255, 255), TimeSpan.FromMilliseconds(500), quadOut, Color.FromArgb(255, 255, 255, 255));
+
                 }
 
                 ValueInput.Clear();
@@ -385,11 +393,6 @@ namespace Viper.Game.Controls.Individual
             }
 
             SliderMovement(e);
-
-            if (!_allowSliding)
-            {
-                Animate.Color(ThumbOverlay.Fill, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 51, 51), TimeSpan.FromMilliseconds(600), quadOut, Color.FromArgb(255, 255, 51, 51));
-            }
         }
 
         // Triggers only when the mouse is being clicked and moved at the same time.
@@ -503,9 +506,6 @@ namespace Viper.Game.Controls.Individual
             Container.PreviewMouseLeftButtonDown -= Container_MouseLeftButtonDown;
             Container.PreviewMouseLeftButtonUp -= Container_PreviewMouseLeftButtonUp;
             Container.MouseWheel -= Container_MouseWheel;
-
-            Animate.Double(ButtonElements, WidthProperty, 14, TimeSpan.FromMilliseconds(500), elastic);
-            Animate.ThicknessValue(ButtonElements, MarginProperty, new Thickness(-7, 4, 0, 4), TimeSpan.FromMilliseconds(500), elastic);
         }
 
         // Adds events and animates stuff when the mouse enters the control.
@@ -517,9 +517,6 @@ namespace Viper.Game.Controls.Individual
             Container.PreviewMouseLeftButtonDown += Container_MouseLeftButtonDown;
             Container.PreviewMouseLeftButtonUp += Container_PreviewMouseLeftButtonUp;
             Container.MouseWheel += Container_MouseWheel;
-
-            Animate.Double(ButtonElements, WidthProperty, 17, TimeSpan.FromMilliseconds(500), elastic);
-            Animate.ThicknessValue(ButtonElements, MarginProperty, new Thickness(-7, 0, 0, 0), TimeSpan.FromMilliseconds(500), elastic);
         }
     }
 }

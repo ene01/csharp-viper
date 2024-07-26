@@ -23,7 +23,7 @@ namespace Viper.Game.Controls.Individual
     /// <summary>
     /// Lógica de interacción para ViperButton.xaml
     /// </summary>
-    public partial class ViperUnlimitedSelector : UserControl
+    public partial class BaseUnlimitedSelector : UserControl
     {
         /// <summary>
         /// Im lazy, so heres the entire control container, do whatrever, use events, etc, idk.
@@ -60,12 +60,14 @@ namespace Viper.Game.Controls.Individual
         /// </summary>
         public EventHandler? NoHovering;
 
+        public EventHandler? NoPossibleMoves;
+
         public EventHandler<ViperUnlimitedSelectorIndexChanged>? IndexChanged;
 
         // Define const.
-        private static readonly Brush BACKGROUND_COLOR = new SolidColorBrush(Color.FromRgb(23, 23, 23));
-        private static readonly Brush BORDER_COLOR = new SolidColorBrush(Color.FromRgb(80, 80, 80));
-        private static readonly Brush FOREGROUND_COLOR = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        private static readonly Brush BACKGROUND_COLOR = new SolidColorBrush(Color.FromRgb(200, 200, 200));
+        private static readonly Brush BORDER_COLOR = new SolidColorBrush(Color.FromRgb(136, 136, 136));
+        private static readonly Brush FOREGROUND_COLOR = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         private static readonly Brush SIDE_BUTTONS_COLOR = new SolidColorBrush(Color.FromRgb(82, 82, 82));
         private static readonly object SIDE_BUTTON_LEFT_CONTENT = "🡸";
         private static readonly object SIDE_BUTTON_RIGTH_CONTENT = "🡺";
@@ -81,10 +83,10 @@ namespace Viper.Game.Controls.Individual
         private object _leftContent = SIDE_BUTTON_LEFT_CONTENT;
         private object _rightContent = SIDE_BUTTON_RIGTH_CONTENT;
         private Brush _background = BACKGROUND_COLOR;
-        private Brush _sideBackground = SIDE_BUTTONS_COLOR;
+        private Brush _leftBackground = SIDE_BUTTONS_COLOR;
+        private Brush _rightBackground = SIDE_BUTTONS_COLOR;
         private Brush _border = BORDER_COLOR;
         private Brush _foreground = FOREGROUND_COLOR;
-        private Brush _sideButtons = SIDE_BUTTONS_COLOR;
         private double _containerHeight = CONTAINER_HEIGHT_NAN;
         private double _containerWidth = CONTAINER_WIDTH_NAN;
         private Thickness _spacing = SPACING_ZERO;
@@ -159,15 +161,26 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public Brush SideButtonsBackground
+        public Brush LeftButtonBackground
         {
-            get { return _sideBackground; }
+            get { return _leftBackground; }
 
             set
             {
-                _background = value;
+                _leftBackground = value;
 
                 LeftButton.Background = value;
+            }
+        }
+
+        public Brush RightButtonBackground
+        {
+            get { return _rightBackground; }
+
+            set
+            {
+                _rightBackground = value;
+
                 RightButton.Background = value;
             }
         }
@@ -227,26 +240,6 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public bool DefaultColorAnimations
-        {
-            get => _defaultAnim;
-
-            set
-            {
-                if (value)
-                {
-                    SetDefaultColorAnimations(this);
-                }
-                else
-                {
-                    this.RightClick = null;
-                    this.LeftClick = null;
-
-                    BorderBrush = BORDER_COLOR;
-                }
-            }
-        }
-
         private bool _setDefaultColorAnimations = false;
 
         private IEasingFunction elastic = new ElasticEase() { Springiness = 5, Oscillations = 2 };
@@ -255,7 +248,7 @@ namespace Viper.Game.Controls.Individual
         /// <summary>
         /// A cool button.
         /// </summary>
-        public ViperUnlimitedSelector()
+        public BaseUnlimitedSelector()
         {
             InitializeComponent();
 
@@ -282,7 +275,7 @@ namespace Viper.Game.Controls.Individual
             CenterElements.Margin = new Thickness(LeftButton.ActualWidth, current.Top, current.Right, current.Bottom);
         }
 
-        private async void RightButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void RightButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine("Right");
 
@@ -291,33 +284,21 @@ namespace Viper.Game.Controls.Individual
                 _currentIndex += 1;
                 IndexViewer.Text = $"{_currentIndex + 1}";
 
-                Animate.Color(WhiteOverlayR.Fill, SolidColorBrush.ColorProperty, Color.FromArgb(0, 128, 189, 255), TimeSpan.FromMilliseconds(300), quadOut, Color.FromArgb(255, 128, 189, 255));
-
-                Animate.Double(IndexViewer.RenderTransform, TranslateTransform.XProperty, 3, TimeSpan.FromMilliseconds(50), quadOut);
-
-                await Task.Delay(50);
-
-                Animate.Double(IndexViewer.RenderTransform, TranslateTransform.XProperty, 0, TimeSpan.FromMilliseconds(300), elastic);
-
                 RightClick?.Invoke(this, new EventArgs());
                 IndexChanged?.Invoke(this, new ViperUnlimitedSelectorIndexChanged(_currentIndex));
             }
             else
             {
-                Animate.Color(WhiteOverlayR.Fill, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 128, 128), TimeSpan.FromMilliseconds(300), quadOut, Color.FromArgb(255, 255, 128, 128));
+                NoPossibleMoves?.Invoke(this, new EventArgs());
             }
         }
 
         private async void LeftButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Debug.WriteLine("Left");
-
             if (!(_currentIndex - 1 < 0) && _isEnabled)
             {
                 _currentIndex -= 1;
                 IndexViewer.Text = $"{_currentIndex + 1}";
-
-                Animate.Color(WhiteOverlayL.Fill, SolidColorBrush.ColorProperty, Color.FromArgb(0, 128, 189, 255), TimeSpan.FromMilliseconds(300), quadOut, Color.FromArgb(255, 128, 189, 255));
 
                 Animate.Double(IndexViewer.RenderTransform, TranslateTransform.XProperty, -3, TimeSpan.FromMilliseconds(50), quadOut);
 
@@ -330,37 +311,8 @@ namespace Viper.Game.Controls.Individual
             }
             else
             {
-                Animate.Color(WhiteOverlayL.Fill, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 128, 128), TimeSpan.FromMilliseconds(300), quadOut, Color.FromArgb(255, 255, 128, 128));
+                NoPossibleMoves?.Invoke(this, new EventArgs());
             }
-        }
-
-        public static void SetDefaultColorAnimations(ViperUnlimitedSelector us)
-        {
-            GradientStop gs1 = new()
-            {
-                Color = Color.FromRgb(80, 80, 80),
-                Offset = 0,
-            };
-
-            GradientStop gs2 = new()
-            {
-                Color = Color.FromRgb(80, 80, 80),
-                Offset = 1,
-            };
-
-            LinearGradientBrush lg = new() { GradientStops = { gs1, gs2 }, StartPoint = new Point(1, 0), EndPoint = new Point(0, 0) };
-
-            us.BorderBrush = lg;
-
-            us.LeftClick += (s, e) =>
-            {
-                Animate.Color(gs2, GradientStop.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(500), new QuadraticEase(), Colors.White);
-            };
-
-            us.RightClick += (s, e) =>
-            {
-                Animate.Color(gs1, GradientStop.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(500), new QuadraticEase(), Colors.White);
-            };
         }
 
         private void EnabledLayerToggle(bool enable)

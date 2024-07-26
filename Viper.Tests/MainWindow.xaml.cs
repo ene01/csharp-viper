@@ -740,7 +740,7 @@ namespace Viper.Tests
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
-            ViperSlider slider1 = new()
+            BaseSlider slider1 = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Height = 40,
@@ -749,7 +749,7 @@ namespace Viper.Tests
                 Scrollable = true,
             };
 
-            ViperSlider slider2 = new()
+            BaseSlider slider2 = new()
             {
                 Height = 40,
                 Width = 300,
@@ -758,7 +758,7 @@ namespace Viper.Tests
                 ProgressBarBrush = new SolidColorBrush(Colors.Gold),
             };
 
-            ViperSlider slider3 = new()
+            BaseSlider slider3 = new()
             {
                 Height = 40,
                 Width = 200,
@@ -767,7 +767,7 @@ namespace Viper.Tests
                 SliderBrush = new SolidColorBrush(Colors.Gold),
             };
 
-            ViperSlider slider4 = new()
+            BaseSlider slider4 = new()
             {
                 Height = 40,
                 Width = 200,
@@ -777,7 +777,7 @@ namespace Viper.Tests
                 ProgressBarBrush = new SolidColorBrush(Colors.Gold),
             };
 
-            ViperSlider slider5 = new()
+            BaseSlider slider5 = new()
             {
                 Height = 40,
                 Width = 200,
@@ -839,17 +839,15 @@ namespace Viper.Tests
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
-            ViperUnlimitedSelector us1 = new()
+            BaseUnlimitedSelector us1 = new()
             {
                 Margin = new Thickness(0, 0, 0, 10),
-                DefaultColorAnimations = true,
             };
 
-            ViperUnlimitedSelector us2 = new()
+            BaseUnlimitedSelector us2 = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Margin = new Thickness(0, 0, 0, 10),
-                DefaultColorAnimations = true,
             };
 
             us1.IndexChanged += (s, e) =>

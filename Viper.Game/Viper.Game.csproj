@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Controls\Individual\ViperUnlimitedSelector.xaml.cs">
+    <Compile Update="Controls\Individual\BaseUnlimitedSelector.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\Individual\ViperSlider.xaml.cs">
+    <Compile Update="Controls\Individual\BaseSlider.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Controls\Individual\BaseComboBox.xaml.cs">
@@ -26,10 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Controls\Individual\ViperUnlimitedSelector.xaml">
+    <Page Update="Controls\Individual\BaseUnlimitedSelector.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Controls\Individual\ViperSlider.xaml">
+    <Page Update="Controls\Individual\BaseSlider.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
