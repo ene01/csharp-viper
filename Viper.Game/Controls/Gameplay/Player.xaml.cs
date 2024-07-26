@@ -172,7 +172,7 @@ namespace Viper.Game.Controls.Gameplay
         /// <summary>
         /// All body parts of the viper.
         /// </summary>
-        public List<Rectangle> PlayerBodyParts
+        public List<Rectangle> BodyParts
         {
             get { return _playerBody; }
         }

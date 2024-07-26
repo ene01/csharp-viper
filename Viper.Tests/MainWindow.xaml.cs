@@ -1026,7 +1026,7 @@ namespace Viper.Tests
 
             GameplaySession gs = new()
             {
-                PlayfieldGridSize = 10,
+                PlayfieldGridSize = 30,
                 PlayfieldBrush = new SolidColorBrush(Color.FromArgb(130, 0, 0, 0)),
                 MaxLives = 3,
                 ShowHUD = true,
@@ -1034,6 +1034,7 @@ namespace Viper.Tests
 
             gs.Food.FoodBrush = new SolidColorBrush(Colors.LightGreen);
             gs.Food.FoodStroke = new SolidColorBrush(Colors.LightGreen);
+            gs.Player.Tickrate = 50;
 
             TestingSpace.Children.Add(gs);
         }

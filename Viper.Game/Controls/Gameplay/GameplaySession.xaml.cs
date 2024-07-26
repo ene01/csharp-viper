@@ -209,9 +209,21 @@ namespace Viper.Game.Controls.Gameplay
                 Animate.Double(PTB, OpacityProperty, 0.5, TimeSpan.FromMilliseconds(500), new QuadraticEase(), 1);
                 PointsText.Text = $" 🍗 {_points} ";
 
-                Food.RandomizePosition();
+                CheckFoodSpawn();
 
+                void CheckFoodSpawn()
+                {
+                    Food.RandomizePosition();
 
+                    foreach (Rectangle bodyPart in Player.BodyParts)
+                    {
+                        if (Food.PositionX == (bodyPart.RenderTransform as TranslateTransform).X && Food.PositionY == (bodyPart.RenderTransform as TranslateTransform).Y)
+                        {
+                            CheckFoodSpawn();
+                            break;
+                        }
+                    }
+                }
 
                 Player.IncreasePlayerSize();
             }
