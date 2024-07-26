@@ -20,7 +20,7 @@
     <Compile Update="Controls\Individual\ViperCheckBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\Individual\ViperButton.xaml.cs">
+    <Compile Update="Controls\Individual\BaseButton.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

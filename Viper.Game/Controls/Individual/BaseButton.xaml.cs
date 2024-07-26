@@ -22,7 +22,7 @@ namespace Viper.Game.Controls.Individual
     /// <summary>
     /// Lógica de interacción para ViperButton.xaml
     /// </summary>
-    public partial class ViperButton : UserControl
+    public partial class BaseButton : UserControl
     {
         /// <summary>
         /// Im lazy, so heres the entire control container, do whatrever, use events, etc, idk.
@@ -59,11 +59,6 @@ namespace Viper.Game.Controls.Individual
         private static readonly Brush BACKGROUND_COLOR = new SolidColorBrush(Color.FromRgb(23, 23, 23));
         private static readonly Brush BORDER_COLOR = new SolidColorBrush(Color.FromRgb(80, 80, 80));
         private static readonly Brush FOREGROUND_COLOR = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-        private const double CONTAINER_HEIGHT_NAN = double.NaN;
-        private const double CONTAINER_WIDTH_NAN = double.NaN;
-        private static readonly Thickness SPACING_ZERO = new Thickness(0, 0, 0, 0);
-        private const VerticalAlignment Y_ALIGNMENT_TOP = VerticalAlignment.Top;
-        private const HorizontalAlignment X_ALIGNMENT_LEFT = HorizontalAlignment.Left;
         private const bool IS_ENABLED_TRUE = true;
 
         // Private properties used for the button.
@@ -71,11 +66,6 @@ namespace Viper.Game.Controls.Individual
         private Brush _background = BACKGROUND_COLOR;
         private Brush _border = BORDER_COLOR;
         private Brush _foreground = FOREGROUND_COLOR;
-        private double _containerHeight = CONTAINER_HEIGHT_NAN;
-        private double _containerWidth = CONTAINER_WIDTH_NAN;
-        private Thickness _spacing = SPACING_ZERO;
-        private VerticalAlignment _yAlignment = Y_ALIGNMENT_TOP;
-        private HorizontalAlignment _xAlignment = X_ALIGNMENT_LEFT;
         private bool _isEnabled = IS_ENABLED_TRUE;
 
         /// <summary>
@@ -165,43 +155,13 @@ namespace Viper.Game.Controls.Individual
 
         private bool _setDefaultColorAnimations = false;
 
-        /// <summary>
-        /// Sets default colors, and color animations for buttons, black when not hovered, white when clicked (red if disabled), and grey when hovered).
-        /// THIS REPLACES ANY BRUSH THAT THE BUTTON HAD.
-        /// </summary>
-        public bool DefaultColorAnimations
-        {
-            get { return _setDefaultColorAnimations; }
-
-            set
-            {
-                _setDefaultColorAnimations = value;
-
-                if (_setDefaultColorAnimations)
-                {
-                    SetDefaltBrushAnimations(this);
-                }
-                else
-                {
-                    this.Release = null;
-                    this.Holding = null;
-                    this.Hovering = null;
-                    this.NoHovering = null;
-
-                    Background = BACKGROUND_COLOR;
-                    BorderBrush = BORDER_COLOR;
-                    Foreground = FOREGROUND_COLOR;
-                }
-            }
-        }
-
         private IEasingFunction elastic = new ElasticEase() { Springiness = 5 };
         private IEasingFunction quadOut = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
 
         /// <summary>
         /// A cool button.
         /// </summary>
-        public ViperButton()
+        public BaseButton()
         {
             InitializeComponent();
 
@@ -268,9 +228,6 @@ namespace Viper.Game.Controls.Individual
             if (_canRegisterClick)
             {
                 Release?.Invoke(this, new EventArgs());
-
-                Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
-                Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
             }
         }
 
@@ -280,17 +237,11 @@ namespace Viper.Game.Controls.Individual
 
             Holding?.Invoke(this, new EventArgs());
 
-            Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleXProperty, 0.9, TimeSpan.FromMilliseconds(1000), quadOut);
-            Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleYProperty, 0.9, TimeSpan.FromMilliseconds(1000), quadOut);
-
             ButtonControl.MouseLeave += LocalMouseLeave;
 
             void LocalMouseLeave(object sender, MouseEventArgs e)
             {
                 NoHovering?.Invoke(this, new EventArgs());
-
-                Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
-                Animate.Double(ButtonGrid.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
 
                 ButtonControl.MouseLeave -= LocalMouseLeave;
             }
@@ -305,66 +256,6 @@ namespace Viper.Game.Controls.Individual
         private void ButtonContainer_MouseEnter(object sender, MouseEventArgs e)
         {
             Hovering?.Invoke(this, new EventArgs());
-        }
-
-        /// <summary>
-        /// Sets default colors, and color animations for buttons, black when not hovered, grey when hovered, and white when clicked (red if disabled)).
-        /// THIS REPLACES ANY BRUSH THAT THE BUTTON HAD.
-        /// </summary>
-        /// <param name="viperButton"></param>
-        public static void SetDefaltBrushAnimations(ViperButton viperButton)
-        {
-            SolidColorBrush bdBrush = new(Color.FromRgb(80, 80, 80));
-            SolidColorBrush bgBrush = new(Color.FromRgb(23, 23, 23));
-            SolidColorBrush fgBrush = new(Color.FromRgb(255, 255, 255));
-
-            viperButton.Background = bgBrush;
-            viperButton.BorderBrush = bdBrush;
-            viperButton.Foreground = fgBrush;
-
-            viperButton.Holding += OnHolding;
-            viperButton.Hovering += OnHover;
-            viperButton.NoHovering += OnNoHover;
-            viperButton.Release += OnRelease;
-
-            void OnHolding(object sender, EventArgs e)
-            {
-                if (viperButton.IsEnabled)
-                {
-                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Colors.White, TimeSpan.FromMilliseconds(100), new QuadraticEase());
-                }
-                else
-                {
-                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(255, 99, 99), TimeSpan.FromMilliseconds(100), new QuadraticEase());
-                }
-            }
-
-            void OnRelease(object sender, EventArgs e)
-            {
-                if (viperButton.IsEnabled)
-                {
-                    Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Colors.White);
-                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase());
-                    Animate.Color(fgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(255, 255, 255), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Colors.Black);
-                }
-                else
-                {
-                    Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Color.FromRgb(255, 99, 99));
-                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase());
-                    Animate.Color(fgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(255, 255, 255), TimeSpan.FromMilliseconds(300), new QuadraticEase(), Color.FromRgb(255, 99, 99));
-                }
-            }
-
-            void OnHover(object sender, EventArgs e)
-            {
-                Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(40, 40, 40), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-            }
-
-            void OnNoHover(object sender, EventArgs e)
-            {
-                Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(300), new QuadraticEase());
-            }
         }
     }
 }

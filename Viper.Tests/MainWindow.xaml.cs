@@ -468,49 +468,43 @@ namespace Viper.Tests
                 VerticalAlignment = VerticalAlignment.Top,
             };
 
-            ViperButton vButton1 = new()
+            BaseButton vButton1 = new()
             {
                 Content = "Enabled",
                 Margin = new Thickness(10, 10, 0, 0),
-                DefaultColorAnimations = true,
             };
 
-            ViperButton vButton2 = new()
+            BaseButton vButton2 = new()
             {
                 Content = "Disabled",
                 Margin = new Thickness(10, 10, 0, 0),
-                DefaultColorAnimations = true,
                 IsEnabled = false,
             };
 
-            ViperButton vButton3 = new()
+            BaseButton vButton3 = new()
             {
                 Content = "With click event",
                 Margin = new Thickness(10, 10, 0, 0),
-                DefaultColorAnimations = true,
             };
 
-            ViperButton vButton4 = new()
+            BaseButton vButton4 = new()
             {
                 Content = "Tall button.",
                 Height = 60,
                 Margin = new Thickness(10, 10, 0, 0),
-                DefaultColorAnimations = true,
             };
 
-            ViperButton vButton5 = new()
+            BaseButton vButton5 = new()
             {
                 Content = "Reading a long text is like trying to find a needle in a haystack, but the needle is the main point, and the haystack is endless paragraphs of rambling.",
                 Margin = new Thickness(10, 10, 0, 0),
-                DefaultColorAnimations = true,
             };
 
-            ViperButton vButton6 = new()
+            BaseButton vButton6 = new()
             {
                 Content = "Dynamically streched button",
                 Margin = new Thickness(10, 10, 0, 0),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                DefaultColorAnimations = true,
             };
 
             vButton2.Click += OnClick;
@@ -521,7 +515,7 @@ namespace Viper.Tests
             {
                 Debug.WriteLine("- An important message from a cool button: You clicked me!");
 
-                if (!(sender as ViperButton).IsEnabled)
+                if (!(sender as BaseButton).IsEnabled)
                 {
                     Debug.WriteLine("- An important message from a disabled button: You fucked up");
                 }
