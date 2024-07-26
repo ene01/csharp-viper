@@ -14,10 +14,10 @@
     <Compile Update="Controls\Individual\ViperSlider.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\Individual\ViperComboBox.xaml.cs">
+    <Compile Update="Controls\Individual\BaseComboBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Controls\Individual\ViperCheckBox.xaml.cs">
+    <Compile Update="Controls\Individual\BaseCheckBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Controls\Individual\BaseButton.xaml.cs">

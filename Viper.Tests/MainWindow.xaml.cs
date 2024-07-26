@@ -544,30 +544,30 @@ namespace Viper.Tests
                 VerticalAlignment = VerticalAlignment.Top,
             };
 
-            ViperCheckBox check1 = new()
+            BaseCheckBox check1 = new()
             {
-                DefaultColorAnimations = true,
-                Content = "Enabled check"
+                Content = "Enabled check",
+                Margin = new Thickness(10, 10, 0, 0),
             };
 
-            ViperCheckBox check2 = new()
+            BaseCheckBox check2 = new()
             {
-                DefaultColorAnimations = true,
                 Content = "Disabled check",
                 IsEnabled = false,
+                Margin = new Thickness(10, 10, 0, 0),
             };
 
-            ViperCheckBox check3 = new()
+            BaseCheckBox check3 = new()
             {
-                DefaultColorAnimations = true,
                 Content = "Long texts are like marathons for your eyes—by the end, you're not sure if you should get a medal or just a nap. 🏅😴",
+                Margin = new Thickness(10, 10, 0, 0),
             };
 
-            ViperCheckBox check4 = new()
+            BaseCheckBox check4 = new()
             {
-                DefaultColorAnimations = true,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Content = "Dynamically stretched check box",
+                Margin = new Thickness(10, 10, 0, 0),
             };
 
             check1.StateChanged += (s, e) =>
@@ -587,7 +587,7 @@ namespace Viper.Tests
         {
             DisposeLastTest("ComboBox");
 
-            List<ViperComboBox> combos = new();
+            List<BaseComboBox> combos = new();
 
             StackPanel comboColumn = new()
             {
@@ -623,39 +623,34 @@ namespace Viper.Tests
                 Content = "Clear items"
             };
 
-            ViperComboBox combo1 = new()
+            BaseComboBox combo1 = new()
             {
-                DefaultColorAnimations = true,
                 Margin = new Thickness(0, 10, 0, 0),
                 UsePreviousItem = true,
                 InstaSelection = true,
             };
 
-            ViperComboBox combo2 = new()
+            BaseComboBox combo2 = new()
             {
                 IsEnabled = false,
-                DefaultColorAnimations = true,
                 Margin = new Thickness(0, 10, 0, 0),
             };
 
-            ViperComboBox combo3 = new()
+            BaseComboBox combo3 = new()
             {
-                DefaultColorAnimations = true,
                 Height = 100,
                 Margin = new Thickness(0, 10, 0, 0),
             };
 
-            ViperComboBox combo4 = new()
+            BaseComboBox combo4 = new()
             {
-                DefaultColorAnimations = true,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 FallbackContent = "This is a really long messaage to tell you that this custom ViperComboBox is currently holding no items, add a few with the buttons on the side!",
                 Margin = new Thickness(0, 10, 0, 0),
             };
 
-            ViperComboBox combo5 = new()
+            BaseComboBox combo5 = new()
             {
-                DefaultColorAnimations = true,
                 Margin = new Thickness(0, 10, 0, 0),
                 ItemContainerMaxHeight = 200,
             };
@@ -672,16 +667,21 @@ namespace Viper.Tests
             combo4.SelectionChanged += UpdateDebugText;
             combo5.SelectionChanged += UpdateDebugText;
 
+            combo1.HoveringItem += (s, e) =>
+            {
+                Debug.WriteLine($"Hovering item {e.Index}");
+            };
+
             void UpdateDebugText(object sender, ViperComboBoxSelectionChanged e)
             {
-                debugText.Text = $"Last selection: {(sender as ViperComboBox).GetItemFromIndex(e.Index)}";
+                debugText.Text = $"Last selection: {(sender as BaseComboBox).GetItemFromIndex(e.Index)}";
             }
 
             debugAdd.Click += (s, e) =>
             {
                 Random rnd = new();
 
-                foreach (ViperComboBox combo in combos)
+                foreach (BaseComboBox combo in combos)
                 {
                     combo.AddItem($"{rnd.Next(0, 1000)}");
                 }
@@ -689,7 +689,7 @@ namespace Viper.Tests
 
             debugRemove.Click += (s, e) =>
             {
-                foreach (ViperComboBox combo in combos)
+                foreach (BaseComboBox combo in combos)
                 {
                     combo.RemoveItem(combo.ItemAmount - 1);
                 }
@@ -697,7 +697,7 @@ namespace Viper.Tests
 
             debugClear.Click += (s, e) =>
             {
-                foreach (ViperComboBox combo in combos)
+                foreach (BaseComboBox combo in combos)
                 {
                     combo.ClearAllItems();
                 }

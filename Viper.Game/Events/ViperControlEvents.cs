@@ -47,6 +47,16 @@ namespace Viper.Game.Events
         }
     }
 
+    public class ViperComboBoxHoveringItemChanged : EventArgs, IViperControlEvents
+    {
+        public int Index;
+
+        public ViperComboBoxHoveringItemChanged(int @index)
+        {
+            Index = @index;
+        }
+    }
+
     public class ViperCheckBoxStateChanged : EventArgs, IViperControlEvents
     {
         public bool State;

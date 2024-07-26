@@ -24,7 +24,7 @@ namespace Viper.Game.Controls.Individual
     /// <summary>
     /// Lógica de interacción para ViperButton.xaml
     /// </summary>
-    public partial class ViperComboBox : UserControl
+    public partial class BaseComboBox : UserControl
     {
         /// <summary>
         /// Im lazy, so heres the entire control container, do whatrever, use events, etc, idk.
@@ -41,7 +41,7 @@ namespace Viper.Game.Controls.Individual
         /// </summary>
         public EventHandler? Release;
 
-        /// <summary>aaaaaaa
+        /// <summary>
         /// Event that triggers when the mouse is being hovered over the combo box.
         /// </summary>
         public EventHandler? Hovering;
@@ -55,32 +55,30 @@ namespace Viper.Game.Controls.Individual
 
         public EventHandler<ViperComboBoxSelectionChanged>? SelectionChanged;
 
+        public EventHandler<ViperComboBoxHoveringItemChanged>? HoveringItem;
+
         private const string DEFAULT_CONTENT_VIPER_CHECK_BOX = "Nothing selected";
-        private const byte BACKGROUND_COLOR_R = 23;
-        private const byte BACKGROUND_COLOR_G = 23;
-        private const byte BACKGROUND_COLOR_B = 23;
+        private const byte BACKGROUND_COLOR_R = 193;
+        private const byte BACKGROUND_COLOR_G = 193;
+        private const byte BACKGROUND_COLOR_B = 193;
+        private const byte LIST_BACKGROUND_COLOR_R = 193;
+        private const byte LIST_BACKGROUND_COLOR_G = 193;
+        private const byte LIST_BACKGROUND_COLOR_B = 193;
         private const byte BORDER_COLOR_R = 80;
         private const byte BORDER_COLOR_G = 80;
         private const byte BORDER_COLOR_B = 80;
-        private const byte FOREGROUND_COLOR_R = 255;
-        private const byte FOREGROUND_COLOR_G = 255;
-        private const byte FOREGROUND_COLOR_B = 255;
-        private const byte ITEMS_BACKGROUND_COLOR_R = 12;
-        private const byte ITEMS_BACKGROUND_COLOR_G = 12;
-        private const byte ITEMS_BACKGROUND_COLOR_B = 12;
-        private const byte ITEMS_DISPLAYERS_COLOR_R = 30;
-        private const byte ITEMS_DISPLAYERS_COLOR_G = 30;
-        private const byte ITEMS_DISPLAYERS_COLOR_B = 30;
+        private const byte FOREGROUND_COLOR_R = 0;
+        private const byte FOREGROUND_COLOR_G = 0;
+        private const byte FOREGROUND_COLOR_B = 0;
+        private const byte ITEMS_DISPLAYERS_COLOR_R = 240;
+        private const byte ITEMS_DISPLAYERS_COLOR_G = 240;
+        private const byte ITEMS_DISPLAYERS_COLOR_B = 240;
+        private const byte ARROW_COLOR_R = 64;
+        private const byte ARROW_COLOR_G = 64;
+        private const byte ARROW_COLOR_B = 64;
         private const double DEFAULT_GRID_HEIGHT = double.NaN;
         private const double DEFAULT_GRID_WIDTH = double.NaN;
         private const double ITEM_CONT_MAX_HEIGHT = 100;
-        private const double THICKNESS_LEFT = 0;
-        private const double THICKNESS_TOP = 0;
-        private const double THICKNESS_RIGHT = 0;
-        private const double THICKNESS_BOTTOM = 0;
-        private const VerticalAlignment DEFAULT_VERTICAL_ALIGNMENT = VerticalAlignment.Top;
-        private const HorizontalAlignment DEFAULT_HORIZONTAL_ALIGNMENT = HorizontalAlignment.Left;
-        private const bool DEFAULT_IS_ENABLED = true;
         private const bool DEFAULT_IS_OPEN = false;
         private const bool DEFAULT_USE_PREVIOUS_ITEM = false;
         private const bool DEFAULT_INSTA_SELECT = false;
@@ -89,18 +87,15 @@ namespace Viper.Game.Controls.Individual
         private Brush _background = new SolidColorBrush(Color.FromRgb(BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B));
         private Brush _border = new SolidColorBrush(Color.FromRgb(BORDER_COLOR_R, BORDER_COLOR_G, BORDER_COLOR_B));
         private Brush _foreground = new SolidColorBrush(Color.FromRgb(FOREGROUND_COLOR_R, FOREGROUND_COLOR_G, FOREGROUND_COLOR_B));
-        private Brush _itemsBackground = new SolidColorBrush(Color.FromRgb(ITEMS_BACKGROUND_COLOR_R, ITEMS_BACKGROUND_COLOR_G, ITEMS_BACKGROUND_COLOR_B));
+        private Brush _itemDisplayersBrush = new SolidColorBrush(Color.FromRgb(ITEMS_DISPLAYERS_COLOR_R, ITEMS_DISPLAYERS_COLOR_G, ITEMS_DISPLAYERS_COLOR_B));
+        private Brush _itemListBrush = new SolidColorBrush(Color.FromRgb(LIST_BACKGROUND_COLOR_R, LIST_BACKGROUND_COLOR_G, LIST_BACKGROUND_COLOR_B));
+        private Color _arrowColor = Color.FromRgb(ARROW_COLOR_R, ARROW_COLOR_G, ARROW_COLOR_B);
         private double _stuffGridHeight = DEFAULT_GRID_HEIGHT;
         private double _stuffGridWidth = DEFAULT_GRID_WIDTH;
         private double _itemContMaxHeight = ITEM_CONT_MAX_HEIGHT;
-        private Thickness _spacing = new Thickness(THICKNESS_LEFT, THICKNESS_TOP, THICKNESS_RIGHT, THICKNESS_BOTTOM);
-        private VerticalAlignment _yAlignment = DEFAULT_VERTICAL_ALIGNMENT;
-        private HorizontalAlignment _xAlignment = DEFAULT_HORIZONTAL_ALIGNMENT;
-        private bool _isEnabled = DEFAULT_IS_ENABLED;
         private bool _isOpen = DEFAULT_IS_OPEN;
         private bool _usePrevious = DEFAULT_USE_PREVIOUS_ITEM;
         private bool _instaSelect = DEFAULT_INSTA_SELECT;
-        private Brush _itemDisplayersBrush = new SolidColorBrush(Color.FromRgb(ITEMS_DISPLAYERS_COLOR_R, ITEMS_DISPLAYERS_COLOR_G, ITEMS_DISPLAYERS_COLOR_B));
         private int? _selected = null;
 
         public new object? Content = null; // :tf:
@@ -139,6 +134,18 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
+        public Color ArrowColor
+        {
+            get { return _arrowColor; }
+
+            set
+            {
+                _arrowColor = value;
+
+                (Arrow.Fill as LinearGradientBrush).GradientStops[1].Color = value;
+            }
+        }
+
         public new Brush BorderBrush
         {
             get { return _border; }
@@ -155,8 +162,8 @@ namespace Viper.Game.Controls.Individual
         {
             get { return _foreground; }
 
-            set 
-            { 
+            set
+            {
                 _foreground = value;
 
                 ComboBoxContent.Foreground = value;
@@ -187,15 +194,17 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        public Brush ItemsBackground
+        public Brush ItemListBackground
         {
-            get { return _itemsBackground; }
+            get
+            {
+                return _itemListBrush;
+            }
 
             set
             {
-                _itemsBackground = value;
-
-                ItemContainer.Background = value;
+                _itemListBrush = value;
+                ItemContainer.Background = _itemListBrush;
             }
         }
 
@@ -216,48 +225,6 @@ namespace Viper.Game.Controls.Individual
             set
             {
                 _itemContMaxHeight = value;
-            }
-        }
-
-        public new VerticalAlignment VerticalAlignment
-        {
-            get { return _yAlignment; }
-
-            set 
-            { 
-                _yAlignment = value;
-
-                Container.VerticalAlignment = value;
-                RootGrid.VerticalAlignment = value;
-                ComboBoxContainerStackPanel.VerticalAlignment = value;
-                ComboBoxStuffGrid.VerticalAlignment = value;
-            }
-        }
-
-        public new HorizontalAlignment HorizontalAlignment
-        {
-            get { return _xAlignment; }
-
-            set 
-            { 
-                _xAlignment = value;
-
-                Container.HorizontalAlignment = value;
-                RootGrid.HorizontalAlignment = value;
-                ComboBoxContainerStackPanel.HorizontalAlignment = value;
-                ComboBoxStuffGrid.HorizontalAlignment = value;
-            }
-        }
-
-        public new bool IsEnabled
-        {
-            get { return _isEnabled; }
-
-            set 
-            { 
-                _isEnabled = value;
-
-                EnabledLayerToggle(value);
             }
         }
 
@@ -309,38 +276,9 @@ namespace Viper.Game.Controls.Individual
             get { return _items.Count; }
         }
 
-        private bool _setDefaultColorAnimations = false;
+        public IEasingFunction DropDownEasing { get; set; }
 
-        /// <summary>
-        /// Sets default colors, and color animations for buttons, black when not hovered, white when clicked (red if disabled), and grey when hovered).
-        /// THIS REPLACES ANY BRUSH THAT THE BUTTON HAD.
-        /// </summary>
-        public bool DefaultColorAnimations
-        {
-            get { return _setDefaultColorAnimations; }
-
-            set
-            {
-                _setDefaultColorAnimations = value;
-
-                if (_setDefaultColorAnimations)
-                {
-                    SetDefaltCheckAnimations(this);
-                }
-                else
-                {
-                    this.Release = null;
-                    this.Holding = null;
-                    this.Hovering = null;
-                    this.NoHovering = null;
-
-                    Background = new SolidColorBrush(Color.FromRgb(BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B));
-                    BorderBrush = new SolidColorBrush(Color.FromRgb(BORDER_COLOR_R, BORDER_COLOR_G, BORDER_COLOR_B));
-                    Foreground = new SolidColorBrush(Color.FromRgb(FOREGROUND_COLOR_R, FOREGROUND_COLOR_G, FOREGROUND_COLOR_B));
-                    ItemsBackground = new SolidColorBrush(Color.FromRgb(ITEMS_BACKGROUND_COLOR_R, ITEMS_BACKGROUND_COLOR_G, ITEMS_BACKGROUND_COLOR_B));
-                }
-            }
-        }
+        public TimeSpan DropDownTimeSpan { get; set; } = TimeSpan.FromMilliseconds(200);
 
         private ScrollViewer _itemScroll = new()
         {
@@ -357,7 +295,24 @@ namespace Viper.Game.Controls.Individual
         };
 
         private List<object> _items = new();
+        /// <summary>
+        /// All items added to the ComboBox
+        /// </summary>
+        public List<object> Items { get { return _items; } }
+
+
         private List<Grid> _itemDisplayers = new();
+        /// <summary>
+        /// Grids that encapsulate the objects added.
+        /// </summary>
+        public List<Grid> ItemDisplayers { get { return _itemDisplayers; } }
+
+
+        private List<Border> _itemDisplayerBorders = new();
+        /// <summary>
+        /// Borders that are usually transparent, these are on each ItemDisplayer, use these for background changes or other things when hovering or whatrver.
+        /// </summary>
+        public List<Border> ItemDisplayerBorders { get { return _itemDisplayerBorders; } }
 
         private IEasingFunction elastic = new ElasticEase() { Springiness = 8, Oscillations = 2 };
         private IEasingFunction quadOut = new QuadraticEase() { EasingMode = EasingMode.EaseOut };
@@ -377,19 +332,20 @@ namespace Viper.Game.Controls.Individual
 
         public void AddItem(object item)
         {
+            int currentIndex = 0;
+
             Grid itemGrid = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(0, 0, 0, 1),
-                Background = _itemDisplayersBrush,
             };
 
             Border border = new()
             {
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Background = new SolidColorBrush(),
+                Background = _itemDisplayersBrush,
                 BorderBrush = new SolidColorBrush(),
                 BorderThickness = new Thickness(1, 1, 1, 1)
             };
@@ -399,24 +355,24 @@ namespace Viper.Game.Controls.Individual
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(5, 5, 5, 5),
+                Foreground = _foreground,
             };
 
             itemGrid.MouseEnter += (s, e) =>
             {
-                Animate.Color(border.BorderBrush, SolidColorBrush.ColorProperty, Colors.Gray, TimeSpan.FromMilliseconds(150), quadOut);
-                Animate.Color(border.Background, SolidColorBrush.ColorProperty, Color.FromArgb(50, 255, 255, 255), TimeSpan.FromMilliseconds(150), quadOut);
+                itemContent.FontWeight = FontWeights.Bold;
+                HoveringItem?.Invoke(this, new ViperComboBoxHoveringItemChanged(currentIndex));
             };
 
             itemGrid.MouseLeave += (s, e) =>
             {
-                Animate.Color(border.BorderBrush, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 255, 255), TimeSpan.FromMilliseconds(150), quadOut);
-                Animate.Color(border.Background, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 255, 255), TimeSpan.FromMilliseconds(150), quadOut);
+                itemContent.FontWeight = FontWeights.Normal;
             };
 
             if (item is string)
             {
 #pragma warning disable CS8604 // Posible argumento de referencia nulo
-                itemContent.Content = WrapWithOverflowTextBlock(item as string, new SolidColorBrush(Colors.White));
+                itemContent.Content = WrapWithOverflowTextBlock(item as string, _foreground);
 #pragma warning restore CS8604 // Posible argumento de referencia nulo
             }
             else
@@ -429,16 +385,15 @@ namespace Viper.Game.Controls.Individual
 
             _items.Add(item);
             _itemDisplayers.Add(itemGrid);
+            _itemDisplayerBorders.Add(border);
 
-            int currentIndex = _itemDisplayers.Count - 1;
+            currentIndex = _itemDisplayers.Count - 1;
 
             itemGrid.PreviewMouseLeftButtonUp += (s, e) =>
             {
                 SelectionChanged?.Invoke(this, new ViperComboBoxSelectionChanged(currentIndex));
 
                 _selected = currentIndex;
-
-                Animate.Color(border.BorderBrush, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 255, 255), TimeSpan.FromMilliseconds(150), quadOut, Colors.White);
 
                 ItemDisplayToggle(false);
 
@@ -510,12 +465,12 @@ namespace Viper.Game.Controls.Individual
             return text;
         }
 
-        public ViperComboBox()
+        public BaseComboBox()
         {
             InitializeComponent();
 
             RootGrid.RenderTransform = new ScaleTransform();
-            SillyThing.RenderTransform = new RotateTransform(132);
+            Arrow.RenderTransform = new RotateTransform();
 
             ItemContainer.Children.Add(_itemScroll);
 
@@ -549,15 +504,9 @@ namespace Viper.Game.Controls.Individual
 
             ComboBoxControl.MouseLeave += LocalMouseLeave;
 
-            Animate.Double(RootGrid.RenderTransform, ScaleTransform.ScaleXProperty, 0.9, TimeSpan.FromMilliseconds(1000), quadOut);
-            Animate.Double(RootGrid.RenderTransform, ScaleTransform.ScaleYProperty, 0.9, TimeSpan.FromMilliseconds(1000), quadOut);
-
             void LocalMouseLeave(object sender, MouseEventArgs e)
             {
                 ComboBoxControl.MouseLeave -= LocalMouseLeave;
-
-                Animate.Double(RootGrid.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
-                Animate.Double(RootGrid.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
 
                 Release?.Invoke(this, new EventArgs());
             }
@@ -593,7 +542,7 @@ namespace Viper.Game.Controls.Individual
 
             CheckSelectedContent();
 
-            EnabledLayerToggle(_isEnabled);
+            EnabledLayerToggle(IsEnabled);
         }
 
         private void CheckSelectedContent(bool forceClear = false)
@@ -611,18 +560,11 @@ namespace Viper.Game.Controls.Individual
 
         private void CheckBoxContainer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Animate.Double(RootGrid.RenderTransform, ScaleTransform.ScaleXProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
-            Animate.Double(RootGrid.RenderTransform, ScaleTransform.ScaleYProperty, 1, TimeSpan.FromMilliseconds(1000), elastic);
-
-            if (_isEnabled)
+            if (IsEnabled)
             {
                 _isOpen = !_isOpen;
 
                 ItemDisplayToggle(_isOpen);
-            }
-            else
-            {
-                Animate.Color(BorderOverlay.BorderBrush, SolidColorBrush.ColorProperty, Color.FromArgb(0, 255, 51, 51), TimeSpan.FromMilliseconds(400), quadOut, Color.FromArgb(255, 255, 51, 51));
             }
 
             Release?.Invoke(this, new EventArgs());
@@ -634,17 +576,15 @@ namespace Viper.Game.Controls.Individual
 
             if (newState)
             {
-                Animate.Double(ItemContainer, FrameworkElement.HeightProperty, _itemContMaxHeight, TimeSpan.FromMilliseconds(600), elastic);
-                Animate.Double(_itemScroll, ScrollViewer.HeightProperty, _itemContMaxHeight, TimeSpan.FromMilliseconds(600), elastic);
-                Animate.Double(SillyThing.RenderTransform, RotateTransform.AngleProperty, 313, TimeSpan.FromMilliseconds(200), quadOut);
-                Animate.Color(SillyThing.Stroke, SolidColorBrush.ColorProperty, Color.FromArgb(120, 0, 0, 0), TimeSpan.FromMilliseconds(200), quadOut);
+                Animate.Double(ItemContainer, FrameworkElement.HeightProperty, _itemContMaxHeight, DropDownTimeSpan, DropDownEasing);
+                Animate.Double(_itemScroll, ScrollViewer.HeightProperty, _itemContMaxHeight, DropDownTimeSpan, DropDownEasing);
+                Animate.Double(Arrow.RenderTransform, RotateTransform.AngleProperty, 180, DropDownTimeSpan, DropDownEasing);
             }
             else
             {
-                Animate.Double(ItemContainer, FrameworkElement.HeightProperty, 0, TimeSpan.FromMilliseconds(200), quadOut);
-                Animate.Double(_itemScroll, ScrollViewer.HeightProperty, 0, TimeSpan.FromMilliseconds(200), elastic);
-                Animate.Double(SillyThing.RenderTransform, RotateTransform.AngleProperty, 132, TimeSpan.FromMilliseconds(200), quadOut);
-                Animate.Color(SillyThing.Stroke, SolidColorBrush.ColorProperty, Color.FromArgb(40, 255, 255, 255), TimeSpan.FromMilliseconds(200), quadOut);
+                Animate.Double(ItemContainer, FrameworkElement.HeightProperty, 0, DropDownTimeSpan, quadOut);
+                Animate.Double(_itemScroll, ScrollViewer.HeightProperty, 0, DropDownTimeSpan, elastic);
+                Animate.Double(Arrow.RenderTransform, RotateTransform.AngleProperty, 0, DropDownTimeSpan, DropDownEasing);
 
                 await Task.Delay(200);
 
@@ -654,60 +594,6 @@ namespace Viper.Game.Controls.Individual
             if (_isOpen != newState)
             {
                 _isOpen = newState;
-            }
-        }
-
-        /// <summary>
-        /// Sets default colors, and color animations for buttons, black when not hovered, grey when hovered, and white when clicked (red if disabled)).
-        /// THIS REPLACES ANY BRUSH THAT THE BUTTON HAD.
-        /// </summary>
-        /// <param name="viperButton"></param>
-        public static void SetDefaltCheckAnimations(ViperComboBox viperComboBox)
-        {
-            SolidColorBrush bgBrush = new(Color.FromRgb(23, 23, 23));
-            SolidColorBrush bdBrush = new(Color.FromRgb(80, 80, 80));
-            SolidColorBrush fgBrush = new(Color.FromRgb(255, 255, 255));
-
-            viperComboBox.BorderBrush = bdBrush;
-            viperComboBox.Background = bgBrush;
-            viperComboBox.Foreground = fgBrush;
-
-#pragma warning disable CS8622 // La nulabilidad de los tipos de referencia del tipo de parámetro no coincide con el delegado de destino (posiblemente debido a los atributos de nulabilidad).
-            viperComboBox.StateChanged+= OnStateChanged;
-            viperComboBox.Hovering += OnHover;
-            viperComboBox.NoHovering += OnNoHover;
-#pragma warning restore CS8622 // La nulabilidad de los tipos de referencia del tipo de parámetro no coincide con el delegado de destino (posiblemente debido a los atributos de nulabilidad).
-
-            void OnStateChanged(object sender, ViperComboBoxStateChanged e)
-            {
-                if (e.IsOpen)
-                {
-                    Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(255, 255, 255), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                    Animate.Color(fgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(0, 0, 0), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(255, 255, 255), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                }
-                else
-                {
-                    Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(40, 40, 40), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                    Animate.Color(fgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(255, 255, 255), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                    Animate.Color(bdBrush, SolidColorBrush.ColorProperty, Color.FromRgb(80, 80, 80), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                }
-            }
-
-            void OnHover(object sender, EventArgs e)
-            {
-                if (!viperComboBox.IsOpen)
-                {
-                    Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(40, 40, 40), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                }
-            }
-
-            void OnNoHover(object sender, EventArgs e)
-            {
-                if (!viperComboBox.IsOpen)
-                {
-                    Animate.Color(bgBrush, SolidColorBrush.ColorProperty, Color.FromRgb(23, 23, 23), TimeSpan.FromMilliseconds(200), new QuadraticEase());
-                }
             }
         }
     }
