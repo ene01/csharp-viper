@@ -21,6 +21,7 @@ using Rectangle = System.Windows.Shapes.Rectangle;
 using Viper.Game.Events;
 using Viper.Game.Controls.Gameplay;
 using System.Numerics;
+using Viper.Game.Controls.Individual.Custom;
 
 namespace Viper.Tests
 {
@@ -507,6 +508,12 @@ namespace Viper.Tests
                 HorizontalAlignment = HorizontalAlignment.Stretch,
             };
 
+            CustomButton cButton = new()
+            {
+                Content = "A cool button",
+                Margin = new Thickness(10, 10, 0, 0),
+            };
+
             vButton2.Click += OnClick;
 
             vButton5.Click += OnClick;
@@ -529,6 +536,7 @@ namespace Viper.Tests
             buttonColumn.Children.Add(vButton4);
             buttonColumn.Children.Add(vButton5);
             buttonColumn.Children.Add(vButton6);
+            buttonColumn.Children.Add(cButton);
 
             TestingSpace.Children.Add(buttonColumn);
 
