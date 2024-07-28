@@ -880,6 +880,11 @@ namespace Viper.Tests
                 Margin = new Thickness(0, 0, 0, 10),
             };
 
+            ClassicUnlimitedSelector cus = new()
+            {
+                Margin = new Thickness(0, 0, 0, 10),
+            };
+
             us1.IndexChanged += (s, e) =>
             {
                 debugText.Text = "Value: " + e.Index.ToString();
@@ -893,6 +898,7 @@ namespace Viper.Tests
             unlimtedSelectorColumn.Children.Add(desc1);
             unlimtedSelectorColumn.Children.Add(us1);
             unlimtedSelectorColumn.Children.Add(us2);
+            unlimtedSelectorColumn.Children.Add(cus);
 
             TestingSpace.Children.Add(unlimtedSelectorColumn);
             TestingInteractions.Children.Add(debugText);

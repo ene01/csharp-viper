@@ -293,18 +293,12 @@ namespace Viper.Game.Controls.Individual
             }
         }
 
-        private async void LeftButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void LeftButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (!(_currentIndex - 1 < 0) && _isEnabled)
             {
                 _currentIndex -= 1;
                 IndexViewer.Text = $"{_currentIndex + 1}";
-
-                Animate.Double(IndexViewer.RenderTransform, TranslateTransform.XProperty, -3, TimeSpan.FromMilliseconds(50), quadOut);
-
-                await Task.Delay(50);
-
-                Animate.Double(IndexViewer.RenderTransform, TranslateTransform.XProperty, 0, TimeSpan.FromMilliseconds(300), elastic);
 
                 LeftClick?.Invoke(this, new EventArgs());
                 IndexChanged?.Invoke(this, new ViperUnlimitedSelectorIndexChanged(_currentIndex));
