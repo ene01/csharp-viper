@@ -124,7 +124,7 @@ namespace Viper.Game.Controls.Individual
 
         public Brush CheckFill
         {
-            get { return _background; }
+            get { return _fill; }
 
             set
             {
@@ -136,7 +136,7 @@ namespace Viper.Game.Controls.Individual
 
         public Brush CheckStroke
         {
-            get { return _border; }
+            get { return _stroke; }
 
             set
             {

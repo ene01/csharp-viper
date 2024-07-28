@@ -12,9 +12,9 @@ namespace Viper.Game.Controls.Individual.Custom
     /// <summary>
     /// A BaseButton with my personal preferences
     /// </summary>
-    public class CustomButton : BaseButton
+    public class ClassicButton : BaseButton
     {
-        public CustomButton()
+        public ClassicButton()
         {
             ElasticEase elastic = new() { Springiness = 5, Oscillations = 5 };
 
@@ -49,12 +49,12 @@ namespace Viper.Game.Controls.Individual.Custom
 
             ButtonGrid.Loaded += (s, e) =>
             {
-                RenderTransformOrigin = new System.Windows.Point(ButtonGrid.ActualWidth, ButtonGrid.ActualHeight);
+                RenderTransformOrigin = new System.Windows.Point(ButtonGrid.ActualWidth / 2, ButtonGrid.ActualHeight / 2);
             };
 
             ButtonGrid.SizeChanged += (s, e) =>
             {
-                RenderTransformOrigin = new System.Windows.Point(ButtonGrid.ActualWidth, ButtonGrid.ActualHeight);
+                RenderTransformOrigin = new System.Windows.Point(ButtonGrid.ActualWidth / 2, ButtonGrid.ActualHeight / 2);
             };
         }
     }

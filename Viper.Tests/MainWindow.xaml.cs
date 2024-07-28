@@ -508,7 +508,7 @@ namespace Viper.Tests
                 HorizontalAlignment = HorizontalAlignment.Stretch,
             };
 
-            CustomButton cButton = new()
+            ClassicButton cButton = new()
             {
                 Content = "A cool button",
                 Margin = new Thickness(10, 10, 0, 0),
@@ -578,6 +578,12 @@ namespace Viper.Tests
                 Margin = new Thickness(10, 10, 0, 0),
             };
 
+            ClassicCheckBox cCheck = new()
+            {
+                Content = "A cool CheckBox",
+                Margin = new Thickness(10, 10, 0, 0),
+            };
+
             check1.StateChanged += (s, e) =>
             {
                 Debug.WriteLine($"{e.State}");
@@ -587,6 +593,7 @@ namespace Viper.Tests
             checkColumn.Children.Add(check2);
             checkColumn.Children.Add(check3);
             checkColumn.Children.Add(check4);
+            checkColumn.Children.Add(cCheck);
 
             TestingSpace.Children.Add(checkColumn);
         }
