@@ -670,11 +670,18 @@ namespace Viper.Tests
                 ItemContainerMaxHeight = 200,
             };
 
+            ClassicComboBox cCombo = new()
+            {
+                FallbackContent = "Cool ComboBox",
+                Margin = new Thickness(0, 10, 0, 0),
+            };
+
             combos.Add(combo1);
             combos.Add(combo2);
             combos.Add(combo3);
             combos.Add(combo4);
             combos.Add(combo5);
+            combos.Add(cCombo);
 
             combo1.SelectionChanged += UpdateDebugText;
             combo2.SelectionChanged += UpdateDebugText;
@@ -724,6 +731,7 @@ namespace Viper.Tests
             comboColumn.Children.Add(combo3);
             comboColumn.Children.Add(combo4);
             comboColumn.Children.Add(combo5);
+            comboColumn.Children.Add(cCombo);
 
             TestingSpace.Children.Add(comboColumn);
             TestingInteractions.Children.Add(debugText);

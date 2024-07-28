@@ -88,6 +88,7 @@ namespace Viper.Game.Controls.Individual
         private Brush _border = new SolidColorBrush(Color.FromRgb(BORDER_COLOR_R, BORDER_COLOR_G, BORDER_COLOR_B));
         private Brush _foreground = new SolidColorBrush(Color.FromRgb(FOREGROUND_COLOR_R, FOREGROUND_COLOR_G, FOREGROUND_COLOR_B));
         private Brush _itemDisplayersBrush = new SolidColorBrush(Color.FromRgb(ITEMS_DISPLAYERS_COLOR_R, ITEMS_DISPLAYERS_COLOR_G, ITEMS_DISPLAYERS_COLOR_B));
+        private Brush _itemDisplayersBorder = new SolidColorBrush();
         private Brush _itemListBrush = new SolidColorBrush(Color.FromRgb(LIST_BACKGROUND_COLOR_R, LIST_BACKGROUND_COLOR_G, LIST_BACKGROUND_COLOR_B));
         private Color _arrowColor = Color.FromRgb(ARROW_COLOR_R, ARROW_COLOR_G, ARROW_COLOR_B);
         private double _stuffGridHeight = DEFAULT_GRID_HEIGHT;
@@ -214,6 +215,20 @@ namespace Viper.Game.Controls.Individual
 
             set
             {
+                _itemDisplayersBrush = value;
+
+                SetDisplayerBrushes(value);
+            }
+        }
+
+        public Brush ItemsDisplayersBorder
+        {
+            get { return _itemDisplayersBorder; }
+
+            set
+            {
+                _itemDisplayersBorder = value;
+
                 SetDisplayerBrushes(value);
             }
         }
@@ -321,7 +336,19 @@ namespace Viper.Game.Controls.Individual
         {
             foreach (Grid itemDisplayer in _itemDisplayers)
             {
-                itemDisplayer.Background = value;
+                Brush bg = _itemDisplayersBrush.Clone();
+
+                itemDisplayer.Background = bg;
+            }
+        }
+
+        private void SetDisplayerBorder(Brush value)
+        {
+            foreach (Border itemBorder in _itemDisplayerBorders)
+            {
+                Brush br = _itemDisplayersBorder.Clone();
+
+                itemBorder.BorderBrush = br;
             }
         }
 
@@ -334,19 +361,22 @@ namespace Viper.Game.Controls.Individual
         {
             int currentIndex = 0;
 
+            Brush bg = _itemDisplayersBrush.Clone();
+            Brush br = _itemDisplayersBorder.Clone();
+
             Grid itemGrid = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(0, 0, 0, 1),
+                Background = bg,
             };
 
             Border border = new()
             {
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Background = _itemDisplayersBrush,
-                BorderBrush = new SolidColorBrush(),
+                BorderBrush = br,
                 BorderThickness = new Thickness(1, 1, 1, 1)
             };
 
@@ -429,6 +459,7 @@ namespace Viper.Game.Controls.Individual
                 _itemStackPanelList.Children.RemoveAt(index);
                 _items.RemoveAt(index);
                 _itemDisplayers.RemoveAt(index);
+                _itemDisplayerBorders.RemoveAt(index);
             }
         }
 

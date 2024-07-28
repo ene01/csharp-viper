@@ -21,7 +21,7 @@ namespace Viper.Game.Controls.Individual.Custom
             Background = new SolidColorBrush(Color.FromRgb(23, 23, 23));
             BorderBrush = new SolidColorBrush(Color.FromRgb(80, 80, 80));
             Foreground = new SolidColorBrush(Colors.White);
-            RenderTransform = new ScaleTransform();
+            ButtonGrid.RenderTransform = new ScaleTransform();
 
             Hovering += (s, e) =>
             {
