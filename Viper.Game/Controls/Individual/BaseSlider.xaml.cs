@@ -234,7 +234,6 @@ namespace Viper.Game.Controls.Individual
 
             RootGrid.RenderTransform = new ScaleTransform();
             RootBorder.BorderBrush = new SolidColorBrush();
-            ThumbOverlay.Fill = new SolidColorBrush();
 
             ButtonElements.RenderTransform = _tTransform;
 
@@ -367,11 +366,6 @@ namespace Viper.Game.Controls.Individual
             else
             {
                 Animate.Double(ValueInputElements, OpacityProperty, 0, TimeSpan.FromMilliseconds(200), quadOut);
-
-                if (failed)
-                {
-
-                }
 
                 ValueInput.Clear();
                 ValueInputElements.IsHitTestVisible = false;

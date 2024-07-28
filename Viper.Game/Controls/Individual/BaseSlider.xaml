@@ -11,8 +11,7 @@
                         <TranslateTransform X="0"/>
                     </TransformGroup>
                 </Grid.RenderTransform>
-                <Rectangle x:Name="Button" Fill="#FFAFAFAF" StrokeThickness="2"/>
-                <Rectangle x:Name="ThumbOverlay" Stroke="Black" StrokeThickness="0" Fill="White"/>
+                <Rectangle x:Name="Button" Fill="#FFAFAFAF" StrokeThickness="2" RenderTransformOrigin="0.65,0.5"/>
             </Grid>
             <Rectangle x:Name="StaticBar" Height="6" VerticalAlignment="Center" Fill="#FF3C3C3C" StrokeThickness="0"/>
             <Rectangle x:Name="ProgressBar" Height="6" VerticalAlignment="Center" StrokeThickness="0" HorizontalAlignment="Left" Width="0" Fill="#FFE4E4E4"/>

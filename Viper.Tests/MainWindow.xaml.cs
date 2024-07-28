@@ -807,12 +807,19 @@ namespace Viper.Tests
                 IsEnabled = false,
             };
 
+            ClassicSlider cSlider = new()
+            {
+                Height = 40,
+                Width = 200,
+            };
+
             sliderColumn.Children.Add(desc1);
             sliderColumn.Children.Add(slider1);
             sliderColumn.Children.Add(slider2);
             sliderColumn.Children.Add(slider3);
             sliderColumn.Children.Add(slider4);
             sliderColumn.Children.Add(slider5);
+            sliderColumn.Children.Add(cSlider);
 
             slider1.ValueChanged += (s, e) =>
             {
